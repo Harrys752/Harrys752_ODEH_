@@ -1,0 +1,636 @@
+--- PAGE 1 ---
+Demo Version of the Second-Round Tasks
+Earth and Environmental Sciences for
+Sustainability: Second-Round Sample Tasks for the
+Open Doors Bachelor's Track
+This sample test includes 46 tasks: 25 basic-level test tasks with one correct answer, 15 intermediate-level
+tasks with several correct answers or a model answer, 3 advanced-level tasks requiring a detailed answer,
+and 3 oral-response tasks. For tasks requiring a detailed answer and for oral-response tasks, assessment
+criteria and model answers are provided.
+Task 1
+Basic level (maximum 1 point)
+Field of science: Geography, physical
+Which shape does the Earth’s orbit have?
+a) Ellipsoid
+b) Ellipse
+c) Circle
+d) Disk
+Answer: b
+Task 2
+Basic level (maximum 1 point)
+Field of science: Geography, physical
+Which river is the longest?
+a) Nile
+b) Senegal
+c) Zambezi
+d) Congo
+Answer: a
+--- PAGE 2 ---
+Demo Version of the Second-Round Tasks
+Task 3
+Basic level (maximum 1 point)
+Field of science: Geography, physical
+Which European was the ﬁrst to circumnavigate the globe?
+a) Ferdinand Magellan
+b) Vasco da Gama
+c) Fyodor Konyukhov
+d) James Cook
+Answer: a
+Task 4
+Basic level (maximum 1 point)
+Field of science: Meteorology & atmospheric sciences
+Permanent winds that are directed from the tropics to the equator are called:
+a) Monsoons
+b) Trade winds (easterlies)
+c) West winds
+d) East winds
+Answer: b
+Task 5
+Basic level (maximum 1 point)
+Field of science: Meteorology & atmospheric sciences
+During the rain, 12.1 mm of precipitation fell. What mass of water fell on an area of 1 ha? The
+density of water is 1 g/cm3.
+a) 1.21 kg
+b) 12.1 kg
+c) 12,100 kg
+d) 121,000 kg
+--- PAGE 3 ---
+Demo Version of the Second-Round Tasks
+Answer: d
+Task 6
+Basic level (maximum 1 point)
+Field of science: Meteorology & atmospheric sciences
+Which factor has the greatest inﬂuence on the formation of climate zones on Earth?
+a) Salinity of ocean water
+b) Geomagnetic ﬁeld
+c) Incidence angle of solar rays
+d) Human activity
+Answer: c
+Task 7
+Basic level (maximum 1 point)
+Field of science: Geology
+Which lake has a tectonic origin?
+a) Baikal
+b) Huron
+c) Taupo
+d) Great Bear Lake
+Answer: a
+Task 8
+Basic level (maximum 1 point)
+Field of science: Geology
+A geologist’s route line consists of 3 sections of 2.1 km, 1.8 km, and 3.5 km. Which distance will the
+geologist cover in a day if he/she returns to the camp along the same route?
+a) 7.4 km
+b) 0.4 km
+c) 22.2 km
+--- PAGE 4 ---
+Demo Version of the Second-Round Tasks
+d) 14.8 km
+Answer: d
+Task 9
+Basic level (maximum 1 point)
+Field of science: Geology
+Which physical force is predominant in the formation of screes, landslides, and rockfalls?
+a) Electromagnetic
+b) Gravitational
+c) Frictional
+d) Elastic
+Answer: b
+Task 10
+Basic level (maximum 1 point)
+Field of science: Geology
+Which of these minerals is an oxide?
+a) Quartz (SiO2)
+b) Olivine ((Mg, Fe)2SiO4)
+c) Malachite (Сu2CO3(OH)2)
+d) Gypsum (CaSO4*2H2O)
+Answer: a
+Task 11
+Basic level (maximum 1 point)
+Field of science: Geochemistry & geophysics
+Which element is most common in the Earth’s crust (by mass)?
+a) Si
+b) S
+--- PAGE 5 ---
+Demo Version of the Second-Round Tasks
+c) Na
+d) Ni
+Answer: a
+Task 12
+Basic level (maximum 1 point)
+Field of science: Geochemistry & geophysics
+Speciﬁc electrical resistance in permafrost is …:
+a) higher than in thawed rocks
+b) lower than in thawed rocks
+c) same as in thawed rocks
+d) absent
+Answer: a
+Task 13
+Basic level (maximum 1 point)
+Field of science: Geochemistry & geophysics
+The highest dielectric permittivity is attributed to:
+a) oil
+b) water
+c) natural gas
+d) gas condensate
+Answer: b
+Task 14
+Basic level (maximum 1 point)
+Field of science: Mining & mineral processing
+What is the origin of marble?
+a) Metamorphic
+--- PAGE 6 ---
+Demo Version of the Second-Round Tasks
+b) Igneous
+c) Hydrothermal
+d) Placer
+Answer: a
+Task 15
+Basic level (maximum 1 point)
+Field of science: Mining & mineral processing
+Calculate the volume of an ore body if the area of one section is 9 m2 and of the second is 4 m2.
+The distance between the sections is 0.3 km. The lines of the exploration sections are parallel.
+a) 1.9 m3
+b) 1,950 m3
+c) 1,900 m3
+d) 2,000 m3
+Answer: b
+Task 16
+Basic level (maximum 1 point)
+Field of science: Mining & mineral processing
+Which property is used in diamond enrichment?
+a) Magnetism
+b) Hydrophobicity
+c) Brittleness
+d) Thermal resistance
+Answer: b
+--- PAGE 7 ---
+Demo Version of the Second-Round Tasks
+Task 17
+Basic level (maximum 1 point)
+Field of science: Mining & mineral processing
+The process of gypsum transformation into anhydrite is called …
+a) dehydration
+b) hydration
+c) substitution
+d) combination
+Answer: a
+Task 18
+Basic level (maximum 1 point)
+Field of science: Mining & mineral processing
+Which of the listed countries is one of the leaders in natural gas production?
+a) India
+b) Russia
+c) Cuba
+d) Lithuania
+Answer: b
+Task 19
+Basic level (maximum 1 point)
+Field of science: Ecology
+Milankovitch cycles describe the changing patterns in the motion of our planet around its axis during
+the day and in its annual revolution around the Sun. There are 5 main parameters described by these
+cycles:
+1. Precession of the Earth's axis — a change in the direction of the Earth's rotation axis relative
+to ﬁxed stars.
+2. Orbital eccentricity — a measure of the diﬀerence between the orbit and a circle.
+3. Axial tilt.
+--- PAGE 8 ---
+Demo Version of the Second-Round Tasks
+4. Precession of the Earth's orbit — a change in the orbital ellipse.
+5. Orbital inclination.
+The increase in total annual solar radiation at high latitudes is associated with a change in this
+parameter:
+a) An increase in the eccentricity of the Earth’s orbit
+b) A decrease in the inclination angle of the Earth’s axis
+c) An increase in the inclination angle of the Earth’s axis
+d) Axial precession
+Answer: c
+Task 20
+Basic level (maximum 1 point)
+Field of science: Ecology
+Which of the following resources is a non-renewable resource? 
+a) Forest resources 
+b) Oil
+c) Solar energy 
+d) Wind energy
+Answer: b
+Task 21
+Basic level (maximum 1 point)
+Field of science: Ecology
+Which of the following sources of atmospheric pollution is natural? 
+a) Emissions from motor vehicles 
+b) Volcanic eruptions 
+c) Operation of thermal power plants 
+d) Burning of agricultural waste
+Answer: b
+--- PAGE 9 ---
+Demo Version of the Second-Round Tasks
+Task 22
+Basic level (maximum 1 point)
+Field of science: Ecology
+Which meteorological factor has the most signiﬁcant eﬀect on the speed and direction of pollutants
+in the surface layer of the atmosphere?
+a) Atmospheric pressure 
+b) Wind 
+c) Relative humidity of the air 
+d) Cloud cover
+Answer: b
+Task 23
+Basic level (maximum 1 point)
+Field of science: Environmental sciences
+The tundra has predominantly moss-and-lichen vegetation, but not trees, due to:
+a) strong winds
+b) waterlogged soil
+c) short growing season and low temperatures
+d) soil salinization
+Answer: c
+Task 24
+Basic level (maximum 1 point)
+Field of science: Environmental sciences
+Of the 10,000 km² of a region’s area, 1,200 km² are forests. What is the proportion of the forested
+area in the region?
+a) 10%
+b) 12%
+c) 15%
+d) 20% 
+--- PAGE 10 ---
+Demo Version of the Second-Round Tasks
+Answer: b
+Task 25
+Basic level (maximum 1 point)
+Field of science: Environmental sciences
+Which initial form of nitrogen is involved in denitriﬁcation, resulting in the formation of molecular
+nitrogen (N2)?
+a) NH4 +
+b) NO3 –
+c) NO2 –
+d) NO
+Answer: b
+Task 26
+Intermediate level (maximum 3 points)
+Field of science: Geography, physical
+The coordinates of the river source are 20°S 51°W.
+The coordinates of the river mouth are 33°S 58°W.
+In what direction relative to the cardinal points does the river ﬂow?
+Write down the answer in the format: “from ххх-ххх to ууу-ууу”.
+Answer: from north-east to south-west
+Task 27
+Intermediate level (maximum 3 points)
+Field of science: Geography, physical
+At which parallels does the sun rise to its zenith twice a year?
+a) Northern Tropic
+b) Between the Northern Tropic and the equator
+--- PAGE 11 ---
+Demo Version of the Second-Round Tasks
+c) Equator
+d) Between the equator and the Southern Tropic
+e) Southern Tropic
+Answer: b, c, d
+Task 28
+Intermediate level (maximum 3 points)
+Field of science: Meteorology & atmospheric sciences
+The troposphere contains the bulk of the atmospheric air – about 80%. The air temperature in the
+troposphere decreases with distance from the Earth’s surface – by 6°C with each kilometer. If the
+height of the mountains is 4,000 m, and the air temperature at the foot of the mountains is 10°C,
+what is the air temperature at the top (°С)?
+Answer: -14
+Task 29
+Intermediate level (maximum 3 points)
+Field of science: Geology
+Select two regions with low seismic activity:
+a) West coast of South America
+b) Greater Sunda Islands
+c) East European Plain
+d) Scandinavia
+Answer: c, d
+Task 30
+Intermediate level (maximum 3 points)
+Field of science: Geology
+Which minerals can be used to make insulating materials? Choose two correct answers:
+a) Mica
+b) Pyrite
+--- PAGE 12 ---
+Demo Version of the Second-Round Tasks
+c) Quartz
+d) Galena
+Answer: a, c
+Task 31
+Intermediate level (maximum 3 points)
+Field of science: Geology
+Choose two minerals for which color is an important diagnostic feature. 
+a) Quartz 
+b) Cinnabar 
+c) Fluorite
+d) Calcite 
+e) Pyrite
+f) Halite
+Answer: b, e
+Task 32
+Intermediate level (maximum 3 points)
+Field of science: Geochemistry & geophysics
+Select two NON-ferromagnetic minerals:
+a) Titanomagnetite
+b) Siderite
+c) Quartz
+d) Hematite
+e) Pyrrhotite
+f) Plagioclase
+Answer: c, f
+--- PAGE 13 ---
+Demo Version of the Second-Round Tasks
+Task 33
+Intermediate level (maximum 3 points)
+Field of science: Geochemistry & geophysics
+A horizontally-layered medium is represented by alternating thin layers of sandstones and shales. All
+the layers have identical thickness. The speciﬁc electrical resistances of the sandstones and shales
+are  ρsand and  ρshale respectively. Then the speciﬁc electrical resistances of the medium in the
+vertical (ρv) and horizontal (ρh) directions are equal to (choose TWO options, using the analogy with
+the series and parallel connection of conductors):
+a) ρv = 0.5 ∙ (ρsand + ρshale)
+b) ρv = ρsand + ρshale
+c) ρv = 2 ∙ (ρsand + ρshale)
+d) ρh = 0.5 / (1/ρsand + 1/ρshale)
+e) ρh = 1 / (1/ρsand + 1/ρshale)
+f) ρh = 2 / (1/ρsand + 1/ρshale)
+Answer: a, f
+Task 34
+Intermediate level (maximum 3 points)
+Field of science: Mining & mineral processing
+Which two metals are primarily obtained by processing sulﬁde ores? 
+a)  Iron 
+b) Copper
+c) Molybdenum
+d) Uranium
+e) Manganese
+f) Chromium
+Answer: b, c
+--- PAGE 14 ---
+Demo Version of the Second-Round Tasks
+Task 35
+Intermediate level (maximum 3 points)
+Field of science: Mining & mineral processing
+Select two countries that produced the most gold in 2025.
+a) India
+b) China
+c) Australia
+d) Kazakhstan
+e) South Africa 
+f) Russia
+Answer: b, f
+Task 36
+Intermediate level (maximum 3 points)
+Field of science: Mining & mineral processing
+Which of the following consequences are considered to be negative environmental impacts of
+mining? Select all that apply.
+a) Formation of anthropogenic relief (piles, quarries) 
+b) Increase in biodiversity in disturbed areas 
+c) Contamination of groundwater and surface water with chemical reagents 
+d) Improvement of soil fertility near deposits 
+e) Reduction of noise levels in adjacent areas 
+f) Increase in nutrients in water bodies
+Answer: a, c
+Task 37
+Intermediate level (maximum 3 points)
+Field of science: Ecology
+What are the consequences of poor environmental management? Choose two correct answers.
+--- PAGE 15 ---
+Demo Version of the Second-Round Tasks
+a) Increased biodiversity 
+b) Soil degradation and desertiﬁcation 
+c) Improved air quality 
+d) The extinction of rare plant and animal species 
+e) Stabilization of climate conditions 
+f) Reducing pollution of surface and groundwater
+Answer: b, d
+Task 38
+Intermediate level (maximum 3 points)
+Field of science: Ecology
+Which of the following mechanisms describe the toxic eﬀects of excessive element concentrations
+on plants? Select all that apply.
+a) Competition with vital metabolites
+b) Substitution of vital ions
+c) Capture of positions in molecules occupied by macroelements
+d) Change in the permeability of cell membranes
+e) Aﬃnity for phosphate groups and active centers in ADP and ATP
+Answer: a, b, d, e
+Task 39
+Intermediate level (maximum 3 points)
+Field of science: Environmental sciences
+Which two factors most often increase the risk of metal release from bottom sediments into the
+water?
+a) Acidiﬁcation of the water/sediment (decrease in pH)
+b) Reduction of suspended solids to zero
+c) Increasing concentration of carbonates that stabilize pH
+d) Sediment resuspension/mixing (storms, dredging, vessel traﬃc) 
+Answer: a, d
+--- PAGE 16 ---
+Demo Version of the Second-Round Tasks
+Task 40
+Intermediate level (maximum 3 points)
+Field of science: Environmental sciences
+Select two correct statements from the following which characterize natural processes in swamps.
+a) Abrasion
+b) Barchan formation
+c) Flooding
+d) Peat formation
+e) Frost weathering
+f) Soil salinization
+Answer: c, d
+--- PAGE 17 ---
+Demo Version of the Second-Round Tasks
+Task 41
+Advanced level (maximum 10 points)
+Field of science: Geography, physical
+--- PAGE 18 ---
+Demo Version of the Second-Round Tasks
+Calculate the Sun’s midday altitude (solar elevation angle) on the day of the summer solstice in the
+city of Saint Petersburg. Write down a solution and answer.
+--- PAGE 19 ---
+Demo Version of the Second-Round Tasks
+Note: A complete solution must include your method and reasoning. 
+Providing only the ﬁnal answer is not suﬃcient.
+Solution method:
+The geographical latitude of the point is ϕ   = 60° n.l.± 1°
+The angular midday height of the sun above the horizon (α) α = 90 – ϕ  + 23°27´ or α = 90 – ϕ  + 23.5°
+Hence the angular midday altitude of the sun above the horizon can be equal to:
+α = 53°27´ 
+or 53.5°
+or 52°27´ 
+or 52.5°
+or 54°27´
+or 54.5°
+Answer:  α = 53°27´ 
+or 53.5°
+or 52°27´ 
+or 52.5°
+or 54°27´
+or 54.5°
+Assessment criteria
+Criterion 1: The geographical latitude of the point is determined correctly ( ϕ ) — 0–2 points
+Criterion 2: The solution record is given, the correct sequence for calculating the angular midday height of
+the sun above the horizon (α) — 0–5 points
+Criterion 3: The correct value of the angular midday altitude of the sun above the horizon is given. (α) — 0–3
+points
+Task 42
+Advanced level (maximum 10 points)
+Field of science: Geochemistry & geophysics
+During reclamation of closed coal mine territories, it is important to neutralize acidic eﬄuents formed
+during oxidation of pyrite (FeS₂) in rock dumps. The oxidation reaction is described by the equation:
+2FeS₂ + 7O₂ + 2H₂O →  2FeSO₄ + 2H₂SO₄
+In a selected sample from dumps with a mass of 2.0 t, the pyrite content is 1.2 % by mass. All the
+sulfuric acid passes into aqueous solution. 
+Tasks: 
+--- PAGE 20 ---
+Demo Version of the Second-Round Tasks
+1. Identify the oxidizing agent and reducing agent in this reaction. Explain your choice through
+changes in oxidation states. 
+2. Calculate the mass of sulfuric acid (H₂SO₄) that can form upon complete oxidation of pyrite in this
+dump.
+3. Slaked lime Ca(OH)₂ is used to neutralize the acid. Write the neutralization reaction equation and
+calculate the mass of pure slaked lime required for complete neutralization of the obtained sulfuric
+acid. 
+Molar masses: FeS₂ = 120 g/mol, H₂SO₄ = 98 g/mol, Ca(OH)₂ = 74 g/mol.
+Note: A complete solution must include your method and reasoning. 
+Providing only the ﬁnal answer is not suﬃcient.
+Solution method:
+Oxidizing agent and reducing agent: 
+Oxidizing agent: O₂ (oxygen). The oxidation state of oxygen decreases from 0 to –2 (in H₂O and
+sulfates) — reduction process. 
+Reducing agent: FeS₂ (pyrite), more precisely — sulfur in its composition. The oxidation state of
+sulfur increases from –1 (in S₂²⁻) to +6 (in SO₄²⁻) — oxidation process. Iron retains the oxidation state
++2.
+2. Calculation of sulfuric acid mass: 
+Mass of pyrite in the dump: m(FeS₂) = 2.0 t × 0.012 = 0.024 t = 24 kg 
+Amount of substance of pyrite: n(FeS₂) = m / M = 24 000 g / 120 g/mol = 200 mol 
+According to the reaction equation: 2 mol FeS₂ produce 2 mol H₂SO₄, meaning the ratio is 1:1.
+Therefore, n(H₂SO₄) = 200 mol 
+Mass of sulfuric acid: m(H₂SO₄) = n × M = 200 mol × 98 g/mol = 19 600 g = 19.6 kg
+3. Calculation of lime mass for neutralization: 
+Neutralization equation: H₂SO₄ + Ca(OH)₂ →  CaSO₄ ↓  + 2H₂O 
+According to the equation: 1 mol H₂SO₄ reacts with 1 mol Ca(OH)₂, meaning: n(Ca(OH)₂) = n(H₂SO₄) =
+200 mol 
+Mass of pure slaked lime: m(Ca(OH)₂) = n × M = 200 mol × 74 g/mol = 14 800 g = 14.8 kg
+Answer:
+Oxidizing agent: O₂, Reducing agent: FeS₂
+19.6 kg
+14.8 kg
+--- PAGE 21 ---
+Demo Version of the Second-Round Tasks
+Assessment criteria
+Criterion 1: Oxidizing agent (O₂) and reducing agent (FeS₂/sulfur) are correctly identiﬁed with justiﬁcation
+through changes in oxidation states (O: 0 → –2, S: –1 → +6). — 0–3 points
+Criterion 2: Mass of H₂SO₄ is correctly calculated: correct calculation of pyrite mass, amount of substance,
+application of 1:1 stoichiometry, ﬁnal answer with units of measurement (19.6 kg). — 0–4 points
+Criterion 3: Neutralization equation H₂SO₄ + Ca(OH)₂ →  CaSO₄ + 2H₂O is correctly written and mass of
+Ca(OH)₂ (14.8 kg) is correctly calculated with units of measurement indicated. — 0–3 points
+Task 43
+Advanced level (maximum 10 points)
+Field of science: Mining & mineral processing
+A vein-type gold deposit has been explored in a fracture zone within granitoids. The ores are
+represented by quartz-sulﬁde veins with disseminated native gold and electrum (a natural alloy of
+gold and silver). To assess the economic feasibility of reserve exploitation and justify the cut-oﬀ
+grade, it is necessary to calculate the net smelter return per tonne of ore, taking into account
+metallurgical processing, reﬁning conditions, and market prices for precious metals.
+Initial data: 
+content of valuable components in the ore: gold C_Au = 8.40 g/t; silver C_Ag = 32.50 g/t; 
+recovery coeﬃcients during cyanidation and reﬁning: gold η_Au = 92.0%; silver η_Ag =
+78.0%; 
+market prices for metals: gold P_Au = 62.50 USD/g; silver P_Ag = 0.78 USD/g; 
+processing conditions: payable metal share paid to the subsoil user upon sale under the
+current agreement: Au = 95.0%, Ag = 90.0%; 
+mining and processing costs per 1 tonne of ore: 18.50 USD/t; other operating expenses
+(delivery to the reﬁnery, insurance): 5.20 USD/t.
+Calculate the net smelter return per tonne of ore in US dollars. Perform intermediate calculations
+without rounding; round the ﬁnal answer to two decimal places.
+Note: A complete solution must include your method and reasoning. 
+Providing only the ﬁnal answer is not suﬃcient.
+Solution method:
+Calculation of the mass of recoverable precious metals from 1 tonne of ore 
+m_Au_rec = C_Au × η_Au = 8.40 × 0.920 = 7.728 g/t 
+m_Ag_rec = C_Ag × η_Ag = 32.50 × 0.780 = 25.350 g/t
+--- PAGE 22 ---
+Demo Version of the Second-Round Tasks
+Calculation of the mass of metals subject to payment 
+m_Au_payable = m_Au_rec × 0.950 = 7.728 × 0.950 = 7.3416 g/t m_Ag_payable = m_Ag_rec × 0.900 =
+25.350 × 0.900 = 22.815 g/t
+Calculation of gross revenue from metal sales 
+R_Au = m_Au_payable × P_Au = 7.3416 × 62.50 = 458.8500 USD/t 
+R_Ag = m_Ag_payable × P_Ag = 22.815 × 0.78 = 17.7957 USD/t 
+R_gross = 458.8500 + 17.7957 = 476.6457 USD/t
+Calculation of total costs
+C_deductions = TC/RC + C_other = 18.50 + 5.20 = 23.70 USD/t
+Calculation of net smelter return (NSR) per tonne of ore 
+      NSR = R_gross − C_deductions = 476.6457 − 23.70 = 452.95 USD/t
+Answer:  452.95 USD/t
+Assessment criteria
+Criterion 1: Correctly determined masses of recoverable metals – 1 point for each correct determination —
+0–2 points
+Criterion 2: Correctly assessed revenue values for each metal – 2 points for each component — 0–4 points
+Criterion 3: Correctly determined gross revenue and costs — 0–2 points
+Criterion 4: Correctly calculated net smelter return per tonne of ore and performed rounding — 0–2 points
+Task 44
+For the oral-response section, the participant must choose one of the three tasks numbered 44, 45, and 46.
+Oral-response task (maximum 5 points)
+Field of science: Geography, physical
+Advanced-level task: 41
+Name the geographical factors that inﬂuence sunshine duration. What does sunshine duration
+depend on?
+Answer:  Sunshine duration is the time (in hours) during which the sun is above the horizon and
+unobscured (for example, by dense clouds). The main geographic factors that inﬂuence it include:
+Latitude: Determines the sun's height above the horizon and the length of daylight. At polar latitudes, polar
+day (the sun shines 24 hours a day) occurs in summer, and polar night occurs in winter.
+Cloud cover: The main factor reducing the amount of direct sunlight. Subtropical deserts (e.g., the Sahara)
+experience the least cloud cover and, consequently, the longest sunshine duration.
+Topography: Mountain ranges can shade an area, reducing sunshine hours in valleys. In addition, the
+aspect of the slopes is important (slopes facing the equator receive more sunlight). 
+Proximity to bodies of water and oceans: In coastal areas, sea fog and increased cloud cover often form,
+which reduces the number of hours of sunshine compared to inland areas. 
+--- PAGE 23 ---
+Demo Version of the Second-Round Tasks
+Altitude: With increasing altitude, the thickness of the atmosphere that blocks the sun's rays decreases.
+The air becomes more transparent, which increases the duration and intensity of sunshine. 
+Atmospheric circulation and haze: The presence of suspended particles (dust, smoke, aerosols, forest
+ﬁres) in the air scatters sunlight and reduces the amount of pure sunshine.
+Assessment criteria
+Criterion 1: Subject-speciﬁc knowledge (terminology, conceptual framework, and theoretical foundations).
+Criterion 2: Breadth of knowledge (relevant facts, illustrative examples, and the integration of theory and
+practice).
+Task 45
+Oral-response task (maximum 5 points)
+Field of science: Geochemistry & geophysics
+Advanced-level task: 42
+What is an oxidation reaction? 
+Answer:  An oxidation reaction is a chemical process in which an atom, ion, or molecule loses electrons,
+leading to an increase in its oxidation state. A classic example of oxidation is the interaction of a substance
+with oxygen, for example, combustion or rusting of iron. However, in the modern understanding, oxidation
+can also proceed without the participation of oxygen, with the involvement of other substances, such as
+halogens or metal ions. Oxidation reactions are always coupled with reduction reactions: together they form
+redox processes in which electrons transfer from the reducing agent to the oxidizing agent.
+ 
+Assessment criteria
+Criterion 1: Subject-speciﬁc knowledge (terminology, conceptual framework, and theoretical foundations).
+Criterion 2: Breadth of knowledge (relevant facts, illustrative examples, and the integration of theory and
+practice).
+Task 46
+Oral-response task (maximum 5 points)
+Field of science: Mining & mineral processing
+Advanced-level task: 43
+What factors inﬂuence the economic feasibility of mining a mineral deposit? 
+Answer:  The economic feasibility of deposit exploitation is primarily inﬂuenced by geological parameters:
+mineral reserves, average grade of the valuable component, depth of occurrence, and complexity of mining
+--- PAGE 24 ---
+Demo Version of the Second-Round Tasks
+and geological conditions, which determine the choice of mining method. Technological properties of the
+ores are of signiﬁcant importance, including mineral composition, amenability to beneﬁciation, and metal
+recovery coeﬃcient, as they directly aﬀect the yield of marketable products and processing eﬃciency.
+Economic assessment is impossible without analysis of market conditions: current and forecast prices for
+raw materials, demand levels, market volatility, and availability of logistics routes for product sales. An
+important factor is the magnitude of capital (CAPEX) and operating (OPEX) expenditures, including costs for
+infrastructure, energy supply, labor resources, and compliance with environmental standards. Regulatory
+conditions must also be considered: tax burden, land reclamation requirements, and stability of licensing
+agreements.
+ 
+Assessment criteria
+Criterion 1: Subject-speciﬁc knowledge (terminology, conceptual framework, and theoretical foundations).
+Criterion 2: Breadth of knowledge (relevant facts, illustrative examples, and the integration of theory and
+practice).

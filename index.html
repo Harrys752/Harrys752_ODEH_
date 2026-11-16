@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Open Doors Olympiad: Earth & Environmental Sciences for Sustainability — Official Stage 2 Simulator</title>
+  
+  <!-- Academic Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="styles.css">
+
+  <!-- MathJax v3 Configuration -->
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']],
+        processEscapes: true,
+        processEnvironments: true
+      },
+      options: {
+        skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      },
+      startup: {
+        pageReady: () => {
+          return MathJax.startup.defaultPageReady();
+        }
+      }
+    };
+  </script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body class="exam-body">
+
+  <!-- Top Proctoring & Examination Control Bar -->
+  <header class="proctor-bar no-print">
+    <div class="proctor-bar-container">
+      <div class="proctor-brand">
+        <span class="proctor-badge">OPEN DOORS PROCTORED EXAM</span>
+        <span class="exam-title-text">Earth & Environmental Sciences for Sustainability (Bachelor's)</span>
+      </div>
+
+      <div class="proctor-status-group">
+        <!-- Live Countdown Timer -->
+        <div class="timer-box" id="timer-box" title="Remaining Examination Time">
+          <span class="timer-icon">⏱️</span>
+          <span class="timer-label">Time Remaining:</span>
+          <span class="timer-digits" id="timer-display">180:00</span>
+        </div>
+
+        <!-- Proctoring Focus Loss Counter -->
+        <div class="focus-loss-badge" id="focus-loss-badge" title="Focus violations detected by browser proctoring">
+          <span class="focus-dot"></span>
+          <span>Focus Loss: <strong id="focus-loss-count">0</strong></span>
+        </div>
+
+        <!-- Scientific Calculator Toggle -->
+        <button id="btn-toggle-calc" class="btn btn-proctor" title="Open Built-in Scientific Calculator">
+          🧮 <span>Calculator</span>
+        </button>
+
+        <!-- Exam Presets & Config -->
+        <button id="btn-toggle-config" class="btn btn-proctor" title="Change Preset Mode or Filter Settings">
+          ⚙️ <span>Mode / Presets</span>
+        </button>
+
+        <!-- Finish Attempt & Submit -->
+        <button id="btn-finish-attempt" class="btn btn-submit-exam" title="Finish current attempt and submit for automated grading">
+          🏁 <span>Finish Attempt & Submit</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Secondary Toolbar: Autosave & PDF Export -->
+  <div class="sub-toolbar no-print">
+    <div class="sub-toolbar-container">
+      <div class="autosave-indicator">
+        <span class="status-dot" id="save-dot"></span>
+        <span id="save-status-text">All answers synchronized locally</span>
+      </div>
+
+      <div class="mode-indicator" id="active-mode-indicator">
+        Mode: <strong>Preset A — Official Stage 2 (43 Tasks · 100 Pts)</strong>
+      </div>
+
+      <div class="export-actions">
+        <button id="btn-new-random-set" class="btn-sub" title="Generate New Randomized Question Set">
+          🎲 New Random Set
+        </button>
+        <button id="btn-reset-answers" class="btn-sub" title="Reset all answers for active set">
+          🔄 Reset Answers
+        </button>
+        <button id="btn-export-blank" class="btn-sub" title="Export clean blank paper to PDF">
+          📄 Export Blank PDF
+        </button>
+        <button id="btn-export-graded" class="btn-sub" title="Export graded attempt + answer key to PDF">
+          📊 Export Graded PDF
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Preset Mode & Configuration Modal Drawer -->
+  <div id="config-modal" class="config-modal-backdrop no-print" style="display: none;">
+    <div class="config-modal-card">
+      <div class="config-modal-header">
+        <h3>Exam Preset Mode & Randomizer Configuration</h3>
+        <button id="btn-close-modal" class="btn-close" aria-label="Close modal">&times;</button>
+      </div>
+      <div class="config-modal-body">
+        <div class="preset-cards-grid">
+          <!-- Preset A -->
+          <div class="preset-card active-preset" data-preset="preset-a">
+            <div class="preset-radio">
+              <input type="radio" name="preset-choice" id="radio-preset-a" value="preset-a" checked>
+            </div>
+            <div class="preset-info">
+              <h4>Preset A: Official Stage 2 Second-Round Simulator</h4>
+              <p>Authentic 43-task competition exam distributed across all 7 fields of science.</p>
+              <div class="preset-badges">
+                <span class="badge-mini">25 Basic (25 pts)</span>
+                <span class="badge-mini">15 Intermediate (45 pts)</span>
+                <span class="badge-mini">3 Advanced (30 pts)</span>
+                <span class="badge-mini highlight">100 Points Total</span>
+                <span class="badge-mini">180 Min Timer</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Preset B -->
+          <div class="preset-card" data-preset="preset-b">
+            <div class="preset-radio">
+              <input type="radio" name="preset-choice" id="radio-preset-b" value="preset-b">
+            </div>
+            <div class="preset-info">
+              <h4>Preset B: Entry-Style 68-Question Speed Drill</h4>
+              <p>Modeled directly on the 68-task conceptual qualification test shown in the reference interface.</p>
+              <div class="preset-badges">
+                <span class="badge-mini">68 Basic Level Tasks</span>
+                <span class="badge-mini highlight">68 Points Total</span>
+                <span class="badge-mini">60 Min Timer</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Preset C -->
+          <div class="preset-card" data-preset="preset-c">
+            <div class="preset-radio">
+              <input type="radio" name="preset-choice" id="radio-preset-c" value="preset-c">
+            </div>
+            <div class="preset-info">
+              <h4>Preset C: Custom Quotas & Field Specialization</h4>
+              <p>Define custom task counts and filter by single scientific discipline or balanced sampling.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Custom Controls (revealed when Preset C selected) -->
+        <div id="custom-preset-settings" class="custom-settings-panel" style="display: none;">
+          <div class="custom-grid">
+            <div class="form-group">
+              <label for="custom-filter-mode">Discipline Sampling Mode:</label>
+              <select id="custom-filter-mode" class="form-control">
+                <option value="balanced" selected>Stratified Balanced Across All 7 Fields</option>
+                <option value="single-field">Single Field of Science Focus</option>
+                <option value="all-pool">Pure Random Pool Sampling</option>
+              </select>
+            </div>
+
+            <div class="form-group" id="custom-target-field-group" style="display: none;">
+              <label for="custom-target-field">Select Field of Science:</label>
+              <select id="custom-target-field" class="form-control">
+                <option value="Geography, physical">1. Geography, physical</option>
+                <option value="Meteorology & atmospheric sciences">2. Meteorology & atmospheric sciences</option>
+                <option value="Geology">3. Geology</option>
+                <option value="Geochemistry & geophysics">4. Geochemistry & geophysics</option>
+                <option value="Mining & mineral processing">5. Mining & mineral processing</option>
+                <option value="Ecology">6. Ecology</option>
+                <option value="Environmental sciences">7. Environmental sciences</option>
+              </select>
+            </div>
+
+            <div class="form-group-row">
+              <div class="form-group">
+                <label for="custom-quota-basic">Basic (1 pt):</label>
+                <input type="number" id="custom-quota-basic" class="form-control" min="0" max="75" value="25">
+              </div>
+              <div class="form-group">
+                <label for="custom-quota-inter">Intermediate (3 pts):</label>
+                <input type="number" id="custom-quota-inter" class="form-control" min="0" max="30" value="15">
+              </div>
+              <div class="form-group">
+                <label for="custom-quota-adv">Advanced (10 pts):</label>
+                <input type="number" id="custom-quota-adv" class="form-control" min="0" max="10" value="3">
+              </div>
+              <div class="form-group">
+                <label for="custom-timer-min">Timer (Minutes):</label>
+                <input type="number" id="custom-timer-min" class="form-control" min="10" max="300" value="180">
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="config-modal-footer">
+        <button id="btn-cancel-modal" class="btn btn-secondary">Cancel</button>
+        <button id="btn-apply-modal" class="btn btn-primary">Start Exam with Selected Mode</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scientific Calculator Modal Drawer -->
+  <div id="calc-drawer" class="calc-drawer no-print" style="display: none;">
+    <div class="calc-header">
+      <h4>Scientific Calculator</h4>
+      <button id="btn-close-calc" class="btn-close-sm">&times;</button>
+    </div>
+    <div class="calc-display-wrapper">
+      <div id="calc-history" class="calc-history"></div>
+      <input type="text" id="calc-display" class="calc-display" value="0" readonly>
+    </div>
+    <div class="calc-buttons-grid">
+      <button class="calc-btn calc-op" data-action="clear">AC</button>
+      <button class="calc-btn calc-op" data-action="backspace">⌫</button>
+      <button class="calc-btn calc-op" data-action="bracket">(</button>
+      <button class="calc-btn calc-op" data-action="bracket">)</button>
+
+      <button class="calc-btn calc-fn" data-fn="sin">sin</button>
+      <button class="calc-btn calc-fn" data-fn="cos">cos</button>
+      <button class="calc-btn calc-fn" data-fn="tan">tan</button>
+      <button class="calc-btn calc-op" data-action="divide">÷</button>
+
+      <button class="calc-btn calc-fn" data-fn="ln">ln</button>
+      <button class="calc-btn calc-fn" data-fn="log">log</button>
+      <button class="calc-btn calc-fn" data-fn="sqrt">√</button>
+      <button class="calc-btn calc-op" data-action="multiply">×</button>
+
+      <button class="calc-btn calc-num">7</button>
+      <button class="calc-btn calc-num">8</button>
+      <button class="calc-btn calc-num">9</button>
+      <button class="calc-btn calc-op" data-action="subtract">−</button>
+
+      <button class="calc-btn calc-num">4</button>
+      <button class="calc-btn calc-num">5</button>
+      <button class="calc-btn calc-num">6</button>
+      <button class="calc-btn calc-op" data-action="add">+</button>
+
+      <button class="calc-btn calc-num">1</button>
+      <button class="calc-btn calc-num">2</button>
+      <button class="calc-btn calc-num">3</button>
+      <button class="calc-btn calc-fn" data-fn="pow">^</button>
+
+      <button class="calc-btn calc-num">0</button>
+      <button class="calc-btn calc-num">.</button>
+      <button class="calc-btn calc-fn" data-fn="pi">π</button>
+      <button class="calc-btn calc-equal" data-action="equals">=</button>
+    </div>
+  </div>
+
+  <!-- Main Container -->
+  <main class="exam-workspace-container">
+
+    <!-- Top Question Navigation Matrix (Matches Screenshots) -->
+    <section class="nav-matrix-panel no-print">
+      <div class="nav-matrix-header">
+        <span class="matrix-title">QUESTION NAVIGATION</span>
+        <div class="matrix-legend">
+          <span class="legend-item"><span class="legend-box tile-active"></span> Active Question (Red)</span>
+          <span class="legend-item"><span class="legend-box tile-saved"></span> Answer Saved (Blue)</span>
+          <span class="legend-item"><span class="legend-box tile-pending"></span> Unanswered (Gray)</span>
+        </div>
+      </div>
+      <div id="question-nav-matrix" class="question-nav-matrix">
+        <!-- Rendered square tiles 1..N via JavaScript -->
+      </div>
+    </section>
+
+    <!-- Single Task Viewport Card (Matches Screenshots) -->
+    <section id="single-task-viewport" class="single-task-viewport">
+      <div class="task-card-frame">
+        <div class="task-card-header">
+          <div class="task-heading-group">
+            <span class="task-number-title" id="task-number-label">Question 1</span>
+            <span class="task-discipline-pill" id="task-discipline-pill">Field of Science</span>
+            <span class="task-points-pill" id="task-points-pill">1 Point</span>
+          </div>
+          <div class="task-status-flag" id="task-save-indicator">Not saved yet</div>
+        </div>
+
+        <!-- Task Stem & Content -->
+        <div class="task-content-area">
+          <h3 class="task-title-text" id="task-title-text"></h3>
+          <div class="task-stem-text" id="task-stem-text">
+            <!-- Injected via JavaScript -->
+          </div>
+        </div>
+
+        <!-- Subtle Horizontal Divider Beneath Question Stem (Matches Screenshot) -->
+        <div class="stem-divider"></div>
+
+        <!-- Interactive Answer Options Zone -->
+        <div class="task-answer-zone" id="task-answer-zone">
+          <!-- Injected via JavaScript based on type -->
+        </div>
+
+        <!-- Single-Task Navigation & Save Answer Bar (Matches Screenshot) -->
+        <div class="task-action-bar no-print">
+          <div class="action-left">
+            <button id="btn-save-answer" class="btn btn-save-answer" disabled>
+              Save answer
+            </button>
+          </div>
+          <div class="action-right">
+            <button id="btn-prev-task" class="btn btn-nav">
+              ◀ Previous
+            </button>
+            <button id="btn-next-task" class="btn btn-nav">
+              Next ▶
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Blank Exam Paper Print Container (Used strictly in Export Blank PDF mode) -->
+    <section id="blank-print-container" class="blank-print-container print-only">
+      <!-- Injected dynamically during print -->
+    </section>
+
+    <!-- Post-Submission Evaluation & Answer Key Section -->
+    <div id="evaluation-anchor"></div>
+    <hr id="evaluation-divider" class="exam-divider" style="display: none;">
+
+    <section id="evaluation-section" class="evaluation-section" style="display: none;">
+      
+      <!-- Score Recap Summary Cards -->
+      <div class="results-banner">
+        <h2 class="results-heading">Official Examination Results & Auto-Grader Recap</h2>
+        
+        <div class="score-cards-grid">
+          <div class="score-card primary-score">
+            <div class="score-card-label">TOTAL EXAMINATION SCORE</div>
+            <div class="score-card-value"><span id="score-earned">0</span> <small>/ <span id="score-max">100</span></small></div>
+            <div class="score-card-sub" id="score-grade-badge">Grade: Evaluating...</div>
+          </div>
+
+          <div class="score-card">
+            <div class="score-card-label">PERCENTAGE ACCURACY</div>
+            <div class="score-card-value"><span id="score-percentage">0%</span></div>
+            <div class="score-card-sub">Weighted Olympiad Metric</div>
+          </div>
+
+          <div class="score-card">
+            <div class="score-card-label">TASKS FULLY CORRECT</div>
+            <div class="score-card-value"><span id="score-correct-tasks">0</span> <small>/ <span id="score-total-tasks">43</span></small></div>
+            <div class="score-card-sub"><span id="score-partial-tasks">0</span> partial credit awards</div>
+          </div>
+        </div>
+
+        <!-- Discipline Breakdown Table -->
+        <div class="field-breakdown-card">
+          <h3>Performance Breakdown Across the 7 Fields of Science</h3>
+          <div class="table-responsive">
+            <table class="field-breakdown-table" id="field-breakdown-table">
+              <thead>
+                <tr>
+                  <th>Field of Science</th>
+                  <th>Task Count</th>
+                  <th>Points Earned</th>
+                  <th>Max Points</th>
+                  <th>Field Mastery</th>
+                </tr>
+              </thead>
+              <tbody id="field-breakdown-tbody">
+                <!-- Injected via JavaScript -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Ready-to-Copy Plain-Text Exam Report -->
+        <div class="report-box-card">
+          <div class="report-box-header">
+            <h3>Diagnostic Examination Report (Ready to Copy-Paste)</h3>
+            <button id="btn-copy-report" class="btn btn-sm btn-secondary">
+              📋 <span>Copy Full Report</span>
+            </button>
+          </div>
+          <p class="report-desc">
+            Complete plain-text summary showing your overall score, discipline breakdown, all fully correct tasks, and an exhaustive analytical walkthrough of every incorrect or partial question.
+          </p>
+          <textarea id="exam-report-text" class="report-textarea" readonly rows="14" spellcheck="false"></textarea>
+        </div>
+      </div>
+
+      <!-- Complete Official Answer Key & Step-by-Step Solutions -->
+      <div class="answer-key-section">
+        <div class="answer-key-header">
+          <h2>Official Answer Key & Step-by-Step Solutions</h2>
+          <p>Examine the full model solutions, stoichiometric derivations, and scoring criteria for all tasks.</p>
+        </div>
+
+        <div id="solutions-container" class="solutions-container">
+          <!-- Injected via JavaScript -->
+        </div>
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- Proctoring Focus Violation Toast / Modal -->
+  <div id="proctor-alert" class="proctor-alert" style="display: none;">
+    <div class="proctor-alert-box">
+      <h4>⚠️ Proctoring Warning: Window Focus Lost</h4>
+      <p>You navigated away from the exam window or switched tabs. All focus violations are recorded in your proctoring audit log.</p>
+      <button id="btn-dismiss-proctor-alert" class="btn btn-sm btn-primary">Return to Exam</button>
+    </div>
+  </div>
+
+  <!-- General Toast Notification -->
+  <div id="toast" class="toast" role="alert" aria-live="assertive">Notification message</div>
+
+  <!-- Scripts -->
+  <script src="questions.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
