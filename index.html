@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Open Doors Olympiad: Earth & Environmental Sciences for Sustainability — NSU Stage 2 Simulator</title>
+  <title>Open Doors: Earth & Environmental Sciences for Sustainability — Stage 2 Simulator</title>
   
   <!-- Academic Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -41,247 +41,482 @@
   </script>
   <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </head>
-<body class="exam-body">
+<body class="app-body">
 
-  <!-- Top Proctoring & Examination Control Bar -->
-  <header class="proctor-bar no-print">
-    <div class="proctor-bar-container">
-      <div class="proctor-brand">
-        <span class="proctor-badge">OPEN DOORS • NSU TRACK</span>
-        <span class="exam-title-text">Earth & Environmental Sciences for Sustainability (Bachelor's)</span>
+  <!-- =========================================================================
+       VIEW 1: PROCTORING PORTAL & EXAM LOBBY (DEFAULT VIEW ON PAGE LOAD)
+       ========================================================================= -->
+  <div id="lobby-view" class="view-container lobby-view">
+    <div class="lobby-container">
+      
+      <!-- Top Eyebrow & Main Title -->
+      <div class="lobby-header-bar">
+        <div class="lobby-eyebrow">PROCTORING SESSION</div>
+        <h1 class="lobby-main-title">Open Doors. Second stage</h1>
+        <p class="lobby-sub-title">Russian Scholarship Project · Association of Global Universities</p>
       </div>
 
-      <div class="proctor-status-group">
-        <!-- Live Countdown Timer -->
-        <div class="timer-box" id="timer-box" title="Remaining Examination Time">
-          <span class="timer-icon">⏱️</span>
-          <span class="timer-label">Time Remaining:</span>
-          <span class="timer-digits" id="timer-display">180:00</span>
+      <!-- Candidate & Exam Session Registration Card -->
+      <div class="candidate-session-card">
+        <div class="candidate-grid">
+          <div class="cand-info-group">
+            <span class="cand-label">Participant:</span>
+            <strong class="cand-value" id="cand-name">Ahmad Al Harits</strong>
+          </div>
+          <div class="cand-info-group">
+            <span class="cand-label">Subject Track:</span>
+            <strong class="cand-value" id="cand-track">Earth and Environmental Sciences for Sustainability — Bachelor's • NSU</strong>
+          </div>
+          <div class="cand-info-group">
+            <span class="cand-label">Scheduled Time Slot:</span>
+            <strong class="cand-value" id="cand-slot">24.11.2026 16:00 (GMT+3) · Duration: 180 min</strong>
+          </div>
+          <div class="cand-info-group">
+            <span class="cand-label">Registration Status:</span>
+            <span class="cand-badge status-confirmed">✓ Verified & Ready</span>
+          </div>
         </div>
+      </div>
 
-        <!-- Proctoring Focus Loss Counter -->
-        <div class="focus-loss-badge" id="focus-loss-badge" title="Focus violations detected by browser proctoring">
-          <span class="focus-dot"></span>
-          <span>Focus Violations: <strong id="focus-loss-count">0</strong></span>
+      <!-- Resume Saved Session Banner (Shown only if uncompleted session exists) -->
+      <div id="resume-session-banner" class="resume-session-banner" style="display: none;">
+        <div class="resume-banner-content">
+          <div class="resume-banner-icon">🔄</div>
+          <div class="resume-banner-text">
+            <h4>Unfinished Examination in Progress</h4>
+            <p id="resume-session-desc">An active session was detected in your browser storage.</p>
+          </div>
         </div>
-
-        <!-- Reference Constants & Calculator Drawer Toggle -->
-        <button id="btn-toggle-calc" class="btn btn-proctor" title="Open Scientific Calculator & Molar Mass Reference">
-          🧮 <span>Tools & Constants</span>
-        </button>
-
-        <!-- PDF Importer Toggle -->
-        <button id="btn-toggle-importer" class="btn btn-proctor" title="Import Custom Tasks from PDF">
-          📥 <span>Import PDF</span>
-        </button>
-
-        <!-- Exam Presets & Config -->
-        <button id="btn-toggle-config" class="btn btn-proctor" title="Change Preset Mode or Filter Settings">
-          ⚙️ <span>Mode / Presets</span>
-        </button>
-
-        <!-- Finish Attempt & Submit -->
-        <button id="btn-finish-attempt" class="btn btn-submit-exam" title="Finish current attempt and submit for automated grading">
-          🏁 <span>Finish Attempt & Submit</span>
-        </button>
-      </div>
-    </div>
-  </header>
-
-  <!-- Secondary Toolbar: Autosave, Mode Info & PDF Export -->
-  <div class="sub-toolbar no-print">
-    <div class="sub-toolbar-container">
-      <div class="autosave-indicator">
-        <span class="status-dot" id="save-dot"></span>
-        <span id="save-status-text">All answers synchronized locally</span>
+        <div class="resume-banner-actions">
+          <button id="btn-resume-session" class="btn btn-primary btn-sm">Resume Saved Attempt</button>
+          <button id="btn-discard-session" class="btn btn-outline-danger btn-sm">Discard & Start Fresh</button>
+        </div>
       </div>
 
-      <div class="mode-indicator" id="active-mode-indicator">
-        Mode: <strong>Preset A — Official Stage 2 (43 Tasks · 100 Pts)</strong>
-      </div>
+      <!-- Mode Selection Grid (3 Mode Cards) -->
+      <div class="mode-selection-section">
+        <h2 class="section-title">Select Mode to Begin</h2>
 
-      <div class="export-actions">
-        <button id="btn-new-random-set" class="btn-sub" title="Generate New Randomized Question Set">
-          🎲 New Random Set
-        </button>
-        <button id="btn-reset-answers" class="btn-sub" title="Reset all answers for active set">
-          🔄 Reset Answers
-        </button>
-        <button id="btn-export-blank" class="btn-sub" title="Export clean blank paper to PDF">
-          📄 Export Blank PDF
-        </button>
-        <button id="btn-export-graded" class="btn-sub" title="Export graded attempt + answer key to PDF">
-          📊 Export Graded PDF
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Preset Mode & Configuration Modal -->
-  <div id="config-modal" class="config-modal-backdrop no-print" style="display: none;">
-    <div class="config-modal-card">
-      <div class="config-modal-header">
-        <h3>Exam Preset Mode & Randomizer Configuration</h3>
-        <button id="btn-close-modal" class="btn-close" aria-label="Close modal">&times;</button>
-      </div>
-      <div class="config-modal-body">
-        <div class="preset-cards-grid">
-          <!-- Preset A -->
-          <div class="preset-card active-preset" data-preset="preset-a">
-            <div class="preset-radio">
-              <input type="radio" name="preset-choice" id="radio-preset-a" value="preset-a" checked>
+        <div class="mode-cards-grid">
+          
+          <!-- Mode A Card -->
+          <div class="mode-card mode-card-proctored">
+            <div class="mode-badge-tag proctored-badge">OFFICIAL STAGE 2 SIMULATION</div>
+            <h3 class="mode-title">Mode A: Proctored Second Stage</h3>
+            <p class="mode-summary">
+              Strict 180-minute proctored examination covering <strong>43 tasks</strong> (25 Basic, 15 Intermediate, 3 Advanced) + 1 Oral Interview briefing. Includes tab-switch violation tracking and official NSU scoring rubric.
+            </p>
+            <div class="mode-features-list">
+              <div class="feature-item"><span>⏱️</span> 180 Minutes Full Duration</div>
+              <div class="feature-item"><span>🛡️</span> Tab-Switch & Blur Proctoring Active</div>
+              <div class="feature-item"><span>📊</span> 100 Points NSU Stratified Balance</div>
             </div>
-            <div class="preset-info">
-              <h4>Preset A: Official Stage 2 Second-Round Simulator (NSU Standard)</h4>
-              <p>Authentic 43-task competition exam strictly formatted to NSU Olympiad specifications.</p>
-              <div class="preset-badges">
-                <span class="badge-mini">25 Basic (25 pts)</span>
-                <span class="badge-mini">15 Intermediate (45 pts)</span>
-                <span class="badge-mini">3 Advanced (30 pts)</span>
-                <span class="badge-mini highlight">100 Points Total</span>
-                <span class="badge-mini">180 Min Timer</span>
-              </div>
+            <div class="mode-actions">
+              <button id="btn-lobby-wizard" class="btn btn-outline-primary btn-block">
+                01–04 Device Check Wizard
+              </button>
+              <button id="btn-lobby-start-proctored" class="btn btn-primary btn-block">
+                Start Proctored Stage 2 (180 min)
+              </button>
             </div>
           </div>
 
-          <!-- Preset B -->
-          <div class="preset-card" data-preset="preset-b">
-            <div class="preset-radio">
-              <input type="radio" name="preset-choice" id="radio-preset-b" value="preset-b">
-            </div>
-            <div class="preset-info">
-              <h4>Preset B: Entry-Style 68-Question Speed Drill</h4>
-              <p>Modeled directly on the 68-question conceptual qualification test shown in the reference interface.</p>
-              <div class="preset-badges">
-                <span class="badge-mini">68 Basic Level Tasks</span>
-                <span class="badge-mini highlight">68 Points Total</span>
-                <span class="badge-mini">60 Min Timer</span>
+          <!-- Mode B Card -->
+          <div class="mode-card mode-card-practice">
+            <div class="mode-badge-tag practice-badge">TEST SESSION (OFFICIAL PRE-EXAM DRILL)</div>
+            <h3 class="mode-title">Mode B: Test Session / Practice Drill</h3>
+            <p class="mode-summary">
+              Mirrors the official <em>"Test session of the Second Stage"</em> for relaxed preparation. <strong>Proctoring sensors and tab-switch penalties are completely disabled</strong> so you can focus on mastering the material.
+            </p>
+            
+            <div class="practice-preset-options">
+              <label class="preset-option-label">
+                <input type="radio" name="practice-preset" value="stage2-full" checked>
+                <span><strong>Stage 2 Full Set:</strong> 43 Tasks (100 Pts · 180 min)</span>
+              </label>
+              <label class="preset-option-label">
+                <input type="radio" name="practice-preset" value="entry-drill">
+                <span><strong>Entry-Style Drill:</strong> 68 Rapid Basic MCQs (68 Pts · 60 min)</span>
+              </label>
+              <label class="preset-option-label">
+                <input type="radio" name="practice-preset" value="single-field">
+                <span><strong>Discipline Focus:</strong> Single Field of Science</span>
+              </label>
+
+              <!-- Single Field Dropdown -->
+              <div id="practice-field-selector-wrap" class="field-select-wrap" style="display: none;">
+                <select id="practice-target-field" class="form-select-sm">
+                  <option value="Geography, physical">1. Geography, physical</option>
+                  <option value="Meteorology & atmospheric sciences">2. Meteorology & atmospheric sciences</option>
+                  <option value="Geology">3. Geology</option>
+                  <option value="Geochemistry & geophysics">4. Geochemistry & geophysics</option>
+                  <option value="Mining & mineral processing">5. Mining & mineral processing</option>
+                  <option value="Ecology">6. Ecology</option>
+                  <option value="Environmental sciences">7. Environmental sciences</option>
+                </select>
               </div>
+            </div>
+
+            <div class="mode-actions">
+              <button id="btn-lobby-start-practice" class="btn btn-secondary btn-block">
+                Start Test Session (No Proctoring)
+              </button>
             </div>
           </div>
 
-          <!-- Preset C -->
-          <div class="preset-card" data-preset="preset-c">
-            <div class="preset-radio">
-              <input type="radio" name="preset-choice" id="radio-preset-c" value="preset-c">
+          <!-- Mode C Card -->
+          <div class="mode-card mode-card-importer">
+            <div class="mode-badge-tag import-badge">CUSTOM STUDY TOOL</div>
+            <h3 class="mode-title">Mode C: PDF Question Bank Importer</h3>
+            <p class="mode-summary">
+              Load tasks directly from any official Olympiad PDF (e.g., <code>Demo_Version.pdf</code>) or your personal lecture notes using client-side PDF.js text extraction.
+            </p>
+            <div class="mode-features-list">
+              <div class="feature-item"><span>📄</span> Zero-Backend Local Parsing</div>
+              <div class="feature-item"><span>⚡</span> Offline Regex + Schema Validator</div>
+              <div class="feature-item"><span>🤖</span> Optional Gemini API OCR Integration</div>
             </div>
-            <div class="preset-info">
-              <h4>Preset C: Custom Quotas & Field Specialization</h4>
-              <p>Configure custom quotas per difficulty and filter by single discipline or balanced distribution.</p>
+            <div class="mode-actions">
+              <button id="btn-lobby-open-importer" class="btn btn-outline-dark btn-block">
+                Open PDF Question Importer
+              </button>
             </div>
           </div>
+
         </div>
+      </div>
 
-        <!-- Custom Controls (revealed when Preset C selected) -->
-        <div id="custom-preset-settings" class="custom-settings-panel" style="display: none;">
-          <div class="custom-grid">
-            <div class="form-group">
-              <label for="custom-filter-mode">Discipline Sampling Mode:</label>
-              <select id="custom-filter-mode" class="form-control">
-                <option value="balanced" selected>Stratified Balanced Across All 7 Fields</option>
-                <option value="single-field">Single Field of Science Focus</option>
-                <option value="all-pool">Pure Random Pool Sampling</option>
-              </select>
-            </div>
-
-            <div class="form-group" id="custom-target-field-group" style="display: none;">
-              <label for="custom-target-field">Select Field of Science:</label>
-              <select id="custom-target-field" class="form-control">
-                <option value="Geography, physical">1. Geography, physical</option>
-                <option value="Meteorology & atmospheric sciences">2. Meteorology & atmospheric sciences</option>
-                <option value="Geology">3. Geology</option>
-                <option value="Geochemistry & geophysics">4. Geochemistry & geophysics</option>
-                <option value="Mining & mineral processing">5. Mining & mineral processing</option>
-                <option value="Ecology">6. Ecology</option>
-                <option value="Environmental sciences">7. Environmental sciences</option>
-              </select>
-            </div>
-
-            <div class="form-group-row">
-              <div class="form-group">
-                <label for="custom-quota-basic">Basic (1 pt):</label>
-                <input type="number" id="custom-quota-basic" class="form-control" min="0" max="75" value="25">
-              </div>
-              <div class="form-group">
-                <label for="custom-quota-inter">Intermediate (3 pts):</label>
-                <input type="number" id="custom-quota-inter" class="form-control" min="0" max="30" value="15">
-              </div>
-              <div class="form-group">
-                <label for="custom-quota-adv">Advanced (10 pts):</label>
-                <input type="number" id="custom-quota-adv" class="form-control" min="0" max="10" value="3">
-              </div>
-              <div class="form-group">
-                <label for="custom-timer-min">Timer (Minutes):</label>
-                <input type="number" id="custom-timer-min" class="form-control" min="10" max="300" value="180">
-              </div>
-            </div>
+      <!-- Official Proctoring Rules & Guidelines Accordion -->
+      <div class="rules-summary-card">
+        <details class="rules-details">
+          <summary class="rules-summary-toggle">
+            <span>📋 Key Second Stage Rules & Proctoring Requirements (2026 Guidelines)</span>
+          </summary>
+          <div class="rules-details-body">
+            <ul>
+              <li><strong>Time Allowance:</strong> You have strictly 180 minutes to answer the written tasks. Time starts when the exam interface is launched.</li>
+              <li><strong>Independent Work:</strong> The proctoring system records video, audio, and active browser tab state. Do not leave the test tab or open third-party websites during the proctored attempt.</li>
+              <li><strong>Workspace:</strong> Single monitor only. Desk must be clear of unauthorized books, cheat sheets, or secondary smart devices.</li>
+              <li><strong>Tools & Tables:</strong> Permitted reference molar masses and scientific formulas are built directly into the exam interface's <em>"Tools & Tables"</em> panel.</li>
+              <li><strong>Drafting Answers:</strong> In the OpenEdu/Moodle test interface, selecting a radio button drafts your choice. You must click <strong>"Save answer"</strong> beneath the task to record it.</li>
+            </ul>
           </div>
-        </div>
+        </details>
+      </div>
 
-      </div>
-      <div class="config-modal-footer">
-        <button id="btn-cancel-modal" class="btn btn-secondary">Cancel</button>
-        <button id="btn-apply-modal" class="btn btn-primary">Start Exam with Selected Mode</button>
-      </div>
     </div>
   </div>
 
-  <!-- Client-Side PDF Importer Modal -->
-  <div id="importer-modal" class="config-modal-backdrop no-print" style="display: none;">
-    <div class="config-modal-card importer-card">
-      <div class="config-modal-header">
-        <h3>Client-Side PDF Question Importer</h3>
-        <button id="btn-close-importer" class="btn-close" aria-label="Close modal">&times;</button>
-      </div>
-      <div class="config-modal-body">
-        <p class="importer-desc">
-          Upload any official Open Doors PDF (e.g. <code>Demo_Version.pdf</code>) or your study notes. 
-          PDF.js extracts the text entirely client-side inside your browser without backend transmission.
-        </p>
-
-        <div class="file-upload-box">
-          <input type="file" id="pdf-file-input" accept="application/pdf" class="file-input-hidden">
-          <label for="pdf-file-input" class="file-upload-label">
-            📁 <span id="file-name-display">Choose or drag a .PDF document</span>
-          </label>
+  <!-- =========================================================================
+       VIEW 2: AUTHENTIC OPENEDU / MOODLE EXAM VIEWPORT (MINIMALIST & CLEAN)
+       ========================================================================= -->
+  <div id="exam-view" class="view-container exam-view" style="display: none;">
+    
+    <!-- Minimalist Top Bar (Subtle, Clean & Non-Bulky) -->
+    <header class="moodle-header-bar no-print">
+      <div class="moodle-header-container">
+        
+        <!-- Left: Exam Title & Mode Badge -->
+        <div class="moodle-brand-group">
+          <span class="moodle-brand-title">Open Doors · Earth & Environmental Sciences</span>
+          <span id="exam-mode-badge" class="moodle-mode-pill">Proctored Stage 2</span>
         </div>
 
-        <div class="import-options-box">
-          <h4>Extraction Method</h4>
-          <div class="radio-row">
-            <label>
-              <input type="radio" name="import-method" value="regex" checked>
-              <strong>Offline Regex Parser:</strong> Parses standard Open Doors formatting (<code>Task X</code>, <code>Answer: ...</code>) instantly without API.
+        <!-- Center: Live Compact Timer -->
+        <div class="moodle-timer-wrap" id="timer-box" title="Remaining Examination Time">
+          <span class="moodle-timer-icon">⏱️</span>
+          <span class="moodle-timer-text">Time remaining:</span>
+          <span class="moodle-timer-digits" id="timer-display">180:00</span>
+        </div>
+
+        <!-- Right: Actions & Tools -->
+        <div class="moodle-actions-group">
+          <!-- Proctoring Focus Loss Badge (Only active in Proctored Mode) -->
+          <span id="focus-loss-badge" class="moodle-violation-badge" style="display: none;" title="Tab-switch focus losses detected">
+            <span class="violation-dot"></span> Focus Violations: <strong id="focus-loss-count">0</strong>
+          </span>
+
+          <button id="btn-toggle-calc" class="btn-moodle-action" title="Open Built-in Scientific Calculator & NSU Constants">
+            🧮 Tools & Tables
+          </button>
+
+          <button id="btn-exam-to-lobby" class="btn-moodle-action" title="Pause and return to Lobby without losing progress">
+            🏠 Return to Lobby
+          </button>
+
+          <button id="btn-finish-attempt" class="btn-moodle-finish" title="Finish current attempt and submit for automated grading">
+            Finish attempt...
+          </button>
+        </div>
+
+      </div>
+    </header>
+
+    <!-- Main Exam Canvas -->
+    <main class="moodle-exam-canvas">
+      
+      <!-- Top Horizontal Question Navigation Matrix (28px x 28px Squares) -->
+      <section class="moodle-matrix-section no-print">
+        <div class="moodle-matrix-wrapper">
+          <div id="question-nav-matrix" class="moodle-tile-matrix">
+            <!-- Tightly packed 28px x 28px square tiles injected dynamically via JS -->
+          </div>
+        </div>
+      </section>
+
+      <!-- Single-Question White Card (860px Centered) -->
+      <section class="moodle-card-section">
+        <div class="moodle-question-card">
+          
+          <!-- Card Header & Metadata -->
+          <div class="moodle-card-header">
+            <div class="moodle-card-meta">
+              <span class="moodle-q-num" id="task-number-label">Question 1</span>
+              <span class="moodle-pill-field" id="task-discipline-pill">Field of Science</span>
+              <span class="moodle-pill-pts" id="task-points-pill">1 Point</span>
+            </div>
+            
+            <div class="moodle-card-flag-wrap">
+              <button id="btn-toggle-flag" class="btn-moodle-flag" title="Flag or unflag this question">
+                <span id="flag-icon">⚑</span> <span id="flag-text">Flag question</span>
+              </button>
+              <span class="moodle-save-indicator" id="task-save-indicator">Not answered yet</span>
+            </div>
+          </div>
+
+          <!-- Question Stem & Content -->
+          <div class="moodle-card-content">
+            <h3 class="moodle-task-title" id="task-title-text" style="display: none;"></h3>
+            <div class="moodle-task-stem" id="task-stem-text">
+              <!-- Rendered task stem HTML -->
+            </div>
+          </div>
+
+          <!-- Thin Horizontal Divider Line (1px solid #e5e7eb) -->
+          <hr class="moodle-stem-divider">
+
+          <!-- Answer Options Zone -->
+          <div class="moodle-answer-zone" id="task-answer-zone">
+            <!-- Circular radio buttons, checkboxes, or calculation inputs -->
+          </div>
+
+          <!-- Card Footer: Save Answer (Left) and Previous/Next (Right) -->
+          <div class="moodle-card-footer no-print">
+            <div class="footer-left">
+              <button id="btn-save-answer" class="btn-moodle-save" disabled>
+                Save answer
+              </button>
+            </div>
+            <div class="footer-right">
+              <button id="btn-prev-task" class="btn-moodle-nav">
+                ◀ Previous
+              </button>
+              <button id="btn-next-task" class="btn-moodle-nav">
+                Next ▶
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+    </main>
+
+  </div>
+
+  <!-- =========================================================================
+       VIEW 3: POST-SUBMISSION EVALUATION & DETAILED REVIEW
+       ========================================================================= -->
+  <div id="review-view" class="view-container review-view" style="display: none;">
+    <div class="review-container">
+      
+      <!-- Top Action Bar -->
+      <div class="review-top-bar no-print">
+        <button id="btn-review-to-lobby" class="btn btn-outline-secondary btn-sm">
+          ← Back to Lobby
+        </button>
+        <div class="review-export-actions">
+          <button id="btn-export-blank" class="btn btn-sm btn-outline-dark">
+            📄 Export Blank PDF
+          </button>
+          <button id="btn-export-graded" class="btn btn-sm btn-primary">
+            📊 Export Graded PDF
+          </button>
+        </div>
+      </div>
+
+      <!-- Score Banner -->
+      <div class="review-banner">
+        <div class="review-eyebrow">EXAMINATION RECAP & OFFICIAL GRADING</div>
+        <h2 class="review-heading">Second Stage Attempt Summary</h2>
+        
+        <div class="score-cards-grid">
+          <div class="score-card primary-score">
+            <div class="score-card-label">TOTAL EXAMINATION SCORE</div>
+            <div class="score-card-value"><span id="score-earned">0</span> <small>/ <span id="score-max">100</span></small></div>
+            <div class="score-card-sub" id="score-grade-badge">Grade: Evaluating...</div>
+          </div>
+
+          <div class="score-card">
+            <div class="score-card-label">PERCENTAGE ACCURACY</div>
+            <div class="score-card-value"><span id="score-percentage">0%</span></div>
+            <div class="score-card-sub">Weighted Olympiad Metric</div>
+          </div>
+
+          <div class="score-card">
+            <div class="score-card-label">TASKS FULLY CORRECT</div>
+            <div class="score-card-value"><span id="score-correct-tasks">0</span> <small>/ <span id="score-total-tasks">43</span></small></div>
+            <div class="score-card-sub"><span id="score-partial-tasks">0</span> partial credit awards</div>
+          </div>
+        </div>
+
+        <!-- Discipline Breakdown Table -->
+        <div class="field-breakdown-card">
+          <h3>Performance Breakdown Across the 7 Fields of Science</h3>
+          <div class="table-responsive">
+            <table class="field-breakdown-table" id="field-breakdown-table">
+              <thead>
+                <tr>
+                  <th>Field of Science</th>
+                  <th>Task Count</th>
+                  <th>Points Earned</th>
+                  <th>Max Points</th>
+                  <th>Field Mastery</th>
+                </tr>
+              </thead>
+              <tbody id="field-breakdown-tbody">
+                <!-- Injected via JavaScript -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Ready-to-Copy Plain-Text Exam Report -->
+        <div class="report-box-card">
+          <div class="report-box-header">
+            <h3>Diagnostic Examination Report (Ready to Copy-Paste)</h3>
+            <button id="btn-copy-report" class="btn btn-sm btn-secondary">
+              📋 <span>Copy Full Report</span>
+            </button>
+          </div>
+          <p class="report-desc">
+            Complete plain-text summary showing your overall score, discipline breakdown, and step-by-step walkthrough of all questions.
+          </p>
+          <textarea id="exam-report-text" class="report-textarea" readonly rows="12" spellcheck="false"></textarea>
+        </div>
+      </div>
+
+      <!-- Official Answer Key & Step-by-Step Solutions -->
+      <div class="answer-key-section">
+        <div class="answer-key-header">
+          <h2>Official Answer Key & NSU Model Solutions</h2>
+          <p>Examine the full model solutions, stoichiometric derivations, and scoring criteria for all tasks.</p>
+        </div>
+
+        <div id="solutions-container" class="solutions-container">
+          <!-- Injected via JavaScript -->
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       MODAL 1: 4-STEP DEVICE CHECK & PROCTORING WIZARD (MODE A)
+       ========================================================================= -->
+  <div id="wizard-modal" class="modal-backdrop no-print" style="display: none;">
+    <div class="modal-card wizard-card">
+      <div class="modal-header">
+        <div>
+          <span class="wizard-eyebrow">PROCTORING VERIFICATION</span>
+          <h3 class="modal-title">Official Second Stage System Check</h3>
+        </div>
+        <button id="btn-close-wizard" class="btn-modal-close" aria-label="Close modal">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <!-- 4 Steps Header -->
+        <div class="wizard-steps-nav">
+          <div class="wizard-step-pill active" data-step="1">01 Time Slot</div>
+          <div class="wizard-step-pill" data-step="2">02 Device Check</div>
+          <div class="wizard-step-pill" data-step="3">03 Self-Check</div>
+          <div class="wizard-step-pill" data-step="4">04 Waiting Room</div>
+        </div>
+
+        <!-- Step 1 Content -->
+        <div class="wizard-step-pane active" id="wizard-step-1">
+          <h4>01. Selected Examination Time Slot</h4>
+          <p class="step-desc">Confirm your registered schedule for the Second Stage:</p>
+          <div class="slot-summary-box">
+            <div class="slot-row"><span>Track:</span> <strong>Earth and Environmental Sciences for Sustainability</strong></div>
+            <div class="slot-row"><span>Date & Time:</span> <strong>24 November 2026, 16:00 (GMT+3)</strong></div>
+            <div class="slot-row"><span>Allocated Duration:</span> <strong>180 Minutes (Continuous)</strong></div>
+            <div class="slot-row"><span>Candidate:</span> <strong>Ahmad Al Harits</strong></div>
+          </div>
+          <p class="slot-note">Ensure you remain at your computer for the full duration of the test.</p>
+        </div>
+
+        <!-- Step 2 Content -->
+        <div class="wizard-step-pane" id="wizard-step-2" style="display: none;">
+          <h4>02. Automated System & Hardware Compatibility</h4>
+          <p class="step-desc">Diagnostic test of required hardware and browser environment:</p>
+          <div class="check-items-list">
+            <div class="check-item"><span class="check-icon success">✓</span> <span>Webcam Video Feed: <strong>Available & Active (HD 720p)</strong></span></div>
+            <div class="check-item"><span class="check-icon success">✓</span> <span>Microphone Audio Feed: <strong>Available (Default Audio Input)</strong></span></div>
+            <div class="check-item"><span class="check-icon success">✓</span> <span>Browser Compatibility: <strong>Google Chrome / Chromium Engine Verified</strong></span></div>
+            <div class="check-item"><span class="check-icon success">✓</span> <span>Display Count: <strong>Single Monitor Detected (Allowed)</strong></span></div>
+            <div class="check-item"><span class="check-icon success">✓</span> <span>Internet Connection Bandwidth: <strong>45 Mbps (Stable)</strong></span></div>
+          </div>
+        </div>
+
+        <!-- Step 3 Content -->
+        <div class="wizard-step-pane" id="wizard-step-3" style="display: none;">
+          <h4>03. Video & Audio Self-Check</h4>
+          <p class="step-desc">Review your camera positioning and test audio levels:</p>
+          <div class="self-check-preview-box">
+            <div class="webcam-sim-frame">
+              <div class="webcam-live-indicator">● LIVE PREVIEW</div>
+              <div class="webcam-center-msg">
+                <span style="font-size: 2.5rem;">👤</span>
+                <p>Webcam Video Stream Active</p>
+                <small style="color: #94a3b8;">Face clearly visible • Room adequately lit</small>
+              </div>
+            </div>
+            <div class="mic-level-meter">
+              <span class="mic-label">Microphone Level:</span>
+              <div class="meter-bar"><div class="meter-fill" style="width: 65%;"></div></div>
+              <span class="mic-status">Optimal</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 4 Content -->
+        <div class="wizard-step-pane" id="wizard-step-4" style="display: none;">
+          <h4>04. Waiting Room & Examination Launch</h4>
+          <p class="step-desc">All system checks complete. Review final rules before entering the exam:</p>
+          <div class="waiting-room-box">
+            <div class="waiting-badge">SESSION READY TO START</div>
+            <p>Once you click <strong>"Begin Proctored Examination"</strong>, your 180-minute countdown begins and window blur/tab-switch sensors activate.</p>
+            <label class="rules-agree-checkbox">
+              <input type="checkbox" id="chk-wizard-rules-agree" checked>
+              <span>I acknowledge the Open Doors Second Stage Proctoring Rules and agree to complete the tasks independently without third-party assistance.</span>
             </label>
           </div>
-          <div class="radio-row">
-            <label>
-              <input type="radio" name="import-method" value="gemini">
-              <strong>Gemini AI Transformation:</strong> Converts unstructured lecture notes into NSU Olympiad JSON tasks using your Gemini API key.
-            </label>
-          </div>
-
-          <div id="gemini-key-container" class="gemini-key-group" style="display: none;">
-            <label for="gemini-api-key-input">Your Google Gemini API Key (stored locally in <code>localStorage</code>):</label>
-            <input type="password" id="gemini-api-key-input" class="form-control" placeholder="AIzaSy...">
-          </div>
         </div>
 
-        <div id="importer-status-log" class="importer-status-log">Ready to process document.</div>
-
-        <div id="importer-preview-box" class="importer-preview-box" style="display: none;">
-          <h4>Parsed Questions Preview (<span id="parsed-count-badge">0</span> tasks found):</h4>
-          <div id="importer-preview-list" class="importer-preview-list"></div>
-        </div>
       </div>
-      <div class="config-modal-footer">
-        <button id="btn-process-pdf" class="btn btn-secondary">Extract & Parse Text</button>
-        <button id="btn-commit-imported" class="btn btn-primary" disabled>Append to Question Bank</button>
+
+      <div class="modal-footer">
+        <button id="btn-wizard-prev" class="btn btn-secondary btn-sm" style="display: none;">Back</button>
+        <button id="btn-wizard-next" class="btn btn-primary btn-sm">Next Step →</button>
+        <button id="btn-wizard-launch-exam" class="btn btn-success btn-sm" style="display: none;">Begin Proctored Examination</button>
       </div>
     </div>
   </div>
 
-  <!-- Scientific Calculator & Constants Reference Drawer -->
+  <!-- =========================================================================
+       MODAL 2: SCIENTIFIC CALCULATOR & NSU REFERENCE CONSTANTS DRAWER
+       ========================================================================= -->
   <div id="calc-drawer" class="calc-drawer no-print" style="display: none;">
     <div class="calc-tabs">
       <button class="calc-tab-btn active" data-tab="calculator">Calculator</button>
@@ -362,163 +597,87 @@
     </div>
   </div>
 
-  <!-- Main Container -->
-  <main class="exam-workspace-container">
+  <!-- =========================================================================
+       MODAL 3: CLIENT-SIDE PDF QUESTION IMPORTER
+       ========================================================================= -->
+  <div id="importer-modal" class="modal-backdrop no-print" style="display: none;">
+    <div class="modal-card importer-card">
+      <div class="modal-header">
+        <h3 class="modal-title">Client-Side PDF Question Importer</h3>
+        <button id="btn-close-importer" class="btn-modal-close" aria-label="Close modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p class="importer-desc">
+          Upload any official Open Doors PDF (e.g. <code>Demo_Version.pdf</code>) or your study notes. 
+          PDF.js extracts the text entirely client-side inside your browser without backend transmission.
+        </p>
 
-    <!-- Top Horizontal Question Navigation Matrix (Matches Attached Screenshots) -->
-    <section class="nav-matrix-panel no-print">
-      <div class="nav-matrix-header">
-        <span class="matrix-title">QUESTION NAVIGATION</span>
-        <div class="matrix-legend">
-          <span class="legend-item"><span class="legend-box tile-active"></span> Active (Crimson Red #d32f2f)</span>
-          <span class="legend-item"><span class="legend-box tile-saved"></span> Saved (Moodle Blue #1967d2)</span>
-          <span class="legend-item"><span class="legend-box tile-pending"></span> Unanswered (Gray #e4e7eb)</span>
-          <span class="legend-item"><span class="legend-box tile-flagged"></span> Flagged</span>
+        <div class="file-upload-box">
+          <input type="file" id="pdf-file-input" accept="application/pdf" class="file-input-hidden">
+          <label for="pdf-file-input" class="file-upload-label">
+            📁 <span id="file-name-display">Choose or drag a .PDF document</span>
+          </label>
+        </div>
+
+        <div class="import-options-box">
+          <h4>Extraction Method</h4>
+          <div class="radio-row">
+            <label>
+              <input type="radio" name="import-method" value="regex" checked>
+              <strong>Offline Regex Parser:</strong> Parses standard Open Doors formatting (<code>Task X</code>, <code>Answer: ...</code>) instantly without API.
+            </label>
+          </div>
+          <div class="radio-row">
+            <label>
+              <input type="radio" name="import-method" value="gemini">
+              <strong>Gemini AI Transformation:</strong> Converts unstructured lecture notes into NSU Olympiad JSON tasks using your Gemini API key.
+            </label>
+          </div>
+
+          <div id="gemini-key-container" class="gemini-key-group" style="display: none;">
+            <label for="gemini-api-key-input">Your Google Gemini API Key (stored locally in <code>localStorage</code>):</label>
+            <input type="password" id="gemini-api-key-input" class="form-control" placeholder="AIzaSy...">
+          </div>
+        </div>
+
+        <div id="importer-status-log" class="importer-status-log">Ready to process document.</div>
+
+        <div id="importer-preview-box" class="importer-preview-box" style="display: none;">
+          <h4>Parsed Questions Preview (<span id="parsed-count-badge">0</span> tasks found):</h4>
+          <div id="importer-preview-list" class="importer-preview-list"></div>
         </div>
       </div>
-      <div id="question-nav-matrix" class="question-nav-matrix">
-        <!-- Square numbered tiles 1..N generated via app.js -->
+      <div class="modal-footer">
+        <button id="btn-process-pdf" class="btn btn-secondary">Extract & Parse Text</button>
+        <button id="btn-commit-imported" class="btn btn-primary" disabled>Append to Active Bank</button>
       </div>
-    </section>
+    </div>
+  </div>
 
-    <!-- Single Task Viewport Card (Matches Attached Screenshots) -->
-    <section id="single-task-viewport" class="single-task-viewport">
-      <div class="task-card-frame">
-        <div class="task-card-header">
-          <div class="task-heading-group">
-            <span class="task-number-title" id="task-number-label">Question 1</span>
-            <span class="task-discipline-pill" id="task-discipline-pill">Field of Science</span>
-            <span class="task-points-pill" id="task-points-pill">1 Point</span>
-          </div>
-          <div class="task-header-right">
-            <button id="btn-toggle-flag" class="btn-flag" title="Flag or unflag this question">
-              <span id="flag-icon">⚑</span> <span id="flag-text">Flag question</span>
-            </button>
-            <span class="task-status-flag" id="task-save-indicator">Not answered yet</span>
-          </div>
-        </div>
-
-        <!-- Task Stem & Content Area -->
-        <div class="task-content-area">
-          <h3 class="task-title-text" id="task-title-text"></h3>
-          <div class="task-stem-text" id="task-stem-text">
-            <!-- Injected via JavaScript with clean semantic HTML -->
-          </div>
-        </div>
-
-        <!-- Thin Horizontal Rule (1px solid #e9ecef) Matching Reference Interface -->
-        <div class="stem-divider"></div>
-
-        <!-- Answer Options Zone -->
-        <div class="task-answer-zone" id="task-answer-zone">
-          <!-- Injected via JavaScript -->
-        </div>
-
-        <!-- Single-Task Navigation & Save Answer Bar (Matches Screenshot) -->
-        <div class="task-action-bar no-print">
-          <div class="action-left">
-            <button id="btn-save-answer" class="btn btn-save-answer" disabled>
-              Save answer
-            </button>
-          </div>
-          <div class="action-right">
-            <button id="btn-prev-task" class="btn btn-nav">
-              ◀ Previous
-            </button>
-            <button id="btn-next-task" class="btn btn-nav">
-              Next ▶
-            </button>
-          </div>
-        </div>
+  <!-- =========================================================================
+       MODAL 4: FINISH ATTEMPT CONFIRMATION DIALOG
+       ========================================================================= -->
+  <div id="finish-dialog" class="modal-backdrop no-print" style="display: none;">
+    <div class="modal-card dialog-card">
+      <div class="modal-header">
+        <h3 class="modal-title">Finish Examination Attempt?</h3>
+        <button id="btn-cancel-finish-x" class="btn-modal-close">&times;</button>
       </div>
-    </section>
-
-    <!-- Blank Exam Paper Print Container (Used strictly in Export Blank PDF mode) -->
-    <section id="blank-print-container" class="blank-print-container print-only">
-      <!-- Injected dynamically during print -->
-    </section>
-
-    <!-- Post-Submission Evaluation & Answer Key Section -->
-    <div id="evaluation-anchor"></div>
-    <hr id="evaluation-divider" class="exam-divider" style="display: none;">
-
-    <section id="evaluation-section" class="evaluation-section" style="display: none;">
-      
-      <!-- Score Recap Summary Cards -->
-      <div class="results-banner">
-        <h2 class="results-heading">Official Examination Results & Auto-Grader Recap</h2>
-        
-        <div class="score-cards-grid">
-          <div class="score-card primary-score">
-            <div class="score-card-label">TOTAL EXAMINATION SCORE</div>
-            <div class="score-card-value"><span id="score-earned">0</span> <small>/ <span id="score-max">100</span></small></div>
-            <div class="score-card-sub" id="score-grade-badge">Grade: Evaluating...</div>
-          </div>
-
-          <div class="score-card">
-            <div class="score-card-label">PERCENTAGE ACCURACY</div>
-            <div class="score-card-value"><span id="score-percentage">0%</span></div>
-            <div class="score-card-sub">Weighted Olympiad Metric</div>
-          </div>
-
-          <div class="score-card">
-            <div class="score-card-label">TASKS FULLY CORRECT</div>
-            <div class="score-card-value"><span id="score-correct-tasks">0</span> <small>/ <span id="score-total-tasks">43</span></small></div>
-            <div class="score-card-sub"><span id="score-partial-tasks">0</span> partial credit awards</div>
-          </div>
+      <div class="modal-body">
+        <p>You are about to submit your examination for final evaluation.</p>
+        <div class="finish-summary-box">
+          <div>Answered Tasks: <strong id="finish-answered-count">0</strong> / <strong id="finish-total-count">43</strong></div>
+          <div>Unanswered Tasks: <strong id="finish-unanswered-count">43</strong></div>
+          <div>Time Remaining: <strong id="finish-time-left">180:00</strong></div>
         </div>
-
-        <!-- Discipline Breakdown Table -->
-        <div class="field-breakdown-card">
-          <h3>Performance Breakdown Across the 7 Fields of Science</h3>
-          <div class="table-responsive">
-            <table class="field-breakdown-table" id="field-breakdown-table">
-              <thead>
-                <tr>
-                  <th>Field of Science</th>
-                  <th>Task Count</th>
-                  <th>Points Earned</th>
-                  <th>Max Points</th>
-                  <th>Field Mastery</th>
-                </tr>
-              </thead>
-              <tbody id="field-breakdown-tbody">
-                <!-- Injected via JavaScript -->
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        <!-- Ready-to-Copy Plain-Text Exam Report -->
-        <div class="report-box-card">
-          <div class="report-box-header">
-            <h3>Diagnostic Examination Report (Ready to Copy-Paste)</h3>
-            <button id="btn-copy-report" class="btn btn-sm btn-secondary">
-              📋 <span>Copy Full Report</span>
-            </button>
-          </div>
-          <p class="report-desc">
-            Complete plain-text summary showing your overall score, discipline breakdown, all fully correct tasks, and an exhaustive analytical walkthrough of every incorrect or partial question with NSU model solutions.
-          </p>
-          <textarea id="exam-report-text" class="report-textarea" readonly rows="14" spellcheck="false"></textarea>
-        </div>
+        <p class="finish-warning">Once submitted, you will not be able to change your answers for this attempt.</p>
       </div>
-
-      <!-- Complete Official Answer Key & Step-by-Step Solutions -->
-      <div class="answer-key-section">
-        <div class="answer-key-header">
-          <h2>Official Answer Key & NSU Model Solutions</h2>
-          <p>Examine the full model solutions, stoichiometric derivations, and scoring criteria for all tasks.</p>
-        </div>
-
-        <div id="solutions-container" class="solutions-container">
-          <!-- Injected via JavaScript -->
-        </div>
+      <div class="modal-footer">
+        <button id="btn-cancel-finish" class="btn btn-secondary">Return to Exam</button>
+        <button id="btn-confirm-finish" class="btn btn-danger">Submit & Finish Attempt</button>
       </div>
-
-    </section>
-
-  </main>
+    </div>
+  </div>
 
   <!-- Proctoring Focus Violation Alert Modal -->
   <div id="proctor-alert" class="proctor-alert" style="display: none;">
@@ -529,10 +688,13 @@
     </div>
   </div>
 
-  <!-- General Toast Notification -->
+  <!-- Blank Exam Paper Print Container (Used strictly in Export Blank PDF mode) -->
+  <section id="blank-print-container" class="blank-print-container print-only"></section>
+
+  <!-- Toast Notification -->
   <div id="toast" class="toast" role="alert" aria-live="assertive">Notification message</div>
 
-  <!-- Core Scripts -->
+  <!-- Core Scripts (questions.js MUST NOT be modified) -->
   <script src="questions.js"></script>
   <script src="app.js"></script>
 </body>
