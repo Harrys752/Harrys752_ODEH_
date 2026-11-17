@@ -1,6 +1,6 @@
 /* ==============================================================================
    Open Doors Olympiad: Earth & Environmental Sciences Simulator
-   Authentic OpenEdu / Moodle Proctoring UI & Print Stylesheet
+   Novosibirsk State University (NSU) & Moodle/OpenEdu Academic Stylesheet
    ============================================================================== */
 
 :root {
@@ -8,37 +8,37 @@
   --font-serif: 'Cinzel', Georgia, serif;
   --font-mono: 'JetBrains Mono', Consolas, monospace;
 
-  /* Authentic Open Doors / Moodle Palette */
+  /* Authentic Open Doors / Moodle Palette (From Attached Screenshots) */
   --color-proctor-bg: #0f172a;       /* Deep Slate Top Bar */
-  --color-page-bg: #f4f6f8;          /* Classic Moodle Cool Gray */
+  --color-page-bg: #f2f4f7;          /* Classic OpenEdu Canvas #f2f4f7 */
   --color-card-bg: #ffffff;
   
-  --color-tile-active: #dc2626;      /* Active Tile: Solid Crimson Red */
-  --color-tile-saved: #1d68b8;       /* Saved Tile: Solid Royal Blue */
-  --color-tile-pending: #cbd5e1;     /* Unanswered Tile: Cool Gray */
-  --color-tile-border: #94a3b8;
+  --color-tile-active: #d32f2f;      /* Active Tile: Solid Crimson Red #d32f2f */
+  --color-tile-saved: #1967d2;       /* Saved Tile: Moodle Royal Blue #1967d2 */
+  --color-tile-pending: #e4e7eb;     /* Unanswered Tile: Cool Gray #e4e7eb */
+  --color-tile-flag: #f59e0b;        /* Flagged corner indicator */
 
-  --color-primary: #1d68b8;          /* OpenEdu Primary Blue */
+  --color-primary: #1967d2;          /* OpenEdu Primary Blue */
   --color-primary-hover: #155294;
-  --color-text-main: #1e293b;
+  --color-text-main: #212529;        /* Clean body text */
   --color-text-muted: #64748b;
-  --color-border: #e2e8f0;
+  --color-border: #dce1e7;          /* Moodle card border #dce1e7 */
   --color-border-dark: #cbd5e1;
 
   --color-success: #15803d;
   --color-success-bg: #f0fdf4;
-  --color-danger: #b91c1c;
+  --color-danger: #d32f2f;
   --color-danger-bg: #fef2f2;
   --color-warning: #b45309;
   --color-warning-bg: #fffbeb;
 
-  --radius-sm: 4px;
-  --radius-md: 6px;
-  --radius-lg: 10px;
+  --radius-sm: 3px;
+  --radius-md: 4px;
+  --radius-lg: 8px;
   
-  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.06);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.08), 0 2px 4px -2px rgba(0, 0, 0, 0.04);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.06);
 }
 
 * {
@@ -106,7 +106,7 @@ body.exam-body {
 .proctor-status-group {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: 0.65rem;
   flex-wrap: wrap;
 }
 
@@ -192,7 +192,7 @@ body.exam-body {
 }
 
 .btn-submit-exam {
-  background-color: #1d68b8;
+  background-color: var(--color-primary);
   color: #ffffff;
   border: 1px solid #2563eb;
   font-size: 0.85rem;
@@ -207,7 +207,7 @@ body.exam-body {
 }
 
 .btn-submit-exam:hover {
-  background-color: #155294;
+  background-color: var(--color-primary-hover);
 }
 
 /* ==============================================================================
@@ -276,7 +276,7 @@ body.exam-body {
 }
 
 /* ==============================================================================
-   Question Navigation Matrix (Matches Attached Screenshots)
+   Question Navigation Matrix (28px x 28px, Exact Match with Attached Screenshots)
    ============================================================================== */
 .exam-workspace-container {
   max-width: 1100px;
@@ -288,7 +288,7 @@ body.exam-body {
   background-color: #ffffff;
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
-  padding: 1rem 1.25rem;
+  padding: 0.85rem 1.25rem;
   margin-bottom: 1.25rem;
   box-shadow: var(--shadow-sm);
 }
@@ -343,7 +343,11 @@ body.exam-body {
   background-color: var(--color-tile-pending);
 }
 
-/* Square Tiles Grid */
+.legend-box.tile-flagged {
+  background: linear-gradient(135deg, var(--color-tile-flag) 50%, var(--color-tile-pending) 50%);
+}
+
+/* Square Tiles Grid (28px x 28px, border-radius: 3px) */
 .question-nav-matrix {
   display: flex;
   flex-wrap: wrap;
@@ -362,6 +366,7 @@ body.exam-body {
   border-radius: 3px;
   cursor: pointer;
   user-select: none;
+  position: relative;
   transition: transform 0.1s ease, filter 0.1s ease;
   border: 1px solid transparent;
 }
@@ -374,8 +379,8 @@ body.exam-body {
 /* Tile States */
 .matrix-tile.pending {
   background-color: var(--color-tile-pending);
-  color: #334155;
-  border-color: #cbd5e1;
+  color: #212529;
+  border-color: #d1d5db;
 }
 
 .matrix-tile.saved {
@@ -389,7 +394,36 @@ body.exam-body {
   color: #ffffff !important;
   font-weight: 700;
   border-color: #b91c1c;
-  box-shadow: 0 0 0 2px rgba(220, 38, 38, 0.4);
+  box-shadow: 0 0 0 2px rgba(211, 47, 47, 0.4);
+}
+
+/* Flagged Triangle Indicator */
+.matrix-tile.flagged::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 0 7px 7px 0;
+  border-color: transparent var(--color-tile-flag) transparent transparent;
+}
+
+/* Post-submission Review Tiles */
+.matrix-tile.review-correct {
+  background-color: #15803d !important;
+  color: #ffffff !important;
+}
+
+.matrix-tile.review-partial {
+  background-color: #f59e0b !important;
+  color: #ffffff !important;
+}
+
+.matrix-tile.review-incorrect {
+  background-color: #d32f2f !important;
+  color: #ffffff !important;
 }
 
 /* ==============================================================================
@@ -404,7 +438,7 @@ body.exam-body {
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-sm);
-  padding: 2rem 2.25rem;
+  padding: 1.75rem 2rem;
 }
 
 .task-card-header {
@@ -427,7 +461,7 @@ body.exam-body {
   font-family: var(--font-sans);
   font-size: 1.25rem;
   font-weight: 700;
-  color: #0f172a;
+  color: #212529;
 }
 
 .task-discipline-pill {
@@ -444,11 +478,44 @@ body.exam-body {
 .task-points-pill {
   background-color: #eff6ff;
   border: 1px solid #bfdbfe;
-  color: #1d68b8;
+  color: var(--color-primary);
   font-size: 0.75rem;
   font-weight: 700;
   padding: 0.2rem 0.6rem;
   border-radius: 9999px;
+}
+
+.task-header-right {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.btn-flag {
+  background: none;
+  border: 1px solid #cbd5e1;
+  border-radius: var(--radius-sm);
+  padding: 0.25rem 0.55rem;
+  font-size: 0.78rem;
+  color: #475569;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  transition: all 0.15s;
+}
+
+.btn-flag:hover {
+  background-color: #f8fafc;
+  color: var(--color-tile-flag);
+  border-color: var(--color-tile-flag);
+}
+
+.btn-flag.is-flagged {
+  background-color: #fffbeb;
+  color: #b45309;
+  border-color: #fde68a;
+  font-weight: 600;
 }
 
 .task-status-flag {
@@ -475,7 +542,7 @@ body.exam-body {
 
 .task-stem-text {
   font-size: 1.05rem;
-  color: #0f172a;
+  color: #212529;
   line-height: 1.6;
 }
 
@@ -483,14 +550,23 @@ body.exam-body {
   margin-bottom: 0.75rem;
 }
 
-/* Subtle Horizontal Divider Beneath Question Stem (Exact match with photo) */
+.task-stem-text ol, .task-stem-text ul {
+  padding-left: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.task-stem-text li {
+  margin-bottom: 0.35rem;
+}
+
+/* Thin Horizontal Rule (1px solid #e9ecef) Exactly Matching Reference Interface */
 .stem-divider {
   height: 1px;
-  background-color: #e2e8f0;
+  background-color: #e9ecef;
   margin: 1.25rem 0 1.5rem;
 }
 
-/* Interactive Answer Options Zone */
+/* Answer Options Zone */
 .task-answer-zone {
   margin-bottom: 2rem;
 }
@@ -522,13 +598,13 @@ body.exam-body {
 
 .moodle-option-label {
   font-size: 0.98rem;
-  color: #1e293b;
+  color: #212529;
   line-height: 1.5;
   flex: 1;
 }
 
 .moodle-option-row:hover .moodle-option-label {
-  color: #0f172a;
+  color: #000000;
 }
 
 /* Inputs for Short & Extended Responses */
@@ -545,7 +621,7 @@ body.exam-body {
 
 .moodle-text-input:focus {
   border-color: var(--color-primary);
-  box-shadow: 0 0 0 3px rgba(29, 104, 184, 0.15);
+  box-shadow: 0 0 0 3px rgba(25, 103, 210, 0.15);
 }
 
 .moodle-textarea {
@@ -563,7 +639,7 @@ body.exam-body {
 
 .moodle-textarea:focus {
   border-color: var(--color-primary);
-  box-shadow: 0 0 0 3px rgba(29, 104, 184, 0.15);
+  box-shadow: 0 0 0 3px rgba(25, 103, 210, 0.15);
 }
 
 /* Action Bar with "Save answer" (Exact match with photo) */
@@ -577,33 +653,33 @@ body.exam-body {
   gap: 0.75rem;
 }
 
-/* Save answer button: Muted gray when unselected / active blue when ready */
+/* Save answer button: Muted gray #e2e8f0 when disabled / Active blue #1967d2 when dirty */
 .btn-save-answer {
-  background-color: #cbd5e1;
-  color: #64748b;
+  background-color: #e2e8f0;
+  color: #94a3b8;
   border: 1px solid #cbd5e1;
   font-size: 0.88rem;
   font-weight: 500;
-  padding: 0.5rem 1.1rem;
+  padding: 0.5rem 1.15rem;
   border-radius: var(--radius-sm);
   cursor: not-allowed;
   transition: all 0.2s ease;
 }
 
 .btn-save-answer.ready {
-  background-color: #1d68b8;
+  background-color: var(--color-primary);
   color: #ffffff;
-  border-color: #1d68b8;
+  border-color: var(--color-primary);
   cursor: pointer;
   box-shadow: var(--shadow-sm);
 }
 
 .btn-save-answer.ready:hover {
-  background-color: #155294;
+  background-color: var(--color-primary-hover);
 }
 
 .btn-save-answer.saved-state {
-  background-color: #e2e8f0;
+  background-color: #f1f5f9;
   color: #475569;
   border-color: #cbd5e1;
   cursor: default;
@@ -615,7 +691,7 @@ body.exam-body {
 }
 
 .btn-nav {
-  background-color: #f8fafc;
+  background-color: #ffffff;
   border: 1px solid #cbd5e1;
   color: #334155;
   font-size: 0.85rem;
@@ -627,7 +703,8 @@ body.exam-body {
 }
 
 .btn-nav:hover:not(:disabled) {
-  background-color: #e2e8f0;
+  background-color: #f8fafc;
+  border-color: #94a3b8;
   color: #0f172a;
 }
 
@@ -637,34 +714,46 @@ body.exam-body {
 }
 
 /* ==============================================================================
-   Scientific Calculator Drawer
+   Scientific Calculator & Constants Reference Drawer
    ============================================================================== */
 .calc-drawer {
   position: fixed;
   bottom: 20px;
   right: 20px;
-  width: 310px;
+  width: 330px;
   background-color: #1e293b;
   border: 1px solid #475569;
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-lg);
-  padding: 1rem;
+  padding: 0.75rem;
   z-index: 500;
   color: #ffffff;
 }
 
-.calc-header {
+.calc-tabs {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  gap: 0.35rem;
   margin-bottom: 0.65rem;
+  border-bottom: 1px solid #334155;
+  padding-bottom: 0.4rem;
 }
 
-.calc-header h4 {
-  font-size: 0.88rem;
+.calc-tab-btn {
+  background: none;
+  border: none;
   color: #94a3b8;
-  text-transform: uppercase;
-  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-family: var(--font-sans);
+  font-weight: 600;
+  padding: 0.25rem 0.5rem;
+  cursor: pointer;
+  border-radius: var(--radius-sm);
+}
+
+.calc-tab-btn.active {
+  background-color: #334155;
+  color: #ffffff;
 }
 
 .btn-close-sm {
@@ -672,7 +761,16 @@ body.exam-body {
   border: none;
   color: #94a3b8;
   font-size: 1.25rem;
+  margin-left: auto;
   cursor: pointer;
+}
+
+.calc-tab-content {
+  display: none;
+}
+
+.calc-tab-content.active {
+  display: block;
 }
 
 .calc-display-wrapper {
@@ -710,7 +808,7 @@ body.exam-body {
 }
 
 .calc-btn {
-  padding: 0.55rem 0;
+  padding: 0.5rem 0;
   font-family: var(--font-mono);
   font-size: 0.9rem;
   font-weight: 600;
@@ -739,9 +837,33 @@ body.exam-body {
 }
 
 .calc-btn.calc-equal {
-  background-color: #1d68b8;
+  background-color: var(--color-primary);
   color: #ffffff;
   border-color: #38bdf8;
+}
+
+/* Constants Reference Tab */
+.constants-scroll-list {
+  max-height: 280px;
+  overflow-y: auto;
+  font-size: 0.82rem;
+  padding-right: 0.35rem;
+}
+
+.constants-scroll-list h5 {
+  color: #38bdf8;
+  margin: 0.5rem 0 0.3rem;
+  font-size: 0.85rem;
+}
+
+.constants-scroll-list ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.constants-scroll-list li {
+  padding: 0.2rem 0;
+  border-bottom: 1px solid #334155;
 }
 
 /* ==============================================================================
@@ -784,7 +906,7 @@ body.exam-body {
 
 .config-modal-header h3 {
   font-size: 1.15rem;
-  color: var(--color-proctor-bg);
+  color: #0f172a;
 }
 
 .config-modal-body {
@@ -908,12 +1030,110 @@ body.exam-body {
 }
 
 /* ==============================================================================
+   PDF Importer Modal
+   ============================================================================== */
+.file-upload-box {
+  border: 2px dashed #94a3b8;
+  border-radius: var(--radius-md);
+  padding: 1.5rem;
+  text-align: center;
+  background-color: #f8fafc;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.file-upload-box:hover {
+  border-color: var(--color-primary);
+  background-color: #eff6ff;
+}
+
+.file-input-hidden {
+  display: none;
+}
+
+.file-upload-label {
+  cursor: pointer;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #334155;
+}
+
+.import-options-box {
+  background-color: #f8fafc;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 1rem;
+}
+
+.import-options-box h4 {
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+  color: #0f172a;
+}
+
+.radio-row {
+  margin-bottom: 0.5rem;
+  font-size: 0.85rem;
+}
+
+.radio-row label {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  cursor: pointer;
+}
+
+.gemini-key-group {
+  margin-top: 0.75rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid var(--color-border);
+}
+
+.gemini-key-group label {
+  font-size: 0.78rem;
+  color: #475569;
+  margin-bottom: 0.25rem;
+  display: block;
+}
+
+.importer-status-log {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  background-color: #0f172a;
+  color: #38bdf8;
+  padding: 0.65rem 0.85rem;
+  border-radius: var(--radius-sm);
+  max-height: 80px;
+  overflow-y: auto;
+}
+
+.importer-preview-box {
+  border-top: 1px solid var(--color-border);
+  padding-top: 0.75rem;
+}
+
+.importer-preview-box h4 {
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+}
+
+.importer-preview-list {
+  max-height: 180px;
+  overflow-y: auto;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: 0.5rem;
+  background-color: #ffffff;
+  font-size: 0.82rem;
+}
+
+/* ==============================================================================
    Post-Submission Evaluation & Answer Key
    ============================================================================== */
 .exam-divider {
   border: 0;
   height: 3px;
-  background: linear-gradient(90deg, #1d68b8, #38bdf8, #1d68b8);
+  background: linear-gradient(90deg, #1967d2, #38bdf8, #1967d2);
   margin: 3.5rem 0;
 }
 
@@ -934,7 +1154,7 @@ body.exam-body {
 .results-heading {
   font-family: var(--font-serif);
   font-size: 1.4rem;
-  color: #0f172a;
+  color: #212529;
   margin-bottom: 1.5rem;
   text-align: center;
 }
@@ -970,7 +1190,7 @@ body.exam-body {
 .score-card-value {
   font-size: 2.2rem;
   font-weight: 700;
-  color: #0f172a;
+  color: #212529;
   line-height: 1.2;
 }
 
@@ -992,7 +1212,7 @@ body.exam-body {
 
 .field-breakdown-card h3 {
   font-size: 1.1rem;
-  color: #0f172a;
+  color: #212529;
   margin-bottom: 0.75rem;
 }
 
@@ -1030,7 +1250,7 @@ body.exam-body {
 
 .report-box-header h3 {
   font-size: 1.05rem;
-  color: #0f172a;
+  color: #212529;
 }
 
 .report-desc {
@@ -1062,7 +1282,7 @@ body.exam-body {
 .answer-key-header h2 {
   font-family: var(--font-serif);
   font-size: 1.35rem;
-  color: #0f172a;
+  color: #212529;
 }
 
 .answer-key-header p {
@@ -1179,7 +1399,7 @@ body.exam-body {
 
 .proctor-alert-box {
   background-color: #ffffff;
-  border-left: 6px solid #dc2626;
+  border-left: 6px solid #d32f2f;
   border-radius: var(--radius-md);
   padding: 1.75rem;
   max-width: 480px;
@@ -1188,7 +1408,7 @@ body.exam-body {
 }
 
 .proctor-alert-box h4 {
-  color: #dc2626;
+  color: #d32f2f;
   font-size: 1.15rem;
   margin-bottom: 0.6rem;
 }

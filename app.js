@@ -1,13 +1,14 @@
 /**
  * Open Doors Olympiad: Earth & Environmental Sciences for Sustainability
- * Stage 2 Second-Round Simulator & Entry Drill Engine
+ * Novosibirsk State University (NSU) Stage 2 Simulator & Drill Engine
  * Complete Vanilla JavaScript Architecture
  */
 
 (function () {
   'use strict';
 
-  const STORAGE_KEY = 'OPEN_DOORS_EARTH_PROCTOR_SESSION_V3';
+  const STORAGE_KEY = 'OPEN_DOORS_NSU_SIM_SESSION_V4';
+  const GEMINI_KEY_STORAGE = 'OPEN_DOORS_GEMINI_API_KEY';
 
   const ALL_FIELDS = [
     'Geography, physical',
@@ -55,8 +56,8 @@
     currentIndex: 0,     // Currently viewed question index (0-based)
     savedAnswers: {},    // questionId -> saved answer (affects blue tiles)
     draftAnswers: {},    // questionId -> uncommitted draft choice
+    flaggedIds: [],      // array of question IDs marked with flag
     remainingSeconds: 180 * 60,
-    isTimerRunning: true,
     focusLossCount: 0,
     isSubmitted: false,
     gradingResult: null,
@@ -65,6 +66,7 @@
 
   let timerInterval = null;
   let saveDebounceTimer = null;
+  let parsedImportQuestions = [];
 
   // DOM Elements
   const DOM = {
@@ -74,6 +76,7 @@
     focusLossCount: document.getElementById('focus-loss-count'),
     focusLossBadge: document.getElementById('focus-loss-badge'),
     btnToggleCalc: document.getElementById('btn-toggle-calc'),
+    btnToggleImporter: document.getElementById('btn-toggle-importer'),
     btnToggleConfig: document.getElementById('btn-toggle-config'),
     btnFinishAttempt: document.getElementById('btn-finish-attempt'),
 
@@ -94,6 +97,9 @@
     taskDisciplinePill: document.getElementById('task-discipline-pill'),
     taskPointsPill: document.getElementById('task-points-pill'),
     taskSaveIndicator: document.getElementById('task-save-indicator'),
+    btnToggleFlag: document.getElementById('btn-toggle-flag'),
+    flagIcon: document.getElementById('flag-icon'),
+    flagText: document.getElementById('flag-text'),
     taskTitleText: document.getElementById('task-title-text'),
     taskStemText: document.getElementById('task-stem-text'),
     taskAnswerZone: document.getElementById('task-answer-zone'),
@@ -115,7 +121,21 @@
     customQuotaAdv: document.getElementById('custom-quota-adv'),
     customTimerMin: document.getElementById('custom-timer-min'),
 
-    // Calculator Drawer
+    // PDF Importer Modal
+    importerModal: document.getElementById('importer-modal'),
+    btnCloseImporter: document.getElementById('btn-close-importer'),
+    pdfFileInput: document.getElementById('pdf-file-input'),
+    fileNameDisplay: document.getElementById('file-name-display'),
+    geminiKeyContainer: document.getElementById('gemini-key-container'),
+    geminiApiKeyInput: document.getElementById('gemini-api-key-input'),
+    importerStatusLog: document.getElementById('importer-status-log'),
+    importerPreviewBox: document.getElementById('importer-preview-box'),
+    parsedCountBadge: document.getElementById('parsed-count-badge'),
+    importerPreviewList: document.getElementById('importer-preview-list'),
+    btnProcessPdf: document.getElementById('btn-process-pdf'),
+    btnCommitImported: document.getElementById('btn-commit-imported'),
+
+    // Tools & Constants Reference Drawer
     calcDrawer: document.getElementById('calc-drawer'),
     btnCloseCalc: document.getElementById('btn-close-calc'),
     calcDisplay: document.getElementById('calc-display'),
@@ -172,13 +192,13 @@
   function triggerMathJax() {
     if (window.MathJax && window.MathJax.typesetPromise) {
       window.MathJax.typesetPromise().catch((err) => {
-        console.warn('MathJax typesetting error:', err);
+        console.warn('MathJax typesetting warning:', err);
       });
     }
   }
 
   // ============================================================================
-  // Stratified Sampling Engine
+  // Stratified Sampling Engine (NSU Olympiad Model)
   // ============================================================================
 
   function sampleQuestions(config) {
@@ -205,7 +225,26 @@
     if (filterMode === 'balanced') {
       selectedBasic = roundRobinByField(basicPool, quotas.basic);
       selectedInter = roundRobinByField(interPool, quotas.intermediate);
-      selectedAdv = roundRobinByField(advPool, quotas.advanced);
+
+      // Advanced Tasks: In Official Stage 2 (3 tasks), pick strictly 1 from Archetype 41 (Geography),
+      // 1 from Archetype 42 (Geochemistry), and 1 from Archetype 43 (Mining)
+      if (quotas.advanced === 3) {
+        const arch41 = advPool.filter((q) => q.field === 'Geography, physical');
+        const arch42 = advPool.filter((q) => q.field === 'Geochemistry & geophysics');
+        const arch43 = advPool.filter((q) => q.field === 'Mining & mineral processing');
+
+        if (arch41.length > 0) selectedAdv.push(shuffle(arch41)[0]);
+        if (arch42.length > 0) selectedAdv.push(shuffle(arch42)[0]);
+        if (arch43.length > 0) selectedAdv.push(shuffle(arch43)[0]);
+
+        // Fallback if not 3
+        if (selectedAdv.length < 3) {
+          const rem = advPool.filter((q) => !selectedAdv.includes(q));
+          selectedAdv.push(...shuffle(rem).slice(0, 3 - selectedAdv.length));
+        }
+      } else {
+        selectedAdv = roundRobinByField(advPool, quotas.advanced);
+      }
     } else {
       selectedBasic = shuffle(basicPool).slice(0, quotas.basic);
       selectedInter = shuffle(interPool).slice(0, quotas.intermediate);
@@ -280,7 +319,7 @@
         DOM.saveDot.style.backgroundColor = '#22c55e';
       }
     } catch (e) {
-      console.warn('Storage save failed:', e);
+      console.warn('Storage save error:', e);
     }
   }
 
@@ -291,10 +330,11 @@
       const parsed = JSON.parse(raw);
       if (parsed && Array.isArray(parsed.activeQuestions) && parsed.activeQuestions.length > 0) {
         state = parsed;
+        if (!Array.isArray(state.flaggedIds)) state.flaggedIds = [];
         return true;
       }
     } catch (e) {
-      console.warn('Storage load failed:', e);
+      console.warn('Storage parse error:', e);
     }
     return false;
   }
@@ -315,13 +355,12 @@
         state.remainingSeconds--;
         updateTimerDisplay();
 
-        // Auto-save remaining seconds every 15 seconds
         if (state.remainingSeconds % 15 === 0) {
           saveSessionToStorage();
         }
       } else {
         clearInterval(timerInterval);
-        showToast('⏰ Time has expired! Submitting your examination...');
+        showToast('⏰ Time has expired! Finalizing and grading examination...');
         gradeExam();
       }
     }, 1000);
@@ -342,7 +381,6 @@
 
     DOM.timerDisplay.textContent = text;
 
-    // Warning when under 10 minutes
     if (state.remainingSeconds <= 600 && DOM.timerBox) {
       DOM.timerBox.classList.add('timer-warning');
     } else if (DOM.timerBox) {
@@ -351,7 +389,7 @@
   }
 
   // ============================================================================
-  // Navigation Matrix Rendering (Matches Reference Screenshots)
+  // Navigation Matrix Rendering (Matches Attached Screenshots)
   // ============================================================================
 
   function renderNavigationMatrix() {
@@ -365,10 +403,6 @@
       tile.dataset.index = idx;
       tile.title = `Question ${idx + 1}: ${q.field} (${q.points} pt)`;
 
-      // Determine state:
-      // Active = Crimson Red (#dc2626)
-      // Saved = Royal Blue (#1d68b8)
-      // Pending = Light Gray (#cbd5e1)
       const hasSavedAnswer =
         state.savedAnswers[q.id] !== undefined &&
         state.savedAnswers[q.id] !== null &&
@@ -376,12 +410,28 @@
           ? state.savedAnswers[q.id].length > 0
           : String(state.savedAnswers[q.id]).trim().length > 0);
 
-      if (idx === state.currentIndex) {
-        tile.classList.add('active');
-      } else if (hasSavedAnswer) {
-        tile.classList.add('saved');
+      // Flagged state
+      if (state.flaggedIds.includes(q.id)) {
+        tile.classList.add('flagged');
+      }
+
+      // Review state after submission
+      if (state.isSubmitted && state.gradingResult) {
+        const resultItem = state.gradingResult.taskResults[idx];
+        if (resultItem) {
+          if (resultItem.status === 'correct') tile.classList.add('review-correct');
+          else if (resultItem.status === 'partial') tile.classList.add('review-partial');
+          else tile.classList.add('review-incorrect');
+        }
       } else {
-        tile.classList.add('pending');
+        // Exam in progress
+        if (idx === state.currentIndex) {
+          tile.classList.add('active'); // Crimson Red #d32f2f
+        } else if (hasSavedAnswer) {
+          tile.classList.add('saved');  // Moodle Royal Blue #1967d2
+        } else {
+          tile.classList.add('pending'); // Cool Gray #e4e7eb
+        }
       }
 
       tile.addEventListener('click', () => {
@@ -393,7 +443,7 @@
   }
 
   // ============================================================================
-  // Single-Task Card Viewport (Matches Reference Screenshots)
+  // Single-Task Card Viewport (Matches Attached Screenshots)
   // ============================================================================
 
   function renderCurrentTask() {
@@ -428,7 +478,21 @@
       }
     }
 
-    // Title and Stem
+    // Flag toggle state
+    const isFlagged = state.flaggedIds.includes(q.id);
+    if (DOM.btnToggleFlag) {
+      if (isFlagged) {
+        DOM.btnToggleFlag.classList.add('is-flagged');
+        DOM.flagIcon.textContent = '🚩';
+        DOM.flagText.textContent = 'Remove flag';
+      } else {
+        DOM.btnToggleFlag.classList.remove('is-flagged');
+        DOM.flagIcon.textContent = '⚑';
+        DOM.flagText.textContent = 'Flag question';
+      }
+    }
+
+    // Title and Stem (Clean Semantic HTML)
     if (DOM.taskTitleText) DOM.taskTitleText.textContent = q.title || '';
     if (DOM.taskStemText) DOM.taskStemText.innerHTML = q.content;
 
@@ -439,7 +503,7 @@
     if (DOM.btnPrevTask) DOM.btnPrevTask.disabled = state.currentIndex === 0;
     if (DOM.btnNextTask) DOM.btnNextTask.disabled = state.currentIndex === totalTasks - 1;
 
-    // Check if Save button should be active or disabled
+    // Save button state
     updateSaveButtonState(q);
 
     // Update Matrix Highlight
@@ -546,7 +610,7 @@
     } else if (q.type === 'extended-response') {
       const textarea = document.createElement('textarea');
       textarea.className = 'moodle-textarea';
-      textarea.placeholder = 'Provide your complete mathematical derivation, chemical equations, reasoning steps, and final numerical value...';
+      textarea.placeholder = 'Write down your full derivation, sequence of equations, reasoning, and final answer with measurement units...';
       textarea.value = typeof currentVal === 'string' ? currentVal : '';
 
       textarea.addEventListener('input', (e) => {
@@ -564,7 +628,6 @@
     const draft = state.draftAnswers[q.id];
     const saved = state.savedAnswers[q.id];
 
-    // Check if draft has content
     const hasDraftContent =
       draft !== undefined &&
       draft !== null &&
@@ -601,6 +664,22 @@
     showToast(`✓ Question ${state.currentIndex + 1} answer saved.`);
   }
 
+  function toggleFlagCurrentQuestion() {
+    const q = state.activeQuestions[state.currentIndex];
+    if (!q) return;
+
+    if (state.flaggedIds.includes(q.id)) {
+      state.flaggedIds = state.flaggedIds.filter((id) => id !== q.id);
+      showToast(`Flag removed from Question ${state.currentIndex + 1}.`);
+    } else {
+      state.flaggedIds.push(q.id);
+      showToast(`Question ${state.currentIndex + 1} flagged for review.`);
+    }
+
+    renderCurrentTask();
+    scheduleSave();
+  }
+
   function navigateToTask(newIndex) {
     if (newIndex < 0 || newIndex >= state.activeQuestions.length) return;
     state.currentIndex = newIndex;
@@ -608,16 +687,30 @@
   }
 
   // ============================================================================
-  // Scientific Calculator Implementation
+  // Scientific Calculator & Reference Tabs
   // ============================================================================
 
   let calcExpr = '';
 
-  function setupCalculator() {
+  function setupCalculatorAndReference() {
     if (!DOM.calcDrawer) return;
 
+    // Tab buttons
+    DOM.calcDrawer.querySelectorAll('.calc-tab-btn').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const tab = btn.dataset.tab;
+        DOM.calcDrawer.querySelectorAll('.calc-tab-btn').forEach((b) => b.classList.remove('active'));
+        DOM.calcDrawer.querySelectorAll('.calc-tab-content').forEach((c) => c.classList.remove('active'));
+
+        btn.classList.add('active');
+        const target = document.getElementById(`tab-${tab}`);
+        if (target) target.classList.add('active');
+      });
+    });
+
+    // Calculator buttons
     DOM.calcDrawer.querySelectorAll('.calc-btn').forEach((btn) => {
-      btn.addEventListener('click', (e) => {
+      btn.addEventListener('click', () => {
         const action = btn.dataset.action;
         const fn = btn.dataset.fn;
         const text = btn.textContent.trim();
@@ -658,7 +751,6 @@
           calcExpr += '+';
           updateCalcDisplay(calcExpr, '');
         } else {
-          // Number or bracket
           calcExpr += text;
           updateCalcDisplay(calcExpr, '');
         }
@@ -684,18 +776,223 @@
   }
 
   // ============================================================================
+  // Client-Side PDF-to-Question-Bank Importer (PDF.js CDN)
+  // ============================================================================
+
+  function setupPdfImporter() {
+    if (!DOM.pdfFileInput) return;
+
+    // Remember stored Gemini key
+    const storedKey = localStorage.getItem(GEMINI_KEY_STORAGE);
+    if (storedKey && DOM.geminiApiKeyInput) {
+      DOM.geminiApiKeyInput.value = storedKey;
+    }
+
+    DOM.pdfFileInput.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (file && DOM.fileNameDisplay) {
+        DOM.fileNameDisplay.textContent = `${file.name} (${Math.round(file.size / 1024)} KB)`;
+      }
+    });
+
+    // Toggle Gemini key field
+    document.querySelectorAll('input[name="import-method"]').forEach((radio) => {
+      radio.addEventListener('change', (e) => {
+        if (e.target.value === 'gemini') {
+          DOM.geminiKeyContainer.style.display = 'block';
+        } else {
+          DOM.geminiKeyContainer.style.display = 'none';
+        }
+      });
+    });
+
+    // Process PDF Button
+    if (DOM.btnProcessPdf) {
+      DOM.btnProcessPdf.addEventListener('click', async () => {
+        const file = DOM.pdfFileInput.files[0];
+        if (!file) {
+          alert('Please select a PDF document first.');
+          return;
+        }
+
+        const method = document.querySelector('input[name="import-method"]:checked').value;
+        DOM.importerStatusLog.textContent = 'Extracting text from PDF via PDF.js...';
+
+        try {
+          const arrayBuffer = await file.arrayBuffer();
+          const pdfDoc = await window.pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+          let fullText = '';
+
+          for (let p = 1; p <= pdfDoc.numPages; p++) {
+            const page = await pdfDoc.getPage(p);
+            const content = await page.getTextContent();
+            const pageText = content.items.map((it) => it.str).join(' ');
+            fullText += `\n--- PAGE ${p} ---\n` + pageText;
+          }
+
+          DOM.importerStatusLog.textContent = `Extracted ${pdfDoc.numPages} pages (${fullText.length} characters). Parsing questions...`;
+
+          if (method === 'regex') {
+            parsedImportQuestions = parseQuestionsWithRegex(fullText);
+          } else {
+            const apiKey = DOM.geminiApiKeyInput.value.trim();
+            if (!apiKey) {
+              alert('Please enter your Gemini API key to use AI parsing.');
+              DOM.importerStatusLog.textContent = 'Error: Missing Gemini API key.';
+              return;
+            }
+            localStorage.setItem(GEMINI_KEY_STORAGE, apiKey);
+            parsedImportQuestions = await parseQuestionsWithGemini(fullText, apiKey);
+          }
+
+          renderImportPreview(parsedImportQuestions);
+        } catch (err) {
+          console.error('PDF extraction failed:', err);
+          DOM.importerStatusLog.textContent = `Extraction failed: ${err.message}`;
+        }
+      });
+    }
+
+    // Commit Imported Questions
+    if (DOM.btnCommitImported) {
+      DOM.btnCommitImported.addEventListener('click', () => {
+        if (!parsedImportQuestions || parsedImportQuestions.length === 0) return;
+
+        // Append to QUESTION_BANK
+        window.QUESTION_BANK = [...(window.QUESTION_BANK || []), ...parsedImportQuestions];
+        DOM.importerModal.style.display = 'none';
+        showToast(`Successfully added ${parsedImportQuestions.length} custom tasks to Question Bank!`);
+      });
+    }
+  }
+
+  function parseQuestionsWithRegex(text) {
+    const tasks = [];
+    // Match "Task X", "Field of science: ...", question text, "Answer: ..."
+    const taskSplits = text.split(/(?=Task\s+\d+)/i);
+
+    taskSplits.forEach((chunk, i) => {
+      const taskMatch = chunk.match(/Task\s+(\d+)/i);
+      if (!taskMatch) return;
+
+      const taskNum = taskMatch[1];
+      const fieldMatch = chunk.match(/Field\s+of\s+science:\s*([^\n\r]+)/i);
+      const field = fieldMatch ? fieldMatch[1].trim() : 'Geography, physical';
+
+      // Check level
+      let difficulty = 'basic';
+      let points = 1;
+      if (chunk.match(/Intermediate\s+level/i)) {
+        difficulty = 'intermediate';
+        points = 3;
+      } else if (chunk.match(/Advanced\s+level/i)) {
+        difficulty = 'advanced';
+        points = 10;
+      }
+
+      // Check answer
+      const ansMatch = chunk.match(/Answer:\s*([^\n\r]+)/i);
+      const answer = ansMatch ? ansMatch[1].trim() : 'a';
+
+      // Extract options a), b), c), d)
+      const options = [];
+      const optMatches = chunk.match(/[a-e]\)\s+([^\n\r]+)/gi);
+      if (optMatches) {
+        optMatches.forEach((m) => {
+          options.push(m.replace(/^[a-e]\)\s+/i, '').trim());
+        });
+      }
+
+      tasks.push({
+        id: `IMPORT-${taskNum}-${Date.now()}`,
+        field: field,
+        difficulty: difficulty,
+        type: options.length > 0 ? 'single-choice' : 'short-answer',
+        points: points,
+        title: `Imported Task ${taskNum}`,
+        content: `<p>${chunk.slice(0, 300).replace(/Task\s+\d+/i, '').trim()}...</p>`,
+        options: options.length > 0 ? options : undefined,
+        correctAnswer: answer,
+        explanation: 'Imported from uploaded PDF document.'
+      });
+    });
+
+    return tasks;
+  }
+
+  async function parseQuestionsWithGemini(text, apiKey) {
+    DOM.importerStatusLog.textContent = 'Calling Gemini 2.5 Flash to structure questions...';
+    const sampleText = text.slice(0, 15000); // Send first 15k chars
+
+    const systemPrompt = `You are a Novosibirsk State University professor converting raw text into structured Earth Sciences Olympiad questions. Output ONLY valid JSON containing an array of question objects with fields: id, field, difficulty, type, points, title, content (clean HTML with <p>, MathJax $...$), options (if MCQ), correctAnswer, explanation.`;
+
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
+    const payload = {
+      contents: [
+        {
+          role: 'user',
+          parts: [
+            { text: systemPrompt },
+            { text: `Extract up to 5 complete Olympiad questions from this text:\n\n${sampleText}` }
+          ]
+        }
+      ],
+      generationConfig: {
+        responseMimeType: 'application/json'
+      }
+    };
+
+    const res = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+
+    if (!res.ok) {
+      throw new Error(`Gemini API returned status ${res.status}`);
+    }
+
+    const data = await res.json();
+    const candidateText = data.candidates?.[0]?.content?.parts?.[0]?.text;
+    const jsonParsed = JSON.parse(candidateText);
+    return Array.isArray(jsonParsed) ? jsonParsed : [jsonParsed];
+  }
+
+  function renderImportPreview(tasks) {
+    if (!DOM.importerPreviewBox || !DOM.importerPreviewList) return;
+    DOM.importerPreviewBox.style.display = 'block';
+    DOM.parsedCountBadge.textContent = tasks.length;
+    DOM.importerPreviewList.innerHTML = '';
+
+    if (tasks.length === 0) {
+      DOM.importerPreviewList.innerHTML = '<div>No recognizable questions found. Try Gemini AI parsing.</div>';
+      DOM.btnCommitImported.disabled = true;
+      return;
+    }
+
+    tasks.forEach((t, idx) => {
+      const item = document.createElement('div');
+      item.style.padding = '0.35rem 0';
+      item.style.borderBottom = '1px solid #e2e8f0';
+      item.innerHTML = `<strong>#${idx + 1} [${t.difficulty.toUpperCase()} · ${t.field}]:</strong> ${t.title || 'Untitled'} (Answer: ${t.correctAnswer})`;
+      DOM.importerPreviewList.appendChild(item);
+    });
+
+    DOM.btnCommitImported.disabled = false;
+    DOM.importerStatusLog.textContent = `Successfully parsed ${tasks.length} tasks! Ready to append to question bank.`;
+  }
+
+  // ============================================================================
   // Proctoring Focus Loss Simulation
   // ============================================================================
 
   function setupProctoringMonitors() {
-    // Detect tab switch
     document.addEventListener('visibilitychange', () => {
       if (document.hidden && !state.isSubmitted) {
         handleFocusLoss();
       }
     });
 
-    // Detect window blur
     window.addEventListener('blur', () => {
       if (!state.isSubmitted) {
         handleFocusLoss();
@@ -725,7 +1022,7 @@
     state.isSubmitted = true;
     clearInterval(timerInterval);
 
-    // Auto-commit any pending draft
+    // Auto-commit active draft
     const curQ = state.activeQuestions[state.currentIndex];
     if (curQ && state.draftAnswers[curQ.id] !== undefined) {
       state.savedAnswers[curQ.id] = state.draftAnswers[curQ.id];
@@ -779,7 +1076,6 @@
           status = 'correct';
           fullyCorrectCount++;
         } else {
-          // Partial credit: user picked subset of correct choices with zero incorrect picks
           const hasIncorrectChoice = sortedUser.some((choice) => !correctSet.includes(choice));
           if (!hasIncorrectChoice && sortedUser.length > 0) {
             const fraction = sortedUser.length / correctSet.length;
@@ -799,7 +1095,6 @@
             status = 'correct';
             fullyCorrectCount++;
           } else {
-            // Check numeric float equivalence within 2%
             const userFloat = parseFloat(normUser.replace(/[^0-9.-]/g, ''));
             const correctFloat = parseFloat(normCorrect.replace(/[^0-9.-]/g, ''));
             if (!isNaN(userFloat) && !isNaN(correctFloat)) {
@@ -881,6 +1176,7 @@
     };
 
     scheduleSave();
+    renderNavigationMatrix();
     renderEvaluationSection();
   }
 
@@ -888,7 +1184,7 @@
     const lines = [];
     lines.push('========================================================================');
     lines.push(' OPEN DOORS INTERNATIONAL OLYMPIAD: EARTH & ENVIRONMENTAL SCIENCES');
-    lines.push(" OFFICIAL PROCTORED EXAMINATION REPORT & DIAGNOSTIC DEBRIEF");
+    lines.push(" NOVOSIBIRSK STATE UNIVERSITY (NSU) EXAMINATION OFFICIAL REPORT");
     lines.push('========================================================================');
     lines.push(`Date: ${new Date().toLocaleString()}`);
     lines.push(`Mode: ${PRESETS[state.presetId]?.name || 'Custom Examination'}`);
@@ -937,7 +1233,7 @@
         lines.push(`Candidate Answer: ${formatAnswerString(t.userAnswer)}`);
 
         if (t.question.type === 'extended-response') {
-          lines.push('Model Derivation:');
+          lines.push('Model Solution & Assessment Criteria:');
           lines.push(t.question.modelSolution.replace(/\$\$/g, '').replace(/\$/g, '').trim());
         } else {
           const correctStr = Array.isArray(t.question.correctAnswer)
@@ -983,7 +1279,7 @@
     if (DOM.scorePartialTasks) DOM.scorePartialTasks.textContent = res.partialCreditCount;
 
     let badgeText = 'Stage 2 Participant';
-    if (res.percentage >= 85) badgeText = 'First Tier Laureate (Winner Potential)';
+    if (res.percentage >= 85) badgeText = 'First Tier Laureate (NSU Winner Standard)';
     else if (res.percentage >= 70) badgeText = 'Prize Winner (High Distinction)';
     else if (res.percentage >= 50) badgeText = 'Qualified Stage 2 Threshold';
 
@@ -1005,7 +1301,7 @@
             <td>
               <div style="display:flex; align-items:center; gap:0.5rem;">
                 <div style="flex:1; background:#e2e8f0; height:6px; border-radius:3px; overflow:hidden;">
-                  <div style="width:${mastery}%; background:#1d68b8; height:100%;"></div>
+                  <div style="width:${mastery}%; background:#1967d2; height:100%;"></div>
                 </div>
                 <span style="font-size:0.8rem; font-weight:600; width:40px;">${mastery}%</span>
               </div>
@@ -1055,7 +1351,7 @@
         const uBlock = document.createElement('div');
         uBlock.innerHTML = `
           <div class="solution-block-label">Your Submitted Answer:</div>
-          <div style="color:${t.status === 'correct' ? '#15803d' : '#b91c1c'}; font-weight:500;">
+          <div style="color:${t.status === 'correct' ? '#15803d' : '#d32f2f'}; font-weight:500;">
             ${formatAnswerString(t.userAnswer)}
           </div>`;
 
@@ -1066,8 +1362,8 @@
 
         cBlock.innerHTML = `
           <div class="solution-block-label">Official Correct Answer:</div>
-          <div style="color:#1d68b8; font-weight:600;">
-            ${t.question.type === 'extended-response' ? 'See model solution below' : correctStr}
+          <div style="color:#1967d2; font-weight:600;">
+            ${t.question.type === 'extended-response' ? 'See model solution & rubric below' : correctStr}
           </div>`;
 
         grid.appendChild(uBlock);
@@ -1080,11 +1376,11 @@
 
         if (t.question.modelSolution) {
           expl.innerHTML = `
-            <h4>Model Solution & Mathematical Derivation:</h4>
+            <h4>NSU Model Solution & Assessment Criteria:</h4>
             <div style="white-space: pre-wrap; line-height: 1.6;">${t.question.modelSolution}</div>`;
         } else if (t.question.explanation) {
           expl.innerHTML = `
-            <h4>Step-by-Step Explanation:</h4>
+            <h4>Academic Explanation:</h4>
             <p>${t.question.explanation}</p>`;
         }
 
@@ -1101,12 +1397,14 @@
   // ============================================================================
 
   function setupEventListeners() {
-    // Save button click
     if (DOM.btnSaveAnswer) {
       DOM.btnSaveAnswer.addEventListener('click', commitSaveCurrentAnswer);
     }
 
-    // Previous and Next
+    if (DOM.btnToggleFlag) {
+      DOM.btnToggleFlag.addEventListener('click', toggleFlagCurrentQuestion);
+    }
+
     if (DOM.btnPrevTask) {
       DOM.btnPrevTask.addEventListener('click', () => {
         navigateToTask(state.currentIndex - 1);
@@ -1119,7 +1417,7 @@
       });
     }
 
-    // Calculator toggle
+    // Tools & Constants toggle
     if (DOM.btnToggleCalc && DOM.calcDrawer) {
       DOM.btnToggleCalc.addEventListener('click', () => {
         const isHidden = DOM.calcDrawer.style.display === 'none';
@@ -1133,7 +1431,20 @@
       });
     }
 
-    // Presets & Config Modal
+    // PDF Importer Toggle
+    if (DOM.btnToggleImporter && DOM.importerModal) {
+      DOM.btnToggleImporter.addEventListener('click', () => {
+        DOM.importerModal.style.display = 'flex';
+      });
+    }
+
+    if (DOM.btnCloseImporter && DOM.importerModal) {
+      DOM.btnCloseImporter.addEventListener('click', () => {
+        DOM.importerModal.style.display = 'none';
+      });
+    }
+
+    // Presets Modal
     if (DOM.btnToggleConfig && DOM.configModal) {
       DOM.btnToggleConfig.addEventListener('click', () => {
         DOM.configModal.style.display = 'flex';
@@ -1152,7 +1463,7 @@
       });
     }
 
-    // Preset card click selection in modal
+    // Preset selection
     document.querySelectorAll('.preset-card').forEach((card) => {
       card.addEventListener('click', () => {
         const val = card.dataset.preset;
@@ -1180,7 +1491,7 @@
       });
     }
 
-    // Apply Modal
+    // Apply Presets
     if (DOM.btnApplyModal) {
       DOM.btnApplyModal.addEventListener('click', () => {
         const selectedRadio = document.querySelector('input[name="preset-choice"]:checked');
@@ -1214,7 +1525,6 @@
     // Finish Attempt & Submit
     if (DOM.btnFinishAttempt) {
       DOM.btnFinishAttempt.addEventListener('click', () => {
-        // Count unsaved/unanswered questions
         const total = state.activeQuestions.length;
         let answered = 0;
         state.activeQuestions.forEach((q) => {
@@ -1322,7 +1632,7 @@
     header.style.marginBottom = '2rem';
     header.innerHTML = `
       <h2 style="font-family:Cinzel,serif; font-size:1.4rem;">OPEN DOORS INTERNATIONAL OLYMPIAD</h2>
-      <h3 style="font-size:1.1rem; color:#1d68b8;">Earth and Environmental Sciences for Sustainability</h3>
+      <h3 style="font-size:1.1rem; color:#1967d2;">Novosibirsk State University • Earth & Environmental Sciences</h3>
       <p style="font-size:0.9rem; color:#64748b;">Blank Examination Paper • ${state.activeQuestions.length} Tasks Total</p>
       <hr style="margin:1rem 0; border:0; border-top:1px solid #000;">
     `;
@@ -1365,7 +1675,7 @@
   }
 
   // ============================================================================
-  // Initialization & Setup
+  // Initialization & Lifecycle
   // ============================================================================
 
   function initNewExamSession() {
@@ -1373,6 +1683,7 @@
     state.currentIndex = 0;
     state.savedAnswers = {};
     state.draftAnswers = {};
+    state.flaggedIds = [];
     state.remainingSeconds = (state.config.durationMinutes || 180) * 60;
     state.focusLossCount = 0;
     state.isSubmitted = false;
@@ -1393,7 +1704,8 @@
 
   function init() {
     setupEventListeners();
-    setupCalculator();
+    setupCalculatorAndReference();
+    setupPdfImporter();
     setupProctoringMonitors();
 
     const restored = loadSessionFromStorage();
@@ -1423,7 +1735,6 @@
     }
   }
 
-  // Run on ready
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init);
   } else {

@@ -3,13 +3,21 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Open Doors Olympiad: Earth & Environmental Sciences for Sustainability — Official Stage 2 Simulator</title>
+  <title>Open Doors Olympiad: Earth & Environmental Sciences for Sustainability — NSU Stage 2 Simulator</title>
   
   <!-- Academic Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   
+  <!-- PDF.js CDN for Client-Side PDF Extraction -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <script>
+    if (window.pdfjsLib) {
+      window.pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+    }
+  </script>
+
   <link rel="stylesheet" href="styles.css">
 
   <!-- MathJax v3 Configuration -->
@@ -39,7 +47,7 @@
   <header class="proctor-bar no-print">
     <div class="proctor-bar-container">
       <div class="proctor-brand">
-        <span class="proctor-badge">OPEN DOORS PROCTORED EXAM</span>
+        <span class="proctor-badge">OPEN DOORS • NSU TRACK</span>
         <span class="exam-title-text">Earth & Environmental Sciences for Sustainability (Bachelor's)</span>
       </div>
 
@@ -54,12 +62,17 @@
         <!-- Proctoring Focus Loss Counter -->
         <div class="focus-loss-badge" id="focus-loss-badge" title="Focus violations detected by browser proctoring">
           <span class="focus-dot"></span>
-          <span>Focus Loss: <strong id="focus-loss-count">0</strong></span>
+          <span>Focus Violations: <strong id="focus-loss-count">0</strong></span>
         </div>
 
-        <!-- Scientific Calculator Toggle -->
-        <button id="btn-toggle-calc" class="btn btn-proctor" title="Open Built-in Scientific Calculator">
-          🧮 <span>Calculator</span>
+        <!-- Reference Constants & Calculator Drawer Toggle -->
+        <button id="btn-toggle-calc" class="btn btn-proctor" title="Open Scientific Calculator & Molar Mass Reference">
+          🧮 <span>Tools & Constants</span>
+        </button>
+
+        <!-- PDF Importer Toggle -->
+        <button id="btn-toggle-importer" class="btn btn-proctor" title="Import Custom Tasks from PDF">
+          📥 <span>Import PDF</span>
         </button>
 
         <!-- Exam Presets & Config -->
@@ -75,7 +88,7 @@
     </div>
   </header>
 
-  <!-- Secondary Toolbar: Autosave & PDF Export -->
+  <!-- Secondary Toolbar: Autosave, Mode Info & PDF Export -->
   <div class="sub-toolbar no-print">
     <div class="sub-toolbar-container">
       <div class="autosave-indicator">
@@ -104,7 +117,7 @@
     </div>
   </div>
 
-  <!-- Preset Mode & Configuration Modal Drawer -->
+  <!-- Preset Mode & Configuration Modal -->
   <div id="config-modal" class="config-modal-backdrop no-print" style="display: none;">
     <div class="config-modal-card">
       <div class="config-modal-header">
@@ -119,8 +132,8 @@
               <input type="radio" name="preset-choice" id="radio-preset-a" value="preset-a" checked>
             </div>
             <div class="preset-info">
-              <h4>Preset A: Official Stage 2 Second-Round Simulator</h4>
-              <p>Authentic 43-task competition exam distributed across all 7 fields of science.</p>
+              <h4>Preset A: Official Stage 2 Second-Round Simulator (NSU Standard)</h4>
+              <p>Authentic 43-task competition exam strictly formatted to NSU Olympiad specifications.</p>
               <div class="preset-badges">
                 <span class="badge-mini">25 Basic (25 pts)</span>
                 <span class="badge-mini">15 Intermediate (45 pts)</span>
@@ -138,7 +151,7 @@
             </div>
             <div class="preset-info">
               <h4>Preset B: Entry-Style 68-Question Speed Drill</h4>
-              <p>Modeled directly on the 68-task conceptual qualification test shown in the reference interface.</p>
+              <p>Modeled directly on the 68-question conceptual qualification test shown in the reference interface.</p>
               <div class="preset-badges">
                 <span class="badge-mini">68 Basic Level Tasks</span>
                 <span class="badge-mini highlight">68 Points Total</span>
@@ -154,7 +167,7 @@
             </div>
             <div class="preset-info">
               <h4>Preset C: Custom Quotas & Field Specialization</h4>
-              <p>Define custom task counts and filter by single scientific discipline or balanced sampling.</p>
+              <p>Configure custom quotas per difficulty and filter by single discipline or balanced distribution.</p>
             </div>
           </div>
         </div>
@@ -213,73 +226,162 @@
     </div>
   </div>
 
-  <!-- Scientific Calculator Modal Drawer -->
+  <!-- Client-Side PDF Importer Modal -->
+  <div id="importer-modal" class="config-modal-backdrop no-print" style="display: none;">
+    <div class="config-modal-card importer-card">
+      <div class="config-modal-header">
+        <h3>Client-Side PDF Question Importer</h3>
+        <button id="btn-close-importer" class="btn-close" aria-label="Close modal">&times;</button>
+      </div>
+      <div class="config-modal-body">
+        <p class="importer-desc">
+          Upload any official Open Doors PDF (e.g. <code>Demo_Version.pdf</code>) or your study notes. 
+          PDF.js extracts the text entirely client-side inside your browser without backend transmission.
+        </p>
+
+        <div class="file-upload-box">
+          <input type="file" id="pdf-file-input" accept="application/pdf" class="file-input-hidden">
+          <label for="pdf-file-input" class="file-upload-label">
+            📁 <span id="file-name-display">Choose or drag a .PDF document</span>
+          </label>
+        </div>
+
+        <div class="import-options-box">
+          <h4>Extraction Method</h4>
+          <div class="radio-row">
+            <label>
+              <input type="radio" name="import-method" value="regex" checked>
+              <strong>Offline Regex Parser:</strong> Parses standard Open Doors formatting (<code>Task X</code>, <code>Answer: ...</code>) instantly without API.
+            </label>
+          </div>
+          <div class="radio-row">
+            <label>
+              <input type="radio" name="import-method" value="gemini">
+              <strong>Gemini AI Transformation:</strong> Converts unstructured lecture notes into NSU Olympiad JSON tasks using your Gemini API key.
+            </label>
+          </div>
+
+          <div id="gemini-key-container" class="gemini-key-group" style="display: none;">
+            <label for="gemini-api-key-input">Your Google Gemini API Key (stored locally in <code>localStorage</code>):</label>
+            <input type="password" id="gemini-api-key-input" class="form-control" placeholder="AIzaSy...">
+          </div>
+        </div>
+
+        <div id="importer-status-log" class="importer-status-log">Ready to process document.</div>
+
+        <div id="importer-preview-box" class="importer-preview-box" style="display: none;">
+          <h4>Parsed Questions Preview (<span id="parsed-count-badge">0</span> tasks found):</h4>
+          <div id="importer-preview-list" class="importer-preview-list"></div>
+        </div>
+      </div>
+      <div class="config-modal-footer">
+        <button id="btn-process-pdf" class="btn btn-secondary">Extract & Parse Text</button>
+        <button id="btn-commit-imported" class="btn btn-primary" disabled>Append to Question Bank</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scientific Calculator & Constants Reference Drawer -->
   <div id="calc-drawer" class="calc-drawer no-print" style="display: none;">
-    <div class="calc-header">
-      <h4>Scientific Calculator</h4>
+    <div class="calc-tabs">
+      <button class="calc-tab-btn active" data-tab="calculator">Calculator</button>
+      <button class="calc-tab-btn" data-tab="constants">NSU Constants Reference</button>
       <button id="btn-close-calc" class="btn-close-sm">&times;</button>
     </div>
-    <div class="calc-display-wrapper">
-      <div id="calc-history" class="calc-history"></div>
-      <input type="text" id="calc-display" class="calc-display" value="0" readonly>
+
+    <!-- Tab 1: Calculator -->
+    <div id="tab-calculator" class="calc-tab-content active">
+      <div class="calc-display-wrapper">
+        <div id="calc-history" class="calc-history"></div>
+        <input type="text" id="calc-display" class="calc-display" value="0" readonly>
+      </div>
+      <div class="calc-buttons-grid">
+        <button class="calc-btn calc-op" data-action="clear">AC</button>
+        <button class="calc-btn calc-op" data-action="backspace">⌫</button>
+        <button class="calc-btn calc-op" data-action="bracket">(</button>
+        <button class="calc-btn calc-op" data-action="bracket">)</button>
+
+        <button class="calc-btn calc-fn" data-fn="sin">sin</button>
+        <button class="calc-btn calc-fn" data-fn="cos">cos</button>
+        <button class="calc-btn calc-fn" data-fn="tan">tan</button>
+        <button class="calc-btn calc-op" data-action="divide">÷</button>
+
+        <button class="calc-btn calc-fn" data-fn="ln">ln</button>
+        <button class="calc-btn calc-fn" data-fn="log">log</button>
+        <button class="calc-btn calc-fn" data-fn="sqrt">√</button>
+        <button class="calc-btn calc-op" data-action="multiply">×</button>
+
+        <button class="calc-btn calc-num">7</button>
+        <button class="calc-btn calc-num">8</button>
+        <button class="calc-btn calc-num">9</button>
+        <button class="calc-btn calc-op" data-action="subtract">−</button>
+
+        <button class="calc-btn calc-num">4</button>
+        <button class="calc-btn calc-num">5</button>
+        <button class="calc-btn calc-num">6</button>
+        <button class="calc-btn calc-op" data-action="add">+</button>
+
+        <button class="calc-btn calc-num">1</button>
+        <button class="calc-btn calc-num">2</button>
+        <button class="calc-btn calc-num">3</button>
+        <button class="calc-btn calc-fn" data-fn="pow">^</button>
+
+        <button class="calc-btn calc-num">0</button>
+        <button class="calc-btn calc-num">.</button>
+        <button class="calc-btn calc-fn" data-fn="pi">π</button>
+        <button class="calc-btn calc-equal" data-action="equals">=</button>
+      </div>
     </div>
-    <div class="calc-buttons-grid">
-      <button class="calc-btn calc-op" data-action="clear">AC</button>
-      <button class="calc-btn calc-op" data-action="backspace">⌫</button>
-      <button class="calc-btn calc-op" data-action="bracket">(</button>
-      <button class="calc-btn calc-op" data-action="bracket">)</button>
 
-      <button class="calc-btn calc-fn" data-fn="sin">sin</button>
-      <button class="calc-btn calc-fn" data-fn="cos">cos</button>
-      <button class="calc-btn calc-fn" data-fn="tan">tan</button>
-      <button class="calc-btn calc-op" data-action="divide">÷</button>
-
-      <button class="calc-btn calc-fn" data-fn="ln">ln</button>
-      <button class="calc-btn calc-fn" data-fn="log">log</button>
-      <button class="calc-btn calc-fn" data-fn="sqrt">√</button>
-      <button class="calc-btn calc-op" data-action="multiply">×</button>
-
-      <button class="calc-btn calc-num">7</button>
-      <button class="calc-btn calc-num">8</button>
-      <button class="calc-btn calc-num">9</button>
-      <button class="calc-btn calc-op" data-action="subtract">−</button>
-
-      <button class="calc-btn calc-num">4</button>
-      <button class="calc-btn calc-num">5</button>
-      <button class="calc-btn calc-num">6</button>
-      <button class="calc-btn calc-op" data-action="add">+</button>
-
-      <button class="calc-btn calc-num">1</button>
-      <button class="calc-btn calc-num">2</button>
-      <button class="calc-btn calc-num">3</button>
-      <button class="calc-btn calc-fn" data-fn="pow">^</button>
-
-      <button class="calc-btn calc-num">0</button>
-      <button class="calc-btn calc-num">.</button>
-      <button class="calc-btn calc-fn" data-fn="pi">π</button>
-      <button class="calc-btn calc-equal" data-action="equals">=</button>
+    <!-- Tab 2: NSU Constants Reference -->
+    <div id="tab-constants" class="calc-tab-content">
+      <div class="constants-scroll-list">
+        <h5>Official Molar Masses (g/mol):</h5>
+        <ul>
+          <li>Pyrite ($\text{FeS}_2$): <strong>120.0</strong></li>
+          <li>Chalcopyrite ($\text{CuFeS}_2$): <strong>183.5</strong></li>
+          <li>Sulfuric acid ($\text{H}_2\text{SO}_4$): <strong>98.0</strong></li>
+          <li>Slaked lime ($\text{Ca(OH)}_2$): <strong>74.0</strong></li>
+          <li>Quicklime ($\text{CaO}$): <strong>56.0</strong></li>
+          <li>Limestone ($\text{CaCO}_3$): <strong>100.0</strong></li>
+          <li>Ferrous sulfate ($\text{FeSO}_4$): <strong>152.0</strong></li>
+          <li>Magnetite ($\text{Fe}_3\text{O}_4$): <strong>231.55</strong></li>
+        </ul>
+        <h5>Physical Constants & Conversions:</h5>
+        <ul>
+          <li>Barometric step: $\approx 10.5\text{–}11.0\text{ m}$ per $1\text{ mm Hg}$</li>
+          <li>Standard pressure: $760\text{ mm Hg} = 101,325\text{ Pa}$</li>
+          <li>Water density: $1.0\text{ g/cm}^3 = 1,000\text{ kg/m}^3$</li>
+          <li>Hectare: $1\text{ ha} = 10,000\text{ m}^2$</li>
+          <li>Dry adiabatic lapse rate: $\Gamma_d = 9.8^\circ\text{C/km}$</li>
+          <li>Standard lapse rate: $\gamma = 6.0\text{–}6.5^\circ\text{C/km}$</li>
+          <li>Solar declination (Summer Solstice): $+23^\circ 27'$ ($+23.5^\circ$)</li>
+          <li>Solar declination (Winter Solstice): $-23^\circ 27'$ ($-23.5^\circ$)</li>
+        </ul>
+      </div>
     </div>
   </div>
 
   <!-- Main Container -->
   <main class="exam-workspace-container">
 
-    <!-- Top Question Navigation Matrix (Matches Screenshots) -->
+    <!-- Top Horizontal Question Navigation Matrix (Matches Attached Screenshots) -->
     <section class="nav-matrix-panel no-print">
       <div class="nav-matrix-header">
         <span class="matrix-title">QUESTION NAVIGATION</span>
         <div class="matrix-legend">
-          <span class="legend-item"><span class="legend-box tile-active"></span> Active Question (Red)</span>
-          <span class="legend-item"><span class="legend-box tile-saved"></span> Answer Saved (Blue)</span>
-          <span class="legend-item"><span class="legend-box tile-pending"></span> Unanswered (Gray)</span>
+          <span class="legend-item"><span class="legend-box tile-active"></span> Active (Crimson Red #d32f2f)</span>
+          <span class="legend-item"><span class="legend-box tile-saved"></span> Saved (Moodle Blue #1967d2)</span>
+          <span class="legend-item"><span class="legend-box tile-pending"></span> Unanswered (Gray #e4e7eb)</span>
+          <span class="legend-item"><span class="legend-box tile-flagged"></span> Flagged</span>
         </div>
       </div>
       <div id="question-nav-matrix" class="question-nav-matrix">
-        <!-- Rendered square tiles 1..N via JavaScript -->
+        <!-- Square numbered tiles 1..N generated via app.js -->
       </div>
     </section>
 
-    <!-- Single Task Viewport Card (Matches Screenshots) -->
+    <!-- Single Task Viewport Card (Matches Attached Screenshots) -->
     <section id="single-task-viewport" class="single-task-viewport">
       <div class="task-card-frame">
         <div class="task-card-header">
@@ -288,23 +390,28 @@
             <span class="task-discipline-pill" id="task-discipline-pill">Field of Science</span>
             <span class="task-points-pill" id="task-points-pill">1 Point</span>
           </div>
-          <div class="task-status-flag" id="task-save-indicator">Not saved yet</div>
-        </div>
-
-        <!-- Task Stem & Content -->
-        <div class="task-content-area">
-          <h3 class="task-title-text" id="task-title-text"></h3>
-          <div class="task-stem-text" id="task-stem-text">
-            <!-- Injected via JavaScript -->
+          <div class="task-header-right">
+            <button id="btn-toggle-flag" class="btn-flag" title="Flag or unflag this question">
+              <span id="flag-icon">⚑</span> <span id="flag-text">Flag question</span>
+            </button>
+            <span class="task-status-flag" id="task-save-indicator">Not answered yet</span>
           </div>
         </div>
 
-        <!-- Subtle Horizontal Divider Beneath Question Stem (Matches Screenshot) -->
+        <!-- Task Stem & Content Area -->
+        <div class="task-content-area">
+          <h3 class="task-title-text" id="task-title-text"></h3>
+          <div class="task-stem-text" id="task-stem-text">
+            <!-- Injected via JavaScript with clean semantic HTML -->
+          </div>
+        </div>
+
+        <!-- Thin Horizontal Rule (1px solid #e9ecef) Matching Reference Interface -->
         <div class="stem-divider"></div>
 
-        <!-- Interactive Answer Options Zone -->
+        <!-- Answer Options Zone -->
         <div class="task-answer-zone" id="task-answer-zone">
-          <!-- Injected via JavaScript based on type -->
+          <!-- Injected via JavaScript -->
         </div>
 
         <!-- Single-Task Navigation & Save Answer Bar (Matches Screenshot) -->
@@ -391,7 +498,7 @@
             </button>
           </div>
           <p class="report-desc">
-            Complete plain-text summary showing your overall score, discipline breakdown, all fully correct tasks, and an exhaustive analytical walkthrough of every incorrect or partial question.
+            Complete plain-text summary showing your overall score, discipline breakdown, all fully correct tasks, and an exhaustive analytical walkthrough of every incorrect or partial question with NSU model solutions.
           </p>
           <textarea id="exam-report-text" class="report-textarea" readonly rows="14" spellcheck="false"></textarea>
         </div>
@@ -400,7 +507,7 @@
       <!-- Complete Official Answer Key & Step-by-Step Solutions -->
       <div class="answer-key-section">
         <div class="answer-key-header">
-          <h2>Official Answer Key & Step-by-Step Solutions</h2>
+          <h2>Official Answer Key & NSU Model Solutions</h2>
           <p>Examine the full model solutions, stoichiometric derivations, and scoring criteria for all tasks.</p>
         </div>
 
@@ -413,7 +520,7 @@
 
   </main>
 
-  <!-- Proctoring Focus Violation Toast / Modal -->
+  <!-- Proctoring Focus Violation Alert Modal -->
   <div id="proctor-alert" class="proctor-alert" style="display: none;">
     <div class="proctor-alert-box">
       <h4>⚠️ Proctoring Warning: Window Focus Lost</h4>
@@ -425,7 +532,7 @@
   <!-- General Toast Notification -->
   <div id="toast" class="toast" role="alert" aria-live="assertive">Notification message</div>
 
-  <!-- Scripts -->
+  <!-- Core Scripts -->
   <script src="questions.js"></script>
   <script src="app.js"></script>
 </body>
