@@ -142,6 +142,10 @@
                 <span><strong>Stage 2 Full Set:</strong> 43 Tasks (100 Pts · 180 min)</span>
               </label>
               <label class="preset-option-label">
+                <input type="radio" name="practice-preset" value="marathon-90">
+                <span><strong>Full Marathon Drill:</strong> 90 Tasks (Practice All Topics · 180 min)</span>
+              </label>
+              <label class="preset-option-label">
                 <input type="radio" name="practice-preset" value="entry-drill">
                 <span><strong>Entry-Style Drill:</strong> 68 Rapid Basic MCQs (68 Pts · 60 min)</span>
               </label>
@@ -219,48 +223,44 @@
        ========================================================================= -->
   <div id="exam-view" class="view-container exam-view" style="display: none;">
     
-    <!-- Top Bar Header (Matches Screenshot: "od" logo, "Testing is underway: 00:22:50", "Task X of Y", Subject) -->
+    <!-- Top Bar Header (Matches Screenshot: Action Controls on Left, "Testing is underway: Task X of Y", "00:22:50", "od" Logo on Right) -->
     <header class="od-top-bar no-print">
       <div class="od-top-bar-inner">
         
-        <!-- Left: Open Doors Logo Badge + Live Timer -->
-        <div class="od-top-left">
-          <div class="od-logo-badge" title="Open Doors International Olympiad">
-            <span class="od-logo-o">o</span><span class="od-logo-d">d</span>
-          </div>
-          <div class="od-timer-meta" id="timer-box">
-            <span class="od-timer-label">Testing is underway:</span>
-            <span class="od-timer-clock" id="timer-display">02:59:50</span>
-          </div>
+        <!-- Left: Action Controls & Candidate Utilities -->
+        <div class="od-top-left-actions">
+          <button id="btn-exam-to-lobby" class="btn-top-action" title="Return to Lobby without losing progress">
+            🏠 Lobby
+          </button>
+          <button id="btn-toggle-calc" class="btn-top-action" title="Open Built-in Scientific Calculator & NSU Constants">
+            🧮 Tools & Tables
+          </button>
+          <button id="btn-finish-attempt" class="btn-top-finish" title="Finish current attempt and submit for automated grading">
+            Finish attempt...
+          </button>
+          <!-- Focus loss badge (only active in proctored mode) -->
+          <span id="focus-loss-badge" class="moodle-violation-badge" style="display: none;" title="Tab-switch focus losses detected">
+            <span class="violation-dot"></span> Violations: <strong id="focus-loss-count">0</strong>
+          </span>
         </div>
 
-        <!-- Center / Right: Task Counter, Subject Title & Action Controls -->
-        <div class="od-top-right">
-          <div class="od-task-info">
-            <div class="od-task-counter" id="task-counter-display">Task 1 of 43</div>
-            <div class="od-subject-title">
-              Earth and Environmental Sciences for Sustainability
+        <!-- Right: Authentic Open Doors Exam Header Block (Matches Screenshot) -->
+        <div class="od-top-exam-block" id="timer-box">
+          <div class="od-exam-meta-text">
+            <div class="od-meta-line-top">
+              <span class="od-timer-label">Testing is underway:</span>
+              <span class="od-task-counter" id="task-counter-display">Task 1 of 43</span>
+            </div>
+            <div class="od-meta-line-timer">
+              <span class="od-timer-clock" id="timer-display">02:59:50</span>
+            </div>
+            <div class="od-meta-line-subject">
+              <span class="od-subject-title">Earth and Environmental Sciences for Sustainability</span>
               <span id="exam-mode-badge" class="moodle-mode-pill" style="display: none;">Proctored Stage 2</span>
             </div>
           </div>
-
-          <div class="od-top-actions">
-            <!-- Focus loss badge (only active in proctored mode) -->
-            <span id="focus-loss-badge" class="moodle-violation-badge" style="display: none;" title="Tab-switch focus losses detected">
-              <span class="violation-dot"></span> Violations: <strong id="focus-loss-count">0</strong>
-            </span>
-
-            <button id="btn-toggle-calc" class="btn-top-action" title="Open Built-in Scientific Calculator & NSU Constants">
-              🧮 Tools & Tables
-            </button>
-
-            <button id="btn-exam-to-lobby" class="btn-top-action" title="Return to Lobby without losing progress">
-              🏠 Lobby
-            </button>
-
-            <button id="btn-finish-attempt" class="btn-top-finish" title="Finish current attempt and submit for automated grading">
-              Finish attempt...
-            </button>
+          <div class="od-logo-badge large-exam" title="Open Doors International Olympiad">
+            <span class="od-logo-o">o</span><span class="od-logo-d">d</span>
           </div>
         </div>
 

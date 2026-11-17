@@ -30,6 +30,14 @@
       targetField: 'all',
       durationMinutes: 180
     },
+    'marathon-90': {
+      id: 'marathon-90',
+      name: "Preset D — Full Training Marathon (90 Tasks · 180 min)",
+      quotas: { basic: 60, intermediate: 25, advanced: 5 },
+      filterMode: 'balanced',
+      targetField: 'all',
+      durationMinutes: 180
+    },
     'entry-drill': {
       id: 'entry-drill',
       name: "Preset B — Entry-Style Speed Drill (68 Basic Tasks · 68 Pts)",
@@ -557,23 +565,21 @@
 
   function updateTimerDisplay() {
     if (!DOM.timerDisplay) return;
-    const minutes = Math.floor(state.remainingSeconds / 60);
+    const hours = Math.floor(state.remainingSeconds / 3600);
+    const minutes = Math.floor((state.remainingSeconds % 3600) / 60);
     const seconds = state.remainingSeconds % 60;
-    const str = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+    const str = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
     DOM.timerDisplay.textContent = str;
 
     if (DOM.timerBox) {
       if (state.remainingSeconds <= 300) {
         DOM.timerBox.style.backgroundColor = '#fef2f2';
-        DOM.timerBox.style.borderColor = '#fca5a5';
         DOM.timerDisplay.style.color = '#dc2626';
       } else if (state.remainingSeconds <= 900) {
         DOM.timerBox.style.backgroundColor = '#fffbeb';
-        DOM.timerBox.style.borderColor = '#fde68a';
         DOM.timerDisplay.style.color = '#b45309';
       } else {
-        DOM.timerBox.style.backgroundColor = '#f8fafc';
-        DOM.timerBox.style.borderColor = '#cbd5e1';
+        DOM.timerBox.style.backgroundColor = 'transparent';
         DOM.timerDisplay.style.color = '#0f172a';
       }
     }
@@ -668,7 +674,10 @@
     const q = state.activeQuestions[state.currentIndex];
     if (!q) return;
 
-    // Header labels
+    // Header labels & Task Counter (e.g. Task 88 of 90)
+    if (DOM.taskCounterDisplay) {
+      DOM.taskCounterDisplay.textContent = `Task ${state.currentIndex + 1} of ${state.activeQuestions.length}`;
+    }
     if (DOM.taskNumberLabel) {
       DOM.taskNumberLabel.textContent = `Question ${state.currentIndex + 1}`;
     }

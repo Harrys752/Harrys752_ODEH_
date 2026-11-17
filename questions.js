@@ -1537,15 +1537,15 @@ const QUESTION_BANK = [
     "type": "single-choice",
     "points": 1,
     "title": "Geophysical Anomaly Contrasts in Mineral Prospecting",
-    "content": "<p>Why do subterranean halite salt domes ($\text{NaCl}$) characteristically manifest as pronounced local negative Bouguer gravity anomalies in regional gravity surveys?</p>",
+    "content": "<p>Why do subterranean halite salt domes ($\\text{NaCl}$) characteristically manifest as pronounced local negative Bouguer gravity anomalies in regional gravity surveys?</p>",
     "options": [
       "Halite absorbs all incoming seismic energy",
-      "Halite has a significantly lower bulk density ($\u0007pprox 2.16\text{ g/cm}^3$) than surrounding consolidated sedimentary rocks ($\u0007pprox 2.4 - 2.7\text{ g/cm}^3$)",
+      "Halite has a significantly lower bulk density ($\\approx 2.16\\text{ g/cm}^3$) than surrounding consolidated sedimentary rocks ($\\approx 2.4 - 2.7\\text{ g/cm}^3$)",
       "Halite exhibits extraordinary ferromagnetic susceptibility",
       "Halite rapidly dissolves in deep borehole drilling fluids"
     ],
-    "correctAnswer": "Halite has a significantly lower bulk density ($\u0007pprox 2.16\text{ g/cm}^3$) than surrounding consolidated sedimentary rocks ($\u0007pprox 2.4 - 2.7\text{ g/cm}^3$)",
-    "explanation": "Halite ($\text{NaCl}$) has an incompact crystal density of ~2.16 g/cm³ that does not significantly increase with burial depth. As surrounding sediments compact to 2.4–2.7 g/cm³, buoyant salt pierces upward into diapirs, creating a massive density deficit and strong negative gravity anomalies."
+    "correctAnswer": "Halite has a significantly lower bulk density ($\\approx 2.16\\text{ g/cm}^3$) than surrounding consolidated sedimentary rocks ($\\approx 2.4 - 2.7\\text{ g/cm}^3$)",
+    "explanation": "Halite ($\\text{NaCl}$) has an incompact crystal density of ~2.16 g/cm³ that does not significantly increase with burial depth. As surrounding sediments compact to 2.4–2.7 g/cm³, buoyant salt pierces upward into diapirs, creating a massive density deficit and strong negative gravity anomalies."
   },
   {
     "id": "GCH-B-11",
@@ -1562,7 +1562,7 @@ const QUESTION_BANK = [
       "Siemens per meter ($\\text{S/m}$)"
     ],
     "correctAnswer": "Henry per meter ($\\text{H/m}$)",
-    "explanation": "Magnetic permeability $\\mu$ is expressed in Henry per meter ($\text{H/m}$ or $\text{N/A}^2$). Tesla ($\text{T}$) is the unit of magnetic flux density $B$, Ohm-meter ($\\Omega\\cdot\text{m}$) is electrical resistivity, and Siemens per meter ($\text{S/m}$) is electrical conductivity."
+    "explanation": "Magnetic permeability $\\mu$ is expressed in Henry per meter ($\\text{H/m}$ or $\\text{N/A}^2$). Tesla ($\\text{T}$) is the unit of magnetic flux density $B$, Ohm-meter ($\\Omega\\cdot\\text{m}$) is electrical resistivity, and Siemens per meter ($\\text{S/m}$) is electrical conductivity."
   },
   {
     "id": "GEO-B-09",
@@ -1681,7 +1681,7 @@ const QUESTION_BANK = [
       "Malachite ($\\text{Cu}_2\\text{CO}_3(\\text{OH})_2$)"
     ],
     "correctAnswer": "Magnesite ($\\text{MgCO}_3$)",
-    "explanation": "Magnesite ($\text{MgCO}_3$, containing 47.8% MgO) and dolomite ($\text{CaMg(CO}_3)_2$) are the primary natural carbonate ores mined for magnesium metal production and high-temperature refractory furnace bricks."
+    "explanation": "Magnesite ($\\text{MgCO}_3$, containing 47.8% MgO) and dolomite ($\\text{CaMg(CO}_3)_2$) are the primary natural carbonate ores mined for magnesium metal production and high-temperature refractory furnace bricks."
   },
   {
     "id": "MIN-B-09",
@@ -1724,14 +1724,14 @@ const QUESTION_BANK = [
     "type": "single-choice",
     "points": 1,
     "title": "Hydrogeochemical Iron Oxidation and Ochre Precipitation",
-    "content": "<p>Deep anoxic groundwater containing dissolved ferrous iron ($\text{Fe}^{2+}$) is discharged from a spring into an oxygenated surface stream. What geochemical reaction occurs, causing rusty-orange ochre deposits?</p>",
+    "content": "<p>Deep anoxic groundwater containing dissolved ferrous iron ($\\text{Fe}^{2+}$) is discharged from a spring into an oxygenated surface stream. What geochemical reaction occurs, causing rusty-orange ochre deposits?</p>",
     "options": [
       "Ferrous iron reduces to elemental metallic iron",
-      "Ferrous iron ($\text{Fe}^{2+}$) is oxidized by dissolved oxygen to ferric iron ($\text{Fe}^{3+}$), precipitating insoluble ferric oxyhydroxides ($\text{Fe(OH)}_3$ / ferrihydrite)",
+      "Ferrous iron ($\\text{Fe}^{2+}$) is oxidized by dissolved oxygen to ferric iron ($\\text{Fe}^{3+}$), precipitating insoluble ferric oxyhydroxides ($\\text{Fe(OH)}_3$ / ferrihydrite)",
       "Iron complexes with chloride to form volatile ferric gas",
       "Iron dissolves completely, increasing water clarity"
     ],
-    "correctAnswer": "Ferrous iron ($\text{Fe}^{2+}$) is oxidized by dissolved oxygen to ferric iron ($\text{Fe}^{3+}$), precipitating insoluble ferric oxyhydroxides ($\text{Fe(OH)}_3$ / ferrihydrite)",
+    "correctAnswer": "Ferrous iron ($\\text{Fe}^{2+}$) is oxidized by dissolved oxygen to ferric iron ($\\text{Fe}^{3+}$), precipitating insoluble ferric oxyhydroxides ($\\text{Fe(OH)}_3$ / ferrihydrite)",
     "explanation": "Upon exposure to oxygen: $4\\text{Fe}^{2+} + \\text{O}_2 + 10\\text{H}_2\\text{O} \\longrightarrow 4\\text{Fe(OH)}_3\\downarrow + 8\\text{H}^+$. The ferric iron hydrolyzes rapidly at neutral pH to form amorphous ferric hydroxide (ochre), producing characteristic orange staining."
   },
   {
@@ -1741,15 +1741,15 @@ const QUESTION_BANK = [
     "type": "single-choice",
     "points": 1,
     "title": "Natural Rainwater Carbonate Equilibrium",
-    "content": "<p>Even in an unpolluted, pristine atmosphere, natural precipitation is slightly acidic ($\text{pH} \\approx 5.6$) rather than strictly neutral ($\text{pH} = 7.0$). Which naturally occurring atmospheric gas is responsible?</p>",
+    "content": "<p>Even in an unpolluted, pristine atmosphere, natural precipitation is slightly acidic ($\\text{pH} \\approx 5.6$) rather than strictly neutral ($\\text{pH} = 7.0$). Which naturally occurring atmospheric gas is responsible?</p>",
     "options": [
-      "Methane ($\text{CH}_4$)",
-      "Carbon dioxide ($\text{CO}_2$), which dissolves to form weak carbonic acid ($\text{H}_2\\text{CO}_3$)",
-      "Diatomic Argon ($\text{Ar}$)",
-      "Sulfur hexafluoride ($\text{SF}_6$)"
+      "Methane ($\\text{CH}_4$)",
+      "Carbon dioxide ($\\text{CO}_2$), which dissolves to form weak carbonic acid ($\\text{H}_2\\text{CO}_3$)",
+      "Diatomic Argon ($\\text{Ar}$)",
+      "Sulfur hexafluoride ($\\text{SF}_6$)"
     ],
-    "correctAnswer": "Carbon dioxide ($\text{CO}_2$), which dissolves to form weak carbonic acid ($\text{H}_2\\text{CO}_3$)",
-    "explanation": "Atmospheric $\text{CO}_2$ dissolves in water droplets according to Henry's law and dissociates: $\\text{CO}_{2(aq)} + \\text{H}_2\\text{O} \\rightleftharpoons \\text{H}_2\\text{CO}_3 \\rightleftharpoons \\text{H}^+ + \\text{HCO}_3^-$. At ambient ~420 ppm $\text{CO}_2$, this equilibrium yields a natural rainwater pH of ~5.6."
+    "correctAnswer": "Carbon dioxide ($\\text{CO}_2$), which dissolves to form weak carbonic acid ($\\text{H}_2\\text{CO}_3$)",
+    "explanation": "Atmospheric $\\text{CO}_2$ dissolves in water droplets according to Henry's law and dissociates: $\\text{CO}_{2(aq)} + \\text{H}_2\\text{O} \\rightleftharpoons \\text{H}_2\\text{CO}_3 \\rightleftharpoons \\text{H}^+ + \\text{HCO}_3^-$. At ambient ~420 ppm $\\text{CO}_2$, this equilibrium yields a natural rainwater pH of ~5.6."
   },
   {
     "id": "ENV-B-10",
@@ -1758,15 +1758,15 @@ const QUESTION_BANK = [
     "type": "single-choice",
     "points": 1,
     "title": "Carcinogenic and Highly Toxic Trace Metal Contaminants",
-    "content": "<p>Which transition metal, widely used in industrial chrome plating and leather tanning, is recognized by the IARC as a Group 1 human inhalation carcinogen specifically in its hexavalent oxo-anion form ($\text{CrO}_4^{2-}$ / $\text{Cr(VI)}$)?</p>",
+    "content": "<p>Which transition metal, widely used in industrial chrome plating and leather tanning, is recognized by the IARC as a Group 1 human inhalation carcinogen specifically in its hexavalent oxo-anion form ($\\text{CrO}_4^{2-}$ / $\\text{Cr(VI)}$)?</p>",
     "options": [
-      "Magnesium ($\text{Mg}$)",
-      "Chromium ($\text{Cr}$)",
-      "Calcium ($\text{Ca}$)",
-      "Potassium ($\text{K}$)"
+      "Magnesium ($\\text{Mg}$)",
+      "Chromium ($\\text{Cr}$)",
+      "Calcium ($\\text{Ca}$)",
+      "Potassium ($\\text{K}$)"
     ],
-    "correctAnswer": "Chromium ($\text{Cr}$)",
-    "explanation": "While trivalent chromium ($\text{Cr(III)}$) is a stable trace nutrient, hexavalent chromium ($\text{Cr(VI)}$) readily crosses cellular sulfate channels via molecular mimicry and undergoes intracellular reduction, generating reactive oxygen species and fatal DNA crosslinks."
+    "correctAnswer": "Chromium ($\\text{Cr}$)",
+    "explanation": "While trivalent chromium ($\\text{Cr(III)}$) is a stable trace nutrient, hexavalent chromium ($\\text{Cr(VI)}$) readily crosses cellular sulfate channels via molecular mimicry and undergoes intracellular reduction, generating reactive oxygen species and fatal DNA crosslinks."
   },
   {
     "id": "GCH-B-13",
@@ -2061,6 +2061,23 @@ const QUESTION_BANK = [
       "308.00"
     ],
     "modelSolution": "Solution method:\n1. Recoverable masses:\n$$m_{\\text{Au,rec}} = 5.00 \\times 0.90 = 4.50\\text{ g/t}$$\n$$m_{\\text{Ag,rec}} = 50.00 \\times 0.80 = 40.00\\text{ g/t}$$\n\n2. Payable masses:\n$$m_{\\text{Au,payable}} = 4.50 \\times 0.96 = 4.32\\text{ g/t}$$\n$$m_{\\text{Ag,payable}} = 40.00 \\times 0.90 = 36.00\\text{ g/t}$$\n\n3. Gross revenue:\n$$R_{\\text{Au}} = 4.32 \\times 70.00 = 302.40\\text{ USD/t}$$\n$$R_{\\text{Ag}} = 36.00 \\times 0.85 = 30.60\\text{ USD/t}$$\n$$R_{\\text{gross}} = 302.40 + 30.60 = 333.00\\text{ USD/t}$$\n\n4. Deductions:\n$$C_{\\text{deductions}} = 20.00 + 5.00 = 25.00\\text{ USD/t}$$\n\n5. Net Smelter Return (NSR):\n$$\\text{NSR} = 333.00 - 25.00 = 308.00\\text{ USD/t}$$\n\nAnswer: $308.00\\text{ USD/t}$\n\nAssessment criteria:\n- Criterion 1: Recoverable metal masses — 0–2 points.\n- Criterion 2: Payable revenues for each metal — 0–4 points.\n- Criterion 3: Gross revenue and deductions — 0–2 points.\n- Criterion 4: Final Net Smelter Return and rounding — 0–2 points."
+  },
+  {
+    "id": "MET-B-12",
+    "field": "Meteorology & atmospheric sciences",
+    "difficulty": "basic",
+    "points": 1,
+    "type": "single-choice",
+    "title": "Monthly Precipitation Proportion of Annual Norm",
+    "content": "<p>At an observation site, 800 mm of precipitation fell during the year. In July, 120 mm fell. Which percentage of the annual norm falls in July?</p>",
+    "options": [
+      "12%",
+      "15%",
+      "18%",
+      "20%"
+    ],
+    "correctAnswer": "15%",
+    "explanation": "The percentage of the annual norm falling in July is calculated as: $\\\\frac{120\\\\text{ mm}}{800\\\\text{ mm}} \\\\times 100\\\\% = 15\\\\%$. In temperate continental and monsoon climates, summer precipitation often represents a distinct peak of the annual hydrometeorological norm."
   }
 ];
 
