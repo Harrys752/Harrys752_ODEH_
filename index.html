@@ -340,7 +340,98 @@
   </div>
 
   <!-- =========================================================================
-       VIEW 3: POST-SUBMISSION EVALUATION & DETAILED REVIEW
+       STAGE 3: POST-PROCTORING FILE UPLOAD VIEW (od.globaluni.ru MATCHING UI)
+       ========================================================================= -->
+  <div id="upload-view" class="view-container upload-view" style="display: none;">
+    <div class="upload-container">
+      
+      <!-- Top Green Banner: Proctoring Concluded & 10:00 Countdown -->
+      <div class="proctoring-ended-banner">
+        <div class="banner-left">
+          <div class="banner-shield-icon">🛡️✓</div>
+          <div class="banner-text">
+            <h3>Proctoring Session Ended — Tab-Switch Monitoring is OFF</h3>
+            <p>
+              As per <strong>Articles 14 & 14.1</strong> of the 2026 Open Doors Rules, proctoring sensors are now deactivated. 
+              You may freely switch windows or use your mobile device to transfer and upload photographs of your handwritten solution sheets (PNG, JPG, JPEG, PDF, max 5 MB).
+            </p>
+          </div>
+        </div>
+        <div class="banner-timer-box">
+          <span class="banner-timer-label">Upload Window Closes In:</span>
+          <span class="banner-timer-digits" id="upload-timer-display">10:00</span>
+        </div>
+      </div>
+
+      <!-- Question Filter Bar (od.globaluni.ru Replication) -->
+      <div class="upload-filter-card">
+        <div class="filter-header-row">
+          <span class="filter-title">Question filter</span>
+          <span id="upload-filter-stats" class="filter-stats">Showing eligible tasks</span>
+        </div>
+        <div class="filter-checkboxes-row">
+          <label class="filter-checkbox-label">
+            <input type="checkbox" id="chk-filter-uploads-only" checked>
+            <span>Only questions with file uploads</span>
+          </label>
+          <label class="filter-checkbox-label">
+            <input type="checkbox" id="chk-filter-answered-only" checked>
+            <span>Only answered questions</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- AI Vision Verification Config Bar (Optional Gemini Key) -->
+      <div class="ai-vision-bar">
+        <div class="ai-bar-info">
+          <span class="ai-badge">🤖 AI VISION EXAMINER</span>
+          <span class="ai-desc">Automated criterion-by-criterion grading (gemini-2.5-flash) for handwritten derivations</span>
+        </div>
+        <div class="ai-bar-input-group">
+          <input type="password" id="upload-gemini-key" class="ai-key-input" placeholder="Google Gemini API Key (stored in localStorage)...">
+          <button id="btn-save-upload-key" class="btn btn-sm btn-outline-primary">Save Key</button>
+        </div>
+      </div>
+
+      <!-- Upload Task Cards Container (Injected via JS) -->
+      <div id="upload-tasks-container" class="upload-tasks-container">
+        <!-- Injected dynamically via renderUploadTasks() -->
+      </div>
+
+      <!-- Bottom Action Bar (Matches od.globaluni.ru) -->
+      <div class="upload-bottom-actions no-print">
+        <div class="upload-action-left">
+          <button id="btn-complete-upload" class="btn btn-primary btn-complete-upload">
+            ✓ Complete
+          </button>
+        </div>
+        <div class="upload-action-right">
+          <button id="btn-skip-upload" class="link-skip-upload">
+            Skip Upload & View Score →
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- AI Vision Grading Overlay Modal -->
+  <div id="ai-grading-overlay" class="modal-backdrop no-print" style="display: none;">
+    <div class="modal-card ai-grading-card">
+      <div class="ai-loading-spinner"></div>
+      <h3 class="ai-loading-title">Verifying Handwritten Sheets with AI Vision...</h3>
+      <p class="ai-loading-desc" id="ai-loading-desc">
+        Analyzing mathematical derivations, chemical formulas, and solar elevation equations with <code>gemini-2.5-flash</code> against NSU Olympiad rubrics.
+      </p>
+      <div class="ai-progress-bar-wrap">
+        <div class="ai-progress-bar" id="ai-progress-bar" style="width: 40%;"></div>
+      </div>
+      <span class="ai-progress-status" id="ai-progress-status">Evaluating Task...</span>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       VIEW 4: POST-SUBMISSION EVALUATION & DETAILED REVIEW
        ========================================================================= -->
   <div id="review-view" class="view-container review-view" style="display: none;">
     <div class="review-container">
