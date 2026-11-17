@@ -92,6 +92,7 @@
     practiceTargetField: document.getElementById('practice-target-field'),
 
     // Exam Header & Proctoring
+    taskCounterDisplay: document.getElementById('task-counter-display'),
     examModeBadge: document.getElementById('exam-mode-badge'),
     timerBox: document.getElementById('timer-box'),
     timerDisplay: document.getElementById('timer-display'),
@@ -838,10 +839,10 @@
 
     if (isDirty) {
       DOM.btnSaveAnswer.disabled = false;
-      DOM.btnSaveAnswer.className = 'btn-moodle-save active-dirty';
+      DOM.btnSaveAnswer.className = 'btn-od-save active-dirty';
     } else {
       DOM.btnSaveAnswer.disabled = true;
-      DOM.btnSaveAnswer.className = 'btn-moodle-save untouched';
+      DOM.btnSaveAnswer.className = 'btn-od-save untouched';
     }
   }
 

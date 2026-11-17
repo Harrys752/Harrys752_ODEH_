@@ -49,11 +49,18 @@
   <div id="lobby-view" class="view-container lobby-view">
     <div class="lobby-container">
       
-      <!-- Top Eyebrow & Main Title -->
+      <!-- Top Eyebrow & Brand Header with Open Doors Badge -->
       <div class="lobby-header-bar">
-        <div class="lobby-eyebrow">PROCTORING SESSION</div>
-        <h1 class="lobby-main-title">Open Doors. Second stage</h1>
-        <p class="lobby-sub-title">Russian Scholarship Project · Association of Global Universities</p>
+        <div class="lobby-brand-row">
+          <div class="od-logo-badge large" title="Open Doors International Olympiad">
+            <span class="od-logo-o">o</span><span class="od-logo-d">d</span>
+          </div>
+          <div class="lobby-brand-text">
+            <div class="lobby-eyebrow">PROCTORING SESSION</div>
+            <h1 class="lobby-main-title">Open Doors. Second stage</h1>
+          </div>
+        </div>
+        <p class="lobby-sub-title">Russian Scholarship Project · Earth and Environmental Sciences for Sustainability (Bachelor's • NSU)</p>
       </div>
 
       <!-- Candidate & Exam Session Registration Card -->
@@ -208,110 +215,118 @@
   </div>
 
   <!-- =========================================================================
-       VIEW 2: AUTHENTIC OPENEDU / MOODLE EXAM VIEWPORT (MINIMALIST & CLEAN)
+       VIEW 2: AUTHENTIC OPENEDU / MOODLE EXAM VIEWPORT (MATCHES SCREENSHOT)
        ========================================================================= -->
   <div id="exam-view" class="view-container exam-view" style="display: none;">
     
-    <!-- Minimalist Top Bar (Subtle, Clean & Non-Bulky) -->
-    <header class="moodle-header-bar no-print">
-      <div class="moodle-header-container">
+    <!-- Top Bar Header (Matches Screenshot: "od" logo, "Testing is underway: 00:22:50", "Task X of Y", Subject) -->
+    <header class="od-top-bar no-print">
+      <div class="od-top-bar-inner">
         
-        <!-- Left: Exam Title & Mode Badge -->
-        <div class="moodle-brand-group">
-          <span class="moodle-brand-title">Open Doors · Earth & Environmental Sciences</span>
-          <span id="exam-mode-badge" class="moodle-mode-pill">Proctored Stage 2</span>
+        <!-- Left: Open Doors Logo Badge + Live Timer -->
+        <div class="od-top-left">
+          <div class="od-logo-badge" title="Open Doors International Olympiad">
+            <span class="od-logo-o">o</span><span class="od-logo-d">d</span>
+          </div>
+          <div class="od-timer-meta" id="timer-box">
+            <span class="od-timer-label">Testing is underway:</span>
+            <span class="od-timer-clock" id="timer-display">02:59:50</span>
+          </div>
         </div>
 
-        <!-- Center: Live Compact Timer -->
-        <div class="moodle-timer-wrap" id="timer-box" title="Remaining Examination Time">
-          <span class="moodle-timer-icon">⏱️</span>
-          <span class="moodle-timer-text">Time remaining:</span>
-          <span class="moodle-timer-digits" id="timer-display">180:00</span>
-        </div>
+        <!-- Center / Right: Task Counter, Subject Title & Action Controls -->
+        <div class="od-top-right">
+          <div class="od-task-info">
+            <div class="od-task-counter" id="task-counter-display">Task 1 of 43</div>
+            <div class="od-subject-title">
+              Earth and Environmental Sciences for Sustainability
+              <span id="exam-mode-badge" class="moodle-mode-pill" style="display: none;">Proctored Stage 2</span>
+            </div>
+          </div>
 
-        <!-- Right: Actions & Tools -->
-        <div class="moodle-actions-group">
-          <!-- Proctoring Focus Loss Badge (Only active in Proctored Mode) -->
-          <span id="focus-loss-badge" class="moodle-violation-badge" style="display: none;" title="Tab-switch focus losses detected">
-            <span class="violation-dot"></span> Focus Violations: <strong id="focus-loss-count">0</strong>
-          </span>
+          <div class="od-top-actions">
+            <!-- Focus loss badge (only active in proctored mode) -->
+            <span id="focus-loss-badge" class="moodle-violation-badge" style="display: none;" title="Tab-switch focus losses detected">
+              <span class="violation-dot"></span> Violations: <strong id="focus-loss-count">0</strong>
+            </span>
 
-          <button id="btn-toggle-calc" class="btn-moodle-action" title="Open Built-in Scientific Calculator & NSU Constants">
-            🧮 Tools & Tables
-          </button>
+            <button id="btn-toggle-calc" class="btn-top-action" title="Open Built-in Scientific Calculator & NSU Constants">
+              🧮 Tools & Tables
+            </button>
 
-          <button id="btn-exam-to-lobby" class="btn-moodle-action" title="Pause and return to Lobby without losing progress">
-            🏠 Return to Lobby
-          </button>
+            <button id="btn-exam-to-lobby" class="btn-top-action" title="Return to Lobby without losing progress">
+              🏠 Lobby
+            </button>
 
-          <button id="btn-finish-attempt" class="btn-moodle-finish" title="Finish current attempt and submit for automated grading">
-            Finish attempt...
-          </button>
+            <button id="btn-finish-attempt" class="btn-top-finish" title="Finish current attempt and submit for automated grading">
+              Finish attempt...
+            </button>
+          </div>
         </div>
 
       </div>
     </header>
 
     <!-- Main Exam Canvas -->
-    <main class="moodle-exam-canvas">
+    <main class="od-exam-canvas">
       
-      <!-- Top Horizontal Question Navigation Matrix (28px x 28px Squares) -->
-      <section class="moodle-matrix-section no-print">
-        <div class="moodle-matrix-wrapper">
-          <div id="question-nav-matrix" class="moodle-tile-matrix">
-            <!-- Tightly packed 28px x 28px square tiles injected dynamically via JS -->
+      <!-- Top Question Navigation Matrix (24px x 24px Squares, Rows of 30 Tiles) -->
+      <section class="od-matrix-section no-print">
+        <div class="od-matrix-container">
+          <div id="question-nav-matrix" class="od-tile-matrix">
+            <!-- Numbered square tiles 1..N injected dynamically via JS -->
           </div>
         </div>
       </section>
 
       <!-- Single-Question White Card (860px Centered) -->
-      <section class="moodle-card-section">
-        <div class="moodle-question-card">
+      <section class="od-card-section">
+        <div class="od-question-card">
           
-          <!-- Card Header & Metadata -->
-          <div class="moodle-card-header">
-            <div class="moodle-card-meta">
-              <span class="moodle-q-num" id="task-number-label">Question 1</span>
-              <span class="moodle-pill-field" id="task-discipline-pill">Field of Science</span>
-              <span class="moodle-pill-pts" id="task-points-pill">1 Point</span>
+          <!-- Card Sub-Header: Flag Toggle & Save Status -->
+          <div class="od-card-top-row">
+            <div class="od-meta-tags">
+              <span id="task-number-label" style="display: none;">Question 1</span>
+              <span class="od-tag-field" id="task-discipline-pill">Geography, physical</span>
+              <span class="od-tag-pts" id="task-points-pill">1 Point</span>
             </div>
             
-            <div class="moodle-card-flag-wrap">
-              <button id="btn-toggle-flag" class="btn-moodle-flag" title="Flag or unflag this question">
+            <div class="od-card-actions">
+              <button id="btn-toggle-flag" class="btn-card-flag" title="Flag or unflag this question">
                 <span id="flag-icon">⚑</span> <span id="flag-text">Flag question</span>
               </button>
-              <span class="moodle-save-indicator" id="task-save-indicator">Not answered yet</span>
+              <span class="od-save-status" id="task-save-indicator">Not answered yet</span>
             </div>
           </div>
 
           <!-- Question Stem & Content -->
-          <div class="moodle-card-content">
-            <h3 class="moodle-task-title" id="task-title-text" style="display: none;"></h3>
-            <div class="moodle-task-stem" id="task-stem-text">
+          <div class="od-card-content">
+            <h3 id="task-title-text" style="display: none;"></h3>
+            <div class="od-task-stem" id="task-stem-text">
               <!-- Rendered task stem HTML -->
             </div>
           </div>
 
-          <!-- Thin Horizontal Divider Line (1px solid #e5e7eb) -->
-          <hr class="moodle-stem-divider">
+          <!-- Thin Horizontal Divider Line (1px solid #edf0f4) -->
+          <hr class="od-stem-divider">
 
-          <!-- Answer Options Zone -->
-          <div class="moodle-answer-zone" id="task-answer-zone">
-            <!-- Circular radio buttons, checkboxes, or calculation inputs -->
+          <!-- Answer Options Zone (Circular Radio Buttons with 12px Spacing) -->
+          <div class="od-answer-zone" id="task-answer-zone">
+            <!-- Rendered via JS -->
           </div>
 
           <!-- Card Footer: Save Answer (Left) and Previous/Next (Right) -->
-          <div class="moodle-card-footer no-print">
+          <div class="od-card-footer no-print">
             <div class="footer-left">
-              <button id="btn-save-answer" class="btn-moodle-save" disabled>
+              <button id="btn-save-answer" class="btn-od-save" disabled>
                 Save answer
               </button>
             </div>
             <div class="footer-right">
-              <button id="btn-prev-task" class="btn-moodle-nav">
+              <button id="btn-prev-task" class="btn-od-nav">
                 ◀ Previous
               </button>
-              <button id="btn-next-task" class="btn-moodle-nav">
+              <button id="btn-next-task" class="btn-od-nav">
                 Next ▶
               </button>
             </div>
@@ -668,7 +683,7 @@
         <div class="finish-summary-box">
           <div>Answered Tasks: <strong id="finish-answered-count">0</strong> / <strong id="finish-total-count">43</strong></div>
           <div>Unanswered Tasks: <strong id="finish-unanswered-count">43</strong></div>
-          <div>Time Remaining: <strong id="finish-time-left">180:00</strong></div>
+          <div>Time Remaining: <strong id="finish-time-left">02:59:50</strong></div>
         </div>
         <p class="finish-warning">Once submitted, you will not be able to change your answers for this attempt.</p>
       </div>

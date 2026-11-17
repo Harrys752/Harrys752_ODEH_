@@ -1,6 +1,6 @@
 /* ==============================================================================
    Open Doors Olympiad: Earth & Environmental Sciences for Sustainability
-   Novosibirsk State University (NSU) & Moodle/OpenEdu Official Stylesheet
+   Novosibirsk State University (NSU) & Official OpenEdu Exam Stylesheet
    ============================================================================== */
 
 :root {
@@ -8,36 +8,36 @@
   --font-serif: 'Cinzel', Georgia, serif;
   --font-mono: 'JetBrains Mono', Consolas, monospace;
 
-  /* Authentic OpenEdu / Moodle Palette (Matching Live Reference Photos) */
+  /* Authentic Open Doors / Moodle Palette (Matching Live Reference Photos) */
   --color-page-bg: #f3f5f8;          /* Light clean academic gray background */
   --color-card-bg: #ffffff;          /* Pure white task cards */
   
-  --color-tile-active: #d32f2f;      /* Active Tile: Solid Crimson Red #d32f2f */
-  --color-tile-saved: #1967d2;       /* Saved Tile: Moodle Royal Blue #1967d2 */
-  --color-tile-pending: #e2e8f0;     /* Unanswered Tile: Cool Neutral Gray #e2e8f0 */
+  --color-tile-active: #dc2626;      /* Active Tile: Solid Crimson Red #dc2626 */
+  --color-tile-saved: #1d68b8;       /* Saved Tile: OpenEdu Royal Blue #1d68b8 */
+  --color-tile-pending: #cbd5e1;     /* Unanswered Tile: Cool Neutral Gray #cbd5e1 */
   --color-tile-flag: #f59e0b;        /* Flagged corner indicator (Amber) */
 
-  --color-primary: #1967d2;          /* OpenEdu Primary Blue */
+  --color-primary: #1d68b8;          /* Open Doors Primary Blue */
   --color-primary-hover: #155294;
   --color-text-main: #1e293b;        /* Clean body text */
   --color-text-muted: #64748b;
-  --color-border: #dce1e7;          /* Moodle card border #dce1e7 */
+  --color-border: #dce1e7;          /* Card border #dce1e7 */
   --color-border-dark: #cbd5e1;
-  --color-divider: #e5e7eb;
+  --color-divider: #edf0f4;
 
   --color-success: #15803d;
   --color-success-bg: #f0fdf4;
-  --color-danger: #d32f2f;
+  --color-danger: #dc2626;
   --color-danger-bg: #fef2f2;
   --color-warning: #b45309;
   --color-warning-bg: #fffbeb;
 
-  --radius-sm: 3px;
+  --radius-sm: 3.5px;
   --radius-md: 4px;
   --radius-lg: 6px;
   
-  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.04);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.06);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.03);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
   --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08);
 }
 
@@ -75,7 +75,7 @@ body.app-body {
 .btn-primary {
   background-color: var(--color-primary);
   color: #ffffff;
-  border-color: #1557b0;
+  border-color: #16569c;
 }
 .btn-primary:hover {
   background-color: var(--color-primary-hover);
@@ -130,7 +130,7 @@ body.app-body {
   color: #ffffff;
 }
 .btn-danger:hover {
-  background-color: #b71c1c;
+  background-color: #b91c1c;
 }
 
 .btn-success {
@@ -151,7 +151,43 @@ body.app-body {
 }
 
 /* ==============================================================================
-   VIEW 1: PROCTORING PORTAL & EXAM LOBBY
+   OPEN DOORS "OD" ICON BADGE
+   ============================================================================== */
+.od-logo-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background: #ffffff;
+  border: 1.5px solid #dce1e7;
+  border-radius: 6px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  font-family: var(--font-sans);
+  font-weight: 800;
+  font-size: 18px;
+  line-height: 1;
+  letter-spacing: -1px;
+  user-select: none;
+}
+
+.od-logo-o {
+  color: #ef4444;
+}
+
+.od-logo-d {
+  color: #1d4ed8;
+}
+
+.od-logo-badge.large {
+  width: 44px;
+  height: 44px;
+  font-size: 24px;
+  border-radius: 8px;
+}
+
+/* ==============================================================================
+   VIEW 1: PROCTORING PORTAL & EXAM LOBBY (BERANDA)
    ============================================================================== */
 .lobby-view {
   min-height: 100vh;
@@ -168,13 +204,21 @@ body.app-body {
   margin-bottom: 1.5rem;
 }
 
+.lobby-brand-row {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  margin-bottom: 0.5rem;
+}
+
 .lobby-eyebrow {
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   font-weight: 700;
   letter-spacing: 0.12em;
   color: #64748b;
   text-transform: uppercase;
-  margin-bottom: 0.35rem;
+  line-height: 1;
+  margin-bottom: 0.2rem;
 }
 
 .lobby-main-title {
@@ -182,12 +226,13 @@ body.app-body {
   font-weight: 700;
   color: #0f172a;
   letter-spacing: -0.02em;
-  margin-bottom: 0.25rem;
+  line-height: 1.15;
 }
 
 .lobby-sub-title {
   font-size: 0.95rem;
   color: #64748b;
+  padding-left: 54px;
 }
 
 /* Candidate Card */
@@ -451,25 +496,25 @@ body.app-body {
 }
 
 /* ==============================================================================
-   VIEW 2: AUTHENTIC OPENEDU / MOODLE EXAM VIEWPORT (MINIMALIST & CLEAN)
+   VIEW 2: AUTHENTIC OPENEDU / MOODLE EXAM VIEWPORT (MATCHING USER SCREENSHOT)
    ============================================================================== */
 .exam-view {
   min-height: 100vh;
   background-color: var(--color-page-bg);
 }
 
-/* Minimalist Moodle Top Bar */
-.moodle-header-bar {
+/* Top Bar: White, subtle bottom border, left logo & timer, right task info & tools */
+.od-top-bar {
   background-color: #ffffff;
-  border-bottom: 1px solid var(--color-divider);
-  padding: 0.5rem 1.5rem;
+  border-bottom: 1px solid var(--color-border);
+  padding: 0.45rem 1.5rem;
   position: sticky;
   top: 0;
   z-index: 90;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
 }
 
-.moodle-header-container {
+.od-top-bar-inner {
   max-width: 1200px;
   margin: 0 auto;
   display: flex;
@@ -479,62 +524,66 @@ body.app-body {
   gap: 0.75rem;
 }
 
-.moodle-brand-group {
+.od-top-left {
   display: flex;
   align-items: center;
-  gap: 0.65rem;
+  gap: 0.75rem;
 }
 
-.moodle-brand-title {
-  font-size: 0.92rem;
-  font-weight: 600;
-  color: #0f172a;
+.od-timer-meta {
+  display: flex;
+  flex-direction: column;
 }
 
-.moodle-mode-pill {
-  font-size: 0.7rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  padding: 0.15rem 0.45rem;
-  border-radius: var(--radius-sm);
-  background-color: #eff6ff;
-  color: var(--color-primary);
-  border: 1px solid #bfdbfe;
-}
-
-/* Compact Timer */
-.moodle-timer-wrap {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  background: #f8fafc;
-  border: 1px solid var(--color-border-dark);
-  border-radius: var(--radius-sm);
-  padding: 0.25rem 0.75rem;
-}
-
-.moodle-timer-icon {
-  font-size: 0.9rem;
-}
-
-.moodle-timer-text {
-  font-size: 0.78rem;
+.od-timer-label {
+  font-size: 0.72rem;
   color: #64748b;
+  font-weight: 500;
+  line-height: 1.1;
 }
 
-.moodle-timer-digits {
+.od-timer-clock {
   font-family: var(--font-mono);
-  font-size: 0.95rem;
+  font-size: 1.15rem;
   font-weight: 700;
   color: #0f172a;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.04em;
+  line-height: 1.2;
+  margin-top: 1px;
 }
 
-/* Actions Group */
-.moodle-actions-group {
+.od-top-right {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 1.25rem;
+  flex-wrap: wrap;
+}
+
+.od-task-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  text-align: right;
+}
+
+.od-task-counter {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #0f172a;
+  line-height: 1.2;
+}
+
+.od-subject-title {
+  font-size: 0.75rem;
+  color: #475569;
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+.od-top-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
 }
 
 .moodle-violation-badge {
@@ -557,69 +606,69 @@ body.app-body {
   border-radius: 50%;
 }
 
-.btn-moodle-action {
+.btn-top-action {
   background: #ffffff;
   border: 1px solid var(--color-border-dark);
   color: #334155;
   font-family: var(--font-sans);
   font-size: 0.8rem;
   font-weight: 600;
-  padding: 0.3rem 0.65rem;
+  padding: 0.32rem 0.65rem;
   border-radius: var(--radius-sm);
   cursor: pointer;
   transition: all 0.15s ease;
 }
 
-.btn-moodle-action:hover {
+.btn-top-action:hover {
   background: #f1f5f9;
 }
 
-.btn-moodle-finish {
+.btn-top-finish {
   background: transparent;
   border: 1px solid #cbd5e1;
   color: var(--color-danger);
   font-family: var(--font-sans);
   font-size: 0.8rem;
   font-weight: 600;
-  padding: 0.3rem 0.75rem;
+  padding: 0.32rem 0.75rem;
   border-radius: var(--radius-sm);
   cursor: pointer;
   transition: all 0.15s ease;
 }
 
-.btn-moodle-finish:hover {
+.btn-top-finish:hover {
   background-color: var(--color-danger-bg);
   border-color: #fca5a5;
 }
 
 /* ==============================================================================
-   TOP QUESTION NAVIGATION MATRIX (28px x 28px Squares Matching Screenshots)
+   QUESTION NAVIGATION MATRIX (25px x 23px Squares, 30 per row in Screenshot)
    ============================================================================== */
-.moodle-matrix-section {
-  padding: 1.25rem 1rem 0.5rem 1rem;
+.od-matrix-section {
+  padding: 1.1rem 1rem 0.4rem 1rem;
 }
 
-.moodle-matrix-wrapper {
+.od-matrix-container {
   max-width: 860px;
   margin: 0 auto;
 }
 
-.moodle-tile-matrix {
+.od-tile-matrix {
   display: flex;
   flex-wrap: wrap;
-  gap: 4px;
+  gap: 3.5px;
   justify-content: flex-start;
   align-items: center;
 }
 
-/* 28px x 28px Square Numbered Tile */
+/* Compact Square Numbered Tile (Matches Screenshot Tiles 1..90) */
 .nav-tile {
-  width: 28px;
-  height: 28px;
-  min-width: 28px;
-  min-height: 28px;
-  border-radius: 3px;
-  font-size: 11px;
+  width: 25px;
+  height: 23px;
+  min-width: 25px;
+  min-height: 23px;
+  border-radius: var(--radius-sm);
+  font-size: 10.5px;
   font-weight: 600;
   font-family: var(--font-sans);
   display: inline-flex;
@@ -631,38 +680,38 @@ body.app-body {
   box-sizing: border-box;
   position: relative;
   border: 1px solid rgba(0, 0, 0, 0.08);
-  transition: transform 0.1s ease, border-color 0.1s ease;
+  transition: transform 0.1s ease;
 }
 
 .nav-tile:hover {
   transform: translateY(-1px);
 }
 
-/* Unanswered / Pending Tile: Light Cool Gray (#e2e8f0) with dark slate text */
+/* Unanswered / Pending Tile (Gray in Screenshot, e.g. Tiles 89, 90) */
 .nav-tile.unanswered {
   background-color: var(--color-tile-pending);
   color: #334155;
-  border-color: #cbd5e1;
+  border-color: #b8c4d2;
 }
 
-/* Saved Tile: Solid Royal Blue (#1967d2) with white text */
+/* Saved Tile (Cerulean / Royal Blue in Screenshot, e.g. Tiles 1..87) */
 .nav-tile.saved {
   background-color: var(--color-tile-saved);
   color: #ffffff;
-  border-color: #1557b0;
+  border-color: #16569c;
   font-weight: 600;
 }
 
-/* Active Tile: Solid Crimson Red (#d32f2f) with bold white text */
+/* Active Tile (Crimson Red in Screenshot, e.g. Tile 88) */
 .nav-tile.active {
   background-color: var(--color-tile-active);
   color: #ffffff;
-  border-color: #b71c1c;
+  border-color: #b91c1c;
   font-weight: 700;
-  box-shadow: 0 0 0 1px #b71c1c;
+  box-shadow: 0 0 0 1px #b91c1c;
 }
 
-/* Flagged indicator: small orange triangle at top-right corner */
+/* Flagged indicator */
 .nav-tile.flagged::after {
   content: '';
   position: absolute;
@@ -670,49 +719,43 @@ body.app-body {
   right: 0;
   width: 0;
   height: 0;
-  border-top: 7px solid var(--color-tile-flag);
-  border-left: 7px solid transparent;
+  border-top: 6px solid var(--color-tile-flag);
+  border-left: 6px solid transparent;
 }
 
 /* ==============================================================================
-   SINGLE-QUESTION WHITE CARD (860px Centered)
+   SINGLE-QUESTION WHITE CARD (860px Centered, Matching Screenshot)
    ============================================================================== */
-.moodle-card-section {
-  padding: 0.75rem 1rem 3rem 1rem;
+.od-card-section {
+  padding: 0.6rem 1rem 3rem 1rem;
 }
 
-.moodle-question-card {
+.od-question-card {
   max-width: 860px;
   margin: 0 auto;
   background: var(--color-card-bg);
   border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
-  padding: 28px 32px;
+  border-radius: var(--radius-lg);
+  padding: 24px 30px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
 }
 
-.moodle-card-header {
+.od-card-top-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
   gap: 0.5rem;
-  margin-bottom: 1rem;
+  margin-bottom: 0.85rem;
 }
 
-.moodle-card-meta {
+.od-meta-tags {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.45rem;
 }
 
-.moodle-q-num {
-  font-size: 1.1rem;
-  font-weight: 700;
-  color: #0f172a;
-}
-
-.moodle-pill-field {
+.od-tag-field {
   font-size: 0.72rem;
   font-weight: 600;
   background-color: #f1f5f9;
@@ -721,7 +764,7 @@ body.app-body {
   border-radius: var(--radius-sm);
 }
 
-.moodle-pill-pts {
+.od-tag-pts {
   font-size: 0.72rem;
   font-weight: 600;
   background-color: #f8fafc;
@@ -731,76 +774,76 @@ body.app-body {
   border-radius: var(--radius-sm);
 }
 
-.moodle-card-flag-wrap {
+.od-card-actions {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: 0.65rem;
 }
 
-.btn-moodle-flag {
+.btn-card-flag {
   background: transparent;
   border: none;
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   color: #64748b;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
-  gap: 0.3rem;
-  padding: 0.25rem 0.5rem;
+  gap: 0.25rem;
+  padding: 0.2rem 0.4rem;
   border-radius: var(--radius-sm);
   transition: all 0.15s ease;
 }
 
-.btn-moodle-flag:hover {
+.btn-card-flag:hover {
   background: #f1f5f9;
   color: #0f172a;
 }
 
-.btn-moodle-flag.flagged {
+.btn-card-flag.flagged {
   color: var(--color-tile-flag);
   font-weight: 600;
 }
 
-.moodle-save-indicator {
-  font-size: 0.78rem;
+.od-save-status {
+  font-size: 0.75rem;
   color: #94a3b8;
 }
 
 /* Question Stem */
-.moodle-card-content {
-  margin-bottom: 1.25rem;
+.od-card-content {
+  margin-bottom: 1rem;
 }
 
-.moodle-task-stem {
-  font-size: 0.96rem;
+.od-task-stem {
+  font-size: 0.95rem;
   color: #0f172a;
   line-height: 1.6;
 }
 
-.moodle-task-stem p {
-  margin-bottom: 0.75rem;
+.od-task-stem p {
+  margin-bottom: 0.65rem;
 }
 
-.moodle-task-stem strong {
+.od-task-stem strong {
   font-weight: 600;
 }
 
-/* Horizontal Stem Divider (1px solid #e5e7eb) */
-.moodle-stem-divider {
+/* Thin Horizontal Divider Line (1px solid #edf0f4) */
+.od-stem-divider {
   border: 0;
   border-top: 1px solid var(--color-divider);
-  margin: 1.25rem 0 1.5rem 0;
+  margin: 1.1rem 0 1.35rem 0;
 }
 
 /* Answer Zone */
-.moodle-answer-zone {
-  margin-bottom: 1.75rem;
+.od-answer-zone {
+  margin-bottom: 1.5rem;
 }
 
 .options-stack {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 13px;
 }
 
 .option-row {
@@ -808,7 +851,7 @@ body.app-body {
   align-items: flex-start;
   gap: 10px;
   cursor: pointer;
-  padding: 6px 10px;
+  padding: 4px 6px;
   border-radius: var(--radius-sm);
   transition: background-color 0.1s ease;
   user-select: none;
@@ -819,7 +862,7 @@ body.app-body {
 }
 
 .option-input {
-  margin-top: 3px;
+  margin-top: 2px;
   width: 17px;
   height: 17px;
   accent-color: var(--color-primary);
@@ -832,7 +875,7 @@ body.app-body {
   line-height: 1.45;
 }
 
-/* Calculation & Short Answer Input */
+/* Numeric & Text Input */
 .numeric-input-wrapper {
   margin-top: 0.5rem;
   max-width: 420px;
@@ -858,10 +901,10 @@ body.app-body {
 .form-control-input:focus {
   outline: none;
   border-color: var(--color-primary);
-  box-shadow: 0 0 0 2px rgba(25, 103, 210, 0.15);
+  box-shadow: 0 0 0 2px rgba(29, 104, 184, 0.15);
 }
 
-/* Extended Derivation Textarea */
+/* Derivation Textarea */
 .derivation-wrapper {
   margin-top: 0.5rem;
 }
@@ -882,23 +925,23 @@ body.app-body {
 .derivation-textarea:focus {
   outline: none;
   border-color: var(--color-primary);
-  box-shadow: 0 0 0 2px rgba(25, 103, 210, 0.15);
+  box-shadow: 0 0 0 2px rgba(29, 104, 184, 0.15);
 }
 
-/* Moodle Card Footer: Save Answer (Left) + Prev/Next (Right) */
-.moodle-card-footer {
+/* Card Footer: Save Answer (Left) + Prev/Next (Right) */
+.od-card-footer {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 1.5rem;
-  padding-top: 1.25rem;
-  border-top: 1px solid #f1f5f9;
+  margin-top: 1.25rem;
+  padding-top: 1.15rem;
+  border-top: 1px solid #f4f6f8;
 }
 
-/* Save Answer Button: Muted Gray when untouched, Solid Blue when dirty */
-.btn-moodle-save {
+/* Save Answer Button: Muted Gray when untouched, Solid Blue when active */
+.btn-od-save {
   font-family: var(--font-sans);
-  font-size: 0.88rem;
+  font-size: 0.86rem;
   font-weight: 600;
   padding: 0.45rem 1.15rem;
   border-radius: var(--radius-sm);
@@ -906,23 +949,23 @@ body.app-body {
   user-select: none;
 }
 
-.btn-moodle-save:disabled,
-.btn-moodle-save.untouched {
+.btn-od-save:disabled,
+.btn-od-save.untouched {
   background-color: #e2e8f0;
   color: #94a3b8;
   border: 1px solid #cbd5e1;
   cursor: not-allowed;
 }
 
-.btn-moodle-save.active-dirty {
+.btn-od-save.active-dirty {
   background-color: var(--color-primary);
   color: #ffffff;
-  border: 1px solid #1557b0;
+  border: 1px solid #16569c;
   cursor: pointer;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 }
 
-.btn-moodle-save.active-dirty:hover {
+.btn-od-save.active-dirty:hover {
   background-color: var(--color-primary-hover);
 }
 
@@ -931,12 +974,12 @@ body.app-body {
   gap: 0.5rem;
 }
 
-.btn-moodle-nav {
+.btn-od-nav {
   background-color: #ffffff;
   border: 1px solid var(--color-border-dark);
   color: #334155;
   font-family: var(--font-sans);
-  font-size: 0.85rem;
+  font-size: 0.84rem;
   font-weight: 600;
   padding: 0.45rem 0.95rem;
   border-radius: var(--radius-sm);
@@ -944,12 +987,12 @@ body.app-body {
   transition: all 0.15s ease;
 }
 
-.btn-moodle-nav:hover:not(:disabled) {
+.btn-od-nav:hover:not(:disabled) {
   background-color: #f1f5f9;
   color: #0f172a;
 }
 
-.btn-moodle-nav:disabled {
+.btn-od-nav:disabled {
   opacity: 0.4;
   cursor: not-allowed;
 }
@@ -1728,9 +1771,9 @@ body.app-body {
    ============================================================================== */
 @media print {
   .no-print,
-  .moodle-header-bar,
-  .moodle-matrix-section,
-  .moodle-card-footer,
+  .od-top-bar,
+  .od-matrix-section,
+  .od-card-footer,
   .modal-backdrop,
   .calc-drawer,
   .toast {
