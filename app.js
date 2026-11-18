@@ -46,6 +46,14 @@
       targetField: 'all',
       durationMinutes: 60
     },
+    'advanced-drill': {
+      id: 'advanced-drill',
+      name: "Preset E — Advanced Essay & Calculation Drill (3 Tasks · 30 Pts)",
+      quotas: { basic: 0, intermediate: 0, advanced: 3 },
+      filterMode: 'balanced',
+      targetField: 'all',
+      durationMinutes: 45
+    },
     'single-field': {
       id: 'single-field',
       name: "Preset C — Discipline Specialization",
@@ -74,11 +82,18 @@
     focusLossCount: 0,
     isSubmitted: false,
     gradingResult: null,
-    lastSaved: null
+    lastSaved: null,
+    oralResponse: null      // { topicId, topicTitle, prepNotes, audioUrl, durationSec, criteriaScores, totalEarned }
   };
 
   let timerInterval = null;
   let uploadTimerInterval = null;
+  let oralPrepTimerInterval = null;
+  let oralRecTimerInterval = null;
+  let oralMediaRecorder = null;
+  let oralAudioChunks = [];
+  let oralPrepSeconds = 180;
+  let oralRecSeconds = 120;
   let saveDebounceTimer = null;
   let parsedImportQuestions = [];
   let proctorListenersAttached = false;
@@ -88,7 +103,34 @@
     // Views
     lobbyView: document.getElementById('lobby-view'),
     examView: document.getElementById('exam-view'),
+    uploadView: document.getElementById('upload-view'),
+    oralView: document.getElementById('oral-view'),
     reviewView: document.getElementById('review-view'),
+
+    // Stage 3.75: Task 44 Oral Response View
+    btnSkipOral: document.getElementById('btn-skip-oral'),
+    oralTopicsContainer: document.getElementById('oral-topics-container'),
+    oralPrepTimerDisplay: document.getElementById('oral-prep-timer-display'),
+    btnStartRecordingEarly: document.getElementById('btn-start-recording-early'),
+    oralPrepNotes: document.getElementById('oral-prep-notes'),
+    oralRecStatus: document.getElementById('oral-rec-status'),
+    oralRecStatusText: document.getElementById('oral-rec-status-text'),
+    oralRecTimerDisplay: document.getElementById('oral-rec-timer-display'),
+    btnStartMicRecord: document.getElementById('btn-start-mic-record'),
+    btnStopMicRecord: document.getElementById('btn-stop-mic-record'),
+    oralAudioPlaybackWrap: document.getElementById('oral-audio-playback-wrap'),
+    oralAudioPlayer: document.getElementById('oral-audio-player'),
+    oralAudioMeta: document.getElementById('oral-audio-meta'),
+    oralMicFallbackMsg: document.getElementById('oral-mic-fallback-msg'),
+    oralTotalScoreDisplay: document.getElementById('oral-total-score-display'),
+    btnSubmitOralDefense: document.getElementById('btn-submit-oral-defense'),
+    btnLobbyStartOral: document.getElementById('btn-lobby-start-oral'),
+    scoreOral: document.getElementById('score-oral'),
+    scoreOralSub: document.getElementById('score-oral-sub'),
+    rubricCrit1: document.getElementById('rubric-crit-1'),
+    rubricCrit2: document.getElementById('rubric-crit-2'),
+    rubricCrit3: document.getElementById('rubric-crit-3'),
+    rubricCrit4: document.getElementById('rubric-crit-4'),
 
     // Stage 3: Post-Proctoring File Upload View
     uploadView: document.getElementById('upload-view'),
@@ -248,6 +290,7 @@
     if (DOM.lobbyView) DOM.lobbyView.style.display = targetView === 'lobby' ? 'block' : 'none';
     if (DOM.examView) DOM.examView.style.display = targetView === 'exam' ? 'block' : 'none';
     if (DOM.uploadView) DOM.uploadView.style.display = targetView === 'upload' ? 'block' : 'none';
+    if (DOM.oralView) DOM.oralView.style.display = targetView === 'oral' ? 'block' : 'none';
     if (DOM.reviewView) DOM.reviewView.style.display = targetView === 'review' ? 'block' : 'none';
 
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -337,6 +380,33 @@
   }
 
   // ============================================================================
+  // Parametric Engine: Instantiate Multi-Variant Archetypes
+  // ============================================================================
+  function instantiateParametricVariants(questions) {
+    const rawBank = window.QUESTION_BANK || [];
+
+    // Group all parametric questions in bank by templateId
+    const templateGroups = {};
+    rawBank.forEach(q => {
+      if (q.templateId) {
+        if (!templateGroups[q.templateId]) templateGroups[q.templateId] = [];
+        templateGroups[q.templateId].push(q);
+      }
+    });
+
+    return questions.map(q => {
+      // If question belongs to a parametric template family with multiple variants
+      if (q.templateId && templateGroups[q.templateId] && templateGroups[q.templateId].length > 1) {
+        const family = templateGroups[q.templateId];
+        // Pick a diverse variant randomly so numbers change on each new exam attempt
+        const chosen = family[Math.floor(Math.random() * family.length)];
+        return { ...chosen };
+      }
+      return q;
+    });
+  }
+
+  // ============================================================================
   // Start Exam Session (Called ONLY When User Explicitly Starts from Lobby)
   // ============================================================================
   function startExamSession({ mode, presetId, quotas, targetField, durationMinutes, customQuestions }) {
@@ -352,9 +422,9 @@
     };
 
     if (customQuestions && customQuestions.length > 0) {
-      state.activeQuestions = customQuestions;
+      state.activeQuestions = instantiateParametricVariants(customQuestions);
     } else {
-      state.activeQuestions = sampleQuestions(state.config);
+      state.activeQuestions = instantiateParametricVariants(sampleQuestions(state.config));
     }
 
     state.currentIndex = 0;
@@ -365,6 +435,7 @@
     state.focusLossCount = 0;
     state.isSubmitted = false;
     state.gradingResult = null;
+    state.oralResponse = null;
 
     // Configure Exam Header
     if (DOM.examModeBadge) {
@@ -857,6 +928,36 @@
       wrap.appendChild(label);
       wrap.appendChild(textarea);
       DOM.taskAnswerZone.appendChild(wrap);
+
+      // Camera-Show Check for advanced extended-response tasks
+      if (q.difficulty === 'advanced') {
+        const cameraDiv = document.createElement('div');
+        cameraDiv.className = 'camera-show-reminder';
+        cameraDiv.innerHTML = `
+          <div class="camera-check-box">
+            <button class="btn-camera-show" id="btn-camera-${q.id}">📷 30s Camera-Show Check</button>
+            <span class="camera-hint">Hold handwritten sheet to camera for 30 seconds before saving. Type only key parameters & final values in the text box.</span>
+          </div>
+        `;
+        wrap.appendChild(cameraDiv);
+
+        // Attach 30s countdown on click
+        setTimeout(() => {
+          const btn = document.getElementById('btn-camera-' + q.id);
+          if (btn) {
+            btn.addEventListener('click', () => {
+              let secs = 30;
+              btn.disabled = true;
+              btn.textContent = '📷 Hold sheet to camera: 30s';
+              const iv = setInterval(() => {
+                secs--;
+                btn.textContent = secs > 0 ? '📷 Hold sheet to camera: ' + secs + 's' : '✓ Camera check complete';
+                if (secs <= 0) { clearInterval(iv); btn.style.backgroundColor = '#dcfce7'; btn.style.color = '#15803d'; }
+              }, 1000);
+            });
+          }
+        }, 100);
+      }
     }
   }
 
@@ -1322,6 +1423,21 @@
       if (DOM.aiGradingOverlay) DOM.aiGradingOverlay.style.display = 'none';
     }
 
+    // Save intermediate upload state
+    saveSessionToStorage();
+
+    // In official Stage 2 simulation (Mode A) or sessions with advanced tasks, transition to Task 44 Oral Response
+    const hasAdvanced = state.activeQuestions.some(q => q.difficulty === 'advanced');
+    if (state.mode === 'proctored' || hasAdvanced) {
+      enterOralStage();
+    } else {
+      finalizeAndShowReview();
+    }
+  }
+
+  function finalizeAndShowReview() {
+    stopOralPrepTimer();
+    stopOralRecording();
     state.isSubmitted = true;
     state.gradingResult = gradeActiveSession();
     saveSessionToStorage();
@@ -1329,6 +1445,335 @@
     switchView('review');
     renderEvaluationSection();
     showToast('Examination attempt finalized and officially graded.');
+  }
+
+  // ============================================================================
+  // STAGE 3.75: TASK 44 SPONTANEOUS ORAL-RESPONSE SIMULATOR (5 PTS)
+  // ============================================================================
+  let selectedOralTopic = null;
+
+  function enterOralStage(fromLobby = false) {
+    stopTimer();
+    stopUploadTimer();
+    detachProctoringListeners();
+
+    switchView('oral');
+
+    // 1. Find Advanced Tasks from current session (or default NSU Olympiad topics)
+    const advancedTasks = state.activeQuestions.filter(q => q.difficulty === 'advanced');
+    let topics = [];
+    if (advancedTasks.length >= 3) {
+      topics = advancedTasks.slice(0, 3);
+    } else if (advancedTasks.length > 0) {
+      topics = [...advancedTasks];
+      const defaults = [
+        { id: 'PARAM-ADV-SOLAR-01', title: 'Solar Midday Altitude & Graticule Mapping', field: 'Environmental sciences', points: 10, content: 'Determine solar culmination elevation at Russian coordinates.' },
+        { id: 'PARAM-ADV-SULFIDE-01', title: 'Sulfide Dump Acid Mine Drainage Neutralization', field: 'Mining & mineral processing', points: 10, content: 'Calculate stoichiometric lime required to neutralize oxidation of sulfide waste.' },
+        { id: 'ADV-03', title: 'Polymetallic Ore Net Smelter Return Valuation', field: 'Mining & mineral processing', points: 10, content: 'Calculate net smelter return (NSR) payable value accounting for deductions and penalties.' }
+      ];
+      defaults.forEach(d => {
+        if (topics.length < 3 && !topics.some(t => t.id === d.id)) topics.push(d);
+      });
+    } else {
+      topics = [
+        { id: 'PARAM-ADV-SOLAR-01', title: 'Solar Midday Altitude & Graticule Mapping', field: 'Environmental sciences', points: 10, content: 'Determine solar culmination elevation at Russian coordinates.' },
+        { id: 'PARAM-ADV-SULFIDE-01', title: 'Sulfide Dump Acid Mine Drainage Neutralization', field: 'Mining & mineral processing', points: 10, content: 'Calculate stoichiometric lime required to neutralize oxidation of sulfide waste.' },
+        { id: 'ADV-03', title: 'Polymetallic Ore Net Smelter Return Valuation', field: 'Mining & mineral processing', points: 10, content: 'Calculate net smelter return (NSR) payable value accounting for deductions and penalties.' }
+      ];
+    }
+
+    selectedOralTopic = topics[0];
+
+    // Render topic cards
+    if (DOM.oralTopicsContainer) {
+      DOM.oralTopicsContainer.innerHTML = '';
+      topics.forEach((t, idx) => {
+        const card = document.createElement('div');
+        card.className = `oral-topic-card ${idx === 0 ? 'selected' : ''}`;
+        card.dataset.topicId = t.id;
+        const stemText = (t.content || '').replace(/<[^>]+>/g, '').substring(0, 140);
+        card.innerHTML = `
+          <div class="topic-field">${escapeHtml(t.field)} · 10 pts</div>
+          <h5>Option ${idx + 1}: ${escapeHtml(t.title || t.field)}</h5>
+          <p>${escapeHtml(stemText)}...</p>
+        `;
+        card.addEventListener('click', () => {
+          document.querySelectorAll('.oral-topic-card').forEach(c => c.classList.remove('selected'));
+          card.classList.add('selected');
+          selectedOralTopic = t;
+          showToast(`Defending topic: ${t.title || t.field}`);
+        });
+        DOM.oralTopicsContainer.appendChild(card);
+      });
+    }
+
+    // Reset recording UI state
+    if (DOM.oralRecStatus) DOM.oralRecStatus.className = 'rec-status-indicator';
+    if (DOM.oralRecStatusText) DOM.oralRecStatusText.textContent = 'Microphone Ready';
+    if (DOM.btnStartMicRecord) {
+      DOM.btnStartMicRecord.style.display = 'inline-flex';
+      DOM.btnStartMicRecord.textContent = '● Record Voice (MediaRecorder)';
+    }
+    if (DOM.btnStopMicRecord) DOM.btnStopMicRecord.style.display = 'none';
+    if (DOM.oralAudioPlaybackWrap) DOM.oralAudioPlaybackWrap.style.display = 'none';
+    if (DOM.oralMicFallbackMsg) DOM.oralMicFallbackMsg.style.display = 'none';
+
+    // Start 3:00 Preparation Countdown
+    startOralPrepTimer();
+    calculateOralRubricTotal();
+    showToast('Task 44: 3-minute oral preparation phase started.');
+  }
+
+  function startOralPrepTimer() {
+    stopOralPrepTimer();
+    oralPrepSeconds = 180;
+    updateOralPrepDisplay();
+
+    oralPrepTimerInterval = setInterval(() => {
+      if (oralPrepSeconds > 0) {
+        oralPrepSeconds--;
+        updateOralPrepDisplay();
+      } else {
+        stopOralPrepTimer();
+        showToast('Preparation time complete! Beginning live 2-minute recording.');
+        startOralRecording();
+      }
+    }, 1000);
+  }
+
+  function stopOralPrepTimer() {
+    if (oralPrepTimerInterval) {
+      clearInterval(oralPrepTimerInterval);
+      oralPrepTimerInterval = null;
+    }
+  }
+
+  function updateOralPrepDisplay() {
+    if (!DOM.oralPrepTimerDisplay) return;
+    const m = Math.floor(oralPrepSeconds / 60);
+    const s = oralPrepSeconds % 60;
+    DOM.oralPrepTimerDisplay.textContent = `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+  }
+
+  async function startOralRecording() {
+    stopOralPrepTimer();
+
+    if (DOM.oralRecStatus) {
+      DOM.oralRecStatus.className = 'rec-status-indicator recording';
+    }
+    if (DOM.oralRecStatusText) {
+      DOM.oralRecStatusText.textContent = '● LIVE RECORDING IN PROGRESS';
+    }
+    if (DOM.btnStartMicRecord) DOM.btnStartMicRecord.style.display = 'none';
+    if (DOM.btnStopMicRecord) DOM.btnStopMicRecord.style.display = 'inline-flex';
+
+    oralAudioChunks = [];
+    oralRecSeconds = 120;
+    updateOralRecDisplay();
+
+    // Start 2:00 Recording Timer
+    oralRecTimerInterval = setInterval(() => {
+      if (oralRecSeconds > 0) {
+        oralRecSeconds--;
+        updateOralRecDisplay();
+      } else {
+        stopOralRecording();
+        showToast('2-minute recording time limit reached.');
+      }
+    }, 1000);
+
+    // Initialize MediaRecorder API
+    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        oralMediaRecorder = new MediaRecorder(stream);
+        oralMediaRecorder.ondataavailable = (e) => {
+          if (e.data && e.data.size > 0) oralAudioChunks.push(e.data);
+        };
+        oralMediaRecorder.onstop = () => {
+          const blob = new Blob(oralAudioChunks, { type: 'audio/webm' });
+          const audioUrl = URL.createObjectURL(blob);
+          if (DOM.oralAudioPlayer) {
+            DOM.oralAudioPlayer.src = audioUrl;
+          }
+          if (DOM.oralAudioPlaybackWrap) {
+            DOM.oralAudioPlaybackWrap.style.display = 'block';
+          }
+          const duration = 120 - oralRecSeconds;
+          if (DOM.oralAudioMeta) {
+            DOM.oralAudioMeta.textContent = `Recorded: ${Math.floor(duration / 60)}m ${duration % 60}s · Topic: ${selectedOralTopic?.title || 'Defended'}`;
+          }
+          // Stop stream tracks
+          stream.getTracks().forEach(track => track.stop());
+        };
+        oralMediaRecorder.start();
+      } catch (err) {
+        console.warn('Microphone access unavailable or denied:', err);
+        if (DOM.oralMicFallbackMsg) DOM.oralMicFallbackMsg.style.display = 'block';
+      }
+    } else {
+      if (DOM.oralMicFallbackMsg) DOM.oralMicFallbackMsg.style.display = 'block';
+    }
+  }
+
+  function stopOralRecording() {
+    if (oralRecTimerInterval) {
+      clearInterval(oralRecTimerInterval);
+      oralRecTimerInterval = null;
+    }
+
+    if (oralMediaRecorder && oralMediaRecorder.state !== 'inactive') {
+      try { oralMediaRecorder.stop(); } catch (e) {}
+    }
+
+    if (DOM.oralRecStatus) {
+      DOM.oralRecStatus.className = 'rec-status-indicator';
+    }
+    if (DOM.oralRecStatusText) {
+      DOM.oralRecStatusText.textContent = '✓ Recording Finished';
+    }
+    if (DOM.btnStopMicRecord) DOM.btnStopMicRecord.style.display = 'none';
+    if (DOM.btnStartMicRecord) {
+      DOM.btnStartMicRecord.style.display = 'inline-flex';
+      DOM.btnStartMicRecord.textContent = '🔄 Re-Record Voice';
+    }
+
+    calculateOralRubricTotal();
+  }
+
+  function calculateOralRubricTotal() {
+    const c1 = parseFloat(DOM.rubricCrit1?.value || '1.5');
+    const c2 = parseFloat(DOM.rubricCrit2?.value || '1.5');
+    const c3 = parseFloat(DOM.rubricCrit3?.value || '1.0');
+    const c4 = parseFloat(DOM.rubricCrit4?.value || '1.0');
+    const total = Math.min(5.0, Math.max(0.0, c1 + c2 + c3 + c4));
+
+    if (DOM.oralTotalScoreDisplay) {
+      DOM.oralTotalScoreDisplay.textContent = `${total.toFixed(1)} / 5.0 Points`;
+    }
+
+    state.oralResponse = {
+      topicId: selectedOralTopic?.id || 'TASK-44',
+      topicTitle: selectedOralTopic?.title || 'Advanced Olympiad Task',
+      prepNotes: DOM.oralPrepNotes?.value || '',
+      durationSec: 120 - oralRecSeconds,
+      criteriaScores: { c1, c2, c3, c4 },
+      totalEarned: total
+    };
+
+    return total;
+  }
+
+  function updateOralRecDisplay() {
+    if (!DOM.oralRecTimerDisplay) return;
+    const m = Math.floor(oralRecSeconds / 60);
+    const s = oralRecSeconds % 60;
+    DOM.oralRecTimerDisplay.textContent = `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+  }
+
+  function submitOralDefenseAndFinish() {
+    calculateOralRubricTotal();
+    finalizeAndShowReview();
+    showToast('Task 44 Oral Defense saved. Examination score calculated.');
+  }
+
+  // ============================================================================
+  // Syllabus Sub-Topic Classifier
+  // ============================================================================
+  function getSyllabusSubtopic(q) {
+    const f = q.field || '';
+    const title = (q.title || '').toLowerCase();
+    const content = (q.content || '').toLowerCase();
+
+    if (f.includes('Geography')) {
+      if (title.includes('scale') || content.includes('scale') || content.includes('landmark') || content.includes('topographic map')) {
+        return 'Geography, physical • Geodesy & Cartographic Scaling';
+      }
+      if (title.includes('river') || content.includes('river') || content.includes('lake') || content.includes('drainage') || content.includes('baikal')) {
+        return 'Geography, physical • Hydrology & Hydrographic Networks';
+      }
+      if (title.includes('soil') || content.includes('soil') || content.includes('solonchak') || content.includes('chernozem')) {
+        return 'Geography, physical • Soil Geography & Pedogenetic Processes';
+      }
+      return 'Geography, physical • Physical Landscapes & Geomorphology';
+    }
+
+    if (f.includes('Meteorology')) {
+      if (title.includes('lapse') || content.includes('adiabatic') || content.includes('temperature') || content.includes('summit')) {
+        return 'Meteorology & atmospheric sciences • Atmospheric Thermodynamics & Lapse Rates';
+      }
+      if (title.includes('baro') || content.includes('pressure') || content.includes('mercury') || content.includes('hydrostatic')) {
+        return 'Meteorology & atmospheric sciences • Barometric Step & Pressure Regimes';
+      }
+      if (title.includes('precip') || content.includes('rainfall') || content.includes('annual norm') || content.includes('monsoon')) {
+        return 'Meteorology & atmospheric sciences • Hydrometeorological Regimes & Precipitation';
+      }
+      return 'Meteorology & atmospheric sciences • Synoptic Meteorology & Climatology';
+    }
+
+    if (f.includes('Geology')) {
+      if (title.includes('mineral') || content.includes('crystal') || content.includes('hardness') || content.includes('mohs') || content.includes('quartz')) {
+        return 'Geology • Mineralogy, Crystallography & Symmetry';
+      }
+      if (title.includes('rock') || content.includes('granite') || content.includes('basalt') || content.includes('gneiss') || content.includes('petrology')) {
+        return 'Geology • Igneous, Sedimentary & Metamorphic Petrology';
+      }
+      if (title.includes('fault') || content.includes('fold') || content.includes('anticline') || content.includes('dip')) {
+        return 'Geology • Structural Geology & Tectonics';
+      }
+      return 'Geology • General Geology & Geochronology';
+    }
+
+    if (f.includes('Geochemistry') || f.includes('geophysics')) {
+      if (title.includes('echo') || content.includes('sound') || content.includes('acoustic') || content.includes('seismic') || content.includes('travel time')) {
+        return 'Geochemistry & geophysics • Exploration Seismology & Acoustic Wave Propagation';
+      }
+      if (title.includes('resist') || content.includes('conductivity') || content.includes('ohm') || content.includes('ves')) {
+        return 'Geochemistry & geophysics • Electrical Prospecting & Specific Resistance';
+      }
+      if (title.includes('iron') || content.includes('redox') || content.includes('isotope') || content.includes('ph')) {
+        return 'Geochemistry & geophysics • Aqueous Geochemistry & Element Migration';
+      }
+      return 'Geochemistry & geophysics • Physical Fields of the Earth & Geochemical Exploration';
+    }
+
+    if (f.includes('Mining')) {
+      if (title.includes('prism') || content.includes('prism') || content.includes('cross-section') || content.includes('reserve')) {
+        return 'Mining & mineral processing • Geometric Ore Reserve Estimation (Parallel Sections)';
+      }
+      if (title.includes('grade') || content.includes('flotation') || content.includes('recovery') || content.includes('concentrate') || content.includes('tailing')) {
+        return 'Mining & mineral processing • Mineral Processing Mass Balance & Beneficiation';
+      }
+      if (title.includes('dump') || content.includes('sulfide') || content.includes('acid') || content.includes('neutraliz')) {
+        return 'Mining & mineral processing • Environmental Geotechnics & Waste Rock Dump Management';
+      }
+      return 'Mining & mineral processing • Rational Subsoil Use & Mining Technology';
+    }
+
+    if (f.includes('Ecology')) {
+      if (title.includes('succession') || content.includes('pioneer') || content.includes('lichen') || content.includes('climax')) {
+        return 'Ecology • Ecological Succession & Ecosystem Homeostasis';
+      }
+      if (title.includes('trophic') || content.includes('energy') || content.includes('food') || content.includes('biomass')) {
+        return 'Ecology • Trophic Web Dynamics & Energetics';
+      }
+      return 'Ecology • Biospheric Conservation & Ecological Communities';
+    }
+
+    if (f.includes('Environmental')) {
+      if (title.includes('solar') || content.includes('solstice') || content.includes('zenith') || content.includes('latitude')) {
+        return 'Environmental sciences • Solar Radiation Geometry & Latitude Insolation';
+      }
+      if (title.includes('metal') || content.includes('chromium') || content.includes('speciation') || content.includes('toxicity')) {
+        return 'Environmental sciences • Heavy Metal Biogeochemistry & Environmental Monitoring';
+      }
+      if (title.includes('smog') || content.includes('greenhouse') || content.includes('emission') || content.includes('sanitary')) {
+        return 'Environmental sciences • Atmospheric Pollution & Sanitary Protection Zones';
+      }
+      return 'Environmental sciences • Anthropogenic Impact & Sustainability';
+    }
+
+    return `${f} • Core Syllabus Competency`;
   }
 
   async function runAiVisionGradingForTask(q, file, apiKey) {
@@ -1550,12 +1995,21 @@ Return JSON ONLY matching this format:
       };
     });
 
+    // Factor in Task 44 Spontaneous Oral Defense (up to 5 points) if completed
+    let oralEarned = 0;
+    if (state.oralResponse && typeof state.oralResponse.totalEarned === 'number') {
+      oralEarned = state.oralResponse.totalEarned;
+      earnedPoints += oralEarned;
+      maxPoints += 5.0;
+    }
+
     const percentage = maxPoints > 0 ? Math.round((earnedPoints / maxPoints) * 100) : 0;
 
     return {
       earnedPoints,
       maxPoints,
       percentage,
+      oralEarned,
       fullyCorrectCount,
       partialCreditCount,
       totalTasks: state.activeQuestions.length,
@@ -1571,12 +2025,22 @@ Return JSON ONLY matching this format:
     const res = state.gradingResult;
     if (!res) return;
 
-    if (DOM.scoreEarned) DOM.scoreEarned.textContent = res.earnedPoints;
+    if (DOM.scoreEarned) DOM.scoreEarned.textContent = typeof res.earnedPoints === 'number' ? (Number.isInteger(res.earnedPoints) ? res.earnedPoints : res.earnedPoints.toFixed(1)) : res.earnedPoints;
     if (DOM.scoreMax) DOM.scoreMax.textContent = res.maxPoints;
     if (DOM.scorePercentage) DOM.scorePercentage.textContent = `${res.percentage}%`;
     if (DOM.scoreCorrectTasks) DOM.scoreCorrectTasks.textContent = res.fullyCorrectCount;
     if (DOM.scoreTotalTasks) DOM.scoreTotalTasks.textContent = res.totalTasks;
     if (DOM.scorePartialTasks) DOM.scorePartialTasks.textContent = res.partialCreditCount;
+
+    if (DOM.scoreOral) {
+      if (state.oralResponse) {
+        DOM.scoreOral.textContent = state.oralResponse.totalEarned.toFixed(1);
+        if (DOM.scoreOralSub) DOM.scoreOralSub.textContent = `Topic: ${state.oralResponse.topicTitle || 'Defended'}`;
+      } else {
+        DOM.scoreOral.textContent = 'N/A';
+        if (DOM.scoreOralSub) DOM.scoreOralSub.textContent = 'Written only';
+      }
+    }
 
     if (DOM.scoreGradeBadge) {
       if (res.percentage >= 85) {
@@ -1663,6 +2127,7 @@ Return JSON ONLY matching this format:
     res.taskEvaluations.forEach((item) => {
       const q = item.question;
       report += `[Task ${item.taskIndex}] ${q.title || q.field} (${q.points} pt) — Status: ${item.status.toUpperCase()} (${item.taskEarned}/${item.maxPoints} pts)\n`;
+      report += `Syllabus Area: ${getSyllabusSubtopic(q)}\n`;
       report += `Your Answer: ${JSON.stringify(item.userAnswer || 'None')}\n`;
       if (state.uploadedFiles[q.id]) {
         const f = state.uploadedFiles[q.id];
@@ -1678,6 +2143,23 @@ Return JSON ONLY matching this format:
       report += `--------------------------------------------------------------------------------\n\n`;
     });
 
+    if (state.oralResponse) {
+      report += `\n================================================================================\n`;
+      report += `TASK 44 ORAL DEFENSE OF ADVANCED TASKS:\n`;
+      report += `================================================================================\n`;
+      report += `- Defended Topic: ${state.oralResponse.topicTitle}\n`;
+      report += `- Awarded Oral Score: ${state.oralResponse.totalEarned.toFixed(1)} / 5.0 Points\n`;
+      report += `- Spoken Duration: ${Math.floor(state.oralResponse.durationSec / 60)}m ${state.oralResponse.durationSec % 60}s\n`;
+      report += `- Criterion 1 (Formulation): ${state.oralResponse.criteriaScores?.c1 || 1.5} / 1.5 pts\n`;
+      report += `- Criterion 2 (Derivation Rigor): ${state.oralResponse.criteriaScores?.c2 || 1.5} / 1.5 pts\n`;
+      report += `- Criterion 3 (Academic Terminology): ${state.oralResponse.criteriaScores?.c3 || 1.0} / 1.0 pt\n`;
+      report += `- Criterion 4 (Error Analysis): ${state.oralResponse.criteriaScores?.c4 || 1.0} / 1.0 pt\n`;
+      if (state.oralResponse.prepNotes) {
+        report += `- Prepared Notes: ${state.oralResponse.prepNotes.replace(/\n/g, ' ')}\n`;
+      }
+      report += `--------------------------------------------------------------------------------\n\n`;
+    }
+
     DOM.examReportText.value = report;
   }
 
@@ -1689,6 +2171,7 @@ Return JSON ONLY matching this format:
       const q = item.question;
       const card = document.createElement('div');
       card.className = `solution-card ${item.status}`;
+      const subtopic = getSyllabusSubtopic(q);
 
       let userAnsDisplay = '';
       if (item.userAnswer === undefined || item.userAnswer === null || item.userAnswer === '') {
@@ -1762,7 +2245,10 @@ Return JSON ONLY matching this format:
 
       card.innerHTML = `
         <div class="solution-header">
-          <span class="solution-title">Task ${item.taskIndex}: ${q.title || q.field}</span>
+          <div>
+            <span class="solution-title">Task ${item.taskIndex}: ${q.title || q.field}</span>
+            <div><span class="syllabus-tag-pill">📘 ${escapeHtml(subtopic)}</span></div>
+          </div>
           <span class="solution-points-tag" style="color: ${item.status === 'correct' ? '#15803d' : item.status === 'partial' ? '#b45309' : '#dc2626'};">
             ${item.taskEarned} / ${item.maxPoints} pts (${item.status.toUpperCase()})
           </span>
@@ -1779,6 +2265,38 @@ Return JSON ONLY matching this format:
 
       DOM.solutionsContainer.appendChild(card);
     });
+
+    // Also render Task 44 Oral Defense card if present
+    if (state.oralResponse) {
+      const oralCard = document.createElement('div');
+      oralCard.className = 'solution-card correct';
+      oralCard.innerHTML = `
+        <div class="solution-header">
+          <div>
+            <span class="solution-title">Task 44: Spontaneous Oral Response & Defense</span>
+            <div><span class="syllabus-tag-pill">🎙️ Oral Defense of Advanced Tasks • Official NSU 5-Point Rubric</span></div>
+          </div>
+          <span class="solution-points-tag" style="color: #15803d;">
+            ${state.oralResponse.totalEarned.toFixed(1)} / 5.0 pts (ORAL DEFENSE)
+          </span>
+        </div>
+        <div class="solution-stem">
+          <strong>Defended Topic:</strong> ${escapeHtml(state.oralResponse.topicTitle)}<br>
+          <strong>Spoken Presentation Duration:</strong> ${Math.floor(state.oralResponse.durationSec / 60)}m ${state.oralResponse.durationSec % 60}s
+        </div>
+        ${state.oralResponse.prepNotes ? `<div class="user-answer-box"><strong>Candidate Prepared Bullet Points:</strong><br>${escapeHtml(state.oralResponse.prepNotes).replace(/\n/g, '<br>')}</div>` : ''}
+        <div class="model-solution-box">
+          <strong>Official NSU 4-Criterion Evaluation Breakdown:</strong>
+          <ul style="margin-top:0.4rem; padding-left:1.2rem; font-size:0.85rem; line-height:1.6;">
+            <li>Problem Formulation & Boundary Equations: <strong>${state.oralResponse.criteriaScores?.c1 || 1.5} / 1.5 pts</strong></li>
+            <li>Derivation Rigor & Calculation Accuracy: <strong>${state.oralResponse.criteriaScores?.c2 || 1.5} / 1.5 pts</strong></li>
+            <li>Academic Fluency & Russian-School Terminology: <strong>${state.oralResponse.criteriaScores?.c3 || 1.0} / 1.0 pt</strong></li>
+            <li>Error Analysis & Geological Heterogeneity Constraints: <strong>${state.oralResponse.criteriaScores?.c4 || 1.0} / 1.0 pt</strong></li>
+          </ul>
+        </div>
+      `;
+      DOM.solutionsContainer.appendChild(oralCard);
+    }
   }
 
   // ============================================================================
@@ -2393,6 +2911,45 @@ Return pure JSON only.`;
         completeUploadAndGrade();
       });
     }
+
+    // Stage 3.75 Oral View Events (Task 44)
+    if (DOM.btnLobbyStartOral) {
+      DOM.btnLobbyStartOral.addEventListener('click', () => {
+        enterOralStage(true);
+      });
+    }
+    if (DOM.btnSkipOral) {
+      DOM.btnSkipOral.addEventListener('click', () => {
+        finalizeAndShowReview();
+      });
+    }
+    if (DOM.btnStartRecordingEarly) {
+      DOM.btnStartRecordingEarly.addEventListener('click', () => {
+        startOralRecording();
+      });
+    }
+    if (DOM.btnStartMicRecord) {
+      DOM.btnStartMicRecord.addEventListener('click', () => {
+        startOralRecording();
+      });
+    }
+    if (DOM.btnStopMicRecord) {
+      DOM.btnStopMicRecord.addEventListener('click', () => {
+        stopOralRecording();
+      });
+    }
+    if (DOM.btnSubmitOralDefense) {
+      DOM.btnSubmitOralDefense.addEventListener('click', () => {
+        submitOralDefenseAndFinish();
+      });
+    }
+
+    // Oral Rubric Score selectors
+    [DOM.rubricCrit1, DOM.rubricCrit2, DOM.rubricCrit3, DOM.rubricCrit4].forEach(sel => {
+      if (sel) {
+        sel.addEventListener('change', calculateOralRubricTotal);
+      }
+    });
 
     // Review View Events
     if (DOM.btnReviewToLobby) {

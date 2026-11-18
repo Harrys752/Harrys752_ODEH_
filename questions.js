@@ -1,7 +1,7 @@
 /**
  * Open Doors International Olympiad: Earth and Environmental Sciences for Sustainability
  * Novosibirsk State University (NSU) Academic Examination Bank
- * Total verified tasks: 115
+ * Total verified tasks: 160
  */
 
 const QUESTION_BANK = [
@@ -2078,6 +2078,1075 @@ const QUESTION_BANK = [
     ],
     "correctAnswer": "15%",
     "explanation": "The percentage of the annual norm falling in July is calculated as: $\\\\frac{120\\\\text{ mm}}{800\\\\text{ mm}} \\\\times 100\\\\% = 15\\\\%$. In temperate continental and monsoon climates, summer precipitation often represents a distinct peak of the annual hydrometeorological norm."
+  },
+  {
+    "id": "PARAM-GEO-SCALE-01",
+    "templateId": "PARAM-GEO-SCALE",
+    "field": "Geography, physical",
+    "difficulty": "basic",
+    "points": 1,
+    "type": "single-choice",
+    "title": "Cartographic Scale Distance Calculation",
+    "content": "<p>On a topographic map at a scale of $1\\\\!:\\\\!25000$, the distance between two landmarks measures $1.8\\\\text{ cm}$ with a ruler. What is the actual ground distance in kilometres?</p>",
+    "params": {
+      "scale": 25000,
+      "ruler_cm": 1.8,
+      "answer_km": 0.45
+    },
+    "options": [
+      "0.45 km",
+      "0.23 km",
+      "0.68 km",
+      "0.9 km"
+    ],
+    "correctAnswer": "0.45 km",
+    "explanation": "Ground distance $= 1.8\\\\text{ cm} \\\\times 25000 = 45000\\\\text{ cm} = 450\\\\text{ m} = 0.45\\\\text{ km}$."
+  },
+  {
+    "id": "PARAM-GEO-SCALE-02",
+    "templateId": "PARAM-GEO-SCALE",
+    "field": "Geography, physical",
+    "difficulty": "basic",
+    "points": 1,
+    "type": "single-choice",
+    "title": "Cartographic Scale Distance Calculation",
+    "content": "<p>On a topographic map at a scale of $1\\\\!:\\\\!50000$, the distance between two landmarks measures $2.4\\\\text{ cm}$ with a ruler. What is the actual ground distance in kilometres?</p>",
+    "params": {
+      "scale": 50000,
+      "ruler_cm": 2.4,
+      "answer_km": 1.2
+    },
+    "options": [
+      "1.2 km",
+      "0.6 km",
+      "1.8 km",
+      "2.4 km"
+    ],
+    "correctAnswer": "1.2 km",
+    "explanation": "Ground distance $= 2.4\\\\text{ cm} \\\\times 50000 = 120000\\\\text{ cm} = 1200\\\\text{ m} = 1.2\\\\text{ km}$."
+  },
+  {
+    "id": "PARAM-GEO-SCALE-03",
+    "templateId": "PARAM-GEO-SCALE",
+    "field": "Geography, physical",
+    "difficulty": "basic",
+    "points": 1,
+    "type": "single-choice",
+    "title": "Cartographic Scale Distance Calculation",
+    "content": "<p>On a topographic map at a scale of $1\\\\!:\\\\!100000$, the distance between two landmarks measures $3.2\\\\text{ cm}$ with a ruler. What is the actual ground distance in kilometres?</p>",
+    "params": {
+      "scale": 100000,
+      "ruler_cm": 3.2,
+      "answer_km": 3.2
+    },
+    "options": [
+      "3.2 km",
+      "1.6 km",
+      "4.8 km",
+      "6.4 km"
+    ],
+    "correctAnswer": "3.2 km",
+    "explanation": "Ground distance $= 3.2\\\\text{ cm} \\\\times 100000 = 320000\\\\text{ cm} = 3200\\\\text{ m} = 3.2\\\\text{ km}$."
+  },
+  {
+    "id": "PARAM-GEO-SCALE-04",
+    "templateId": "PARAM-GEO-SCALE",
+    "field": "Geography, physical",
+    "difficulty": "basic",
+    "points": 1,
+    "type": "single-choice",
+    "title": "Cartographic Scale Distance Calculation",
+    "content": "<p>On a topographic map at a scale of $1\\\\!:\\\\!200000$, the distance between two landmarks measures $4.5\\\\text{ cm}$ with a ruler. What is the actual ground distance in kilometres?</p>",
+    "params": {
+      "scale": 200000,
+      "ruler_cm": 4.5,
+      "answer_km": 9.0
+    },
+    "options": [
+      "9 km",
+      "4.5 km",
+      "13.5 km",
+      "18 km"
+    ],
+    "correctAnswer": "9 km",
+    "explanation": "Ground distance $= 4.5\\\\text{ cm} \\\\times 200000 = 900000\\\\text{ cm} = 9000\\\\text{ m} = 9\\\\text{ km}$."
+  },
+  {
+    "id": "PARAM-GEO-SCALE-05",
+    "templateId": "PARAM-GEO-SCALE",
+    "field": "Geography, physical",
+    "difficulty": "basic",
+    "points": 1,
+    "type": "single-choice",
+    "title": "Cartographic Scale Distance Calculation",
+    "content": "<p>On a topographic map at a scale of $1\\\\!:\\\\!250000$, the distance between two landmarks measures $6.4\\\\text{ cm}$ with a ruler. What is the actual ground distance in kilometres?</p>",
+    "params": {
+      "scale": 250000,
+      "ruler_cm": 6.4,
+      "answer_km": 16.0
+    },
+    "options": [
+      "16 km",
+      "8 km",
+      "24 km",
+      "32 km"
+    ],
+    "correctAnswer": "16 km",
+    "explanation": "Ground distance $= 6.4\\\\text{ cm} \\\\times 250000 = 1.6e+06\\\\text{ cm} = 16000\\\\text{ m} = 16\\\\text{ km}$."
+  },
+  {
+    "id": "PARAM-GEO-SCALE-06",
+    "templateId": "PARAM-GEO-SCALE",
+    "field": "Geography, physical",
+    "difficulty": "basic",
+    "points": 1,
+    "type": "single-choice",
+    "title": "Cartographic Scale Distance Calculation",
+    "content": "<p>On a topographic map at a scale of $1\\\\!:\\\\!500000$, the distance between two landmarks measures $3.2\\\\text{ cm}$ with a ruler. What is the actual ground distance in kilometres?</p>",
+    "params": {
+      "scale": 500000,
+      "ruler_cm": 3.2,
+      "answer_km": 16.0
+    },
+    "options": [
+      "16 km",
+      "8 km",
+      "24 km",
+      "32 km"
+    ],
+    "correctAnswer": "16 km",
+    "explanation": "Ground distance $= 3.2\\\\text{ cm} \\\\times 500000 = 1.6e+06\\\\text{ cm} = 16000\\\\text{ m} = 16\\\\text{ km}$."
+  },
+  {
+    "id": "PARAM-GCH-ECHO-01",
+    "templateId": "PARAM-GCH-ECHO",
+    "field": "Geochemistry & mineralogy",
+    "difficulty": "basic",
+    "points": 1,
+    "type": "single-choice",
+    "title": "Echo-Sounding Bathymetric Depth Calculation",
+    "content": "<p>A research vessel performs echo-sounding. The two-way travel time (TWT) of the acoustic pulse is $1.6\\\\text{ s}$ and the sound velocity in seawater is $1500\\\\text{ m/s}$. What is the ocean depth at this point?</p>",
+    "params": {
+      "twt_s": 1.6,
+      "speed_ms": 1500,
+      "depth_m": 1200.0
+    },
+    "options": [
+      "1200 m",
+      "600 m",
+      "1800 m",
+      "2400 m"
+    ],
+    "correctAnswer": "1200 m",
+    "explanation": "Depth $= \\\\frac{v \\\\times t}{2} = \\\\frac{1500 \\\\times 1.6}{2} = \\\\frac{2400}{2} = 1200\\\\text{ m}$."
+  },
+  {
+    "id": "PARAM-GCH-ECHO-02",
+    "templateId": "PARAM-GCH-ECHO",
+    "field": "Geochemistry & mineralogy",
+    "difficulty": "basic",
+    "points": 1,
+    "type": "single-choice",
+    "title": "Echo-Sounding Bathymetric Depth Calculation",
+    "content": "<p>A research vessel performs echo-sounding. The two-way travel time (TWT) of the acoustic pulse is $2.4\\\\text{ s}$ and the sound velocity in seawater is $1480\\\\text{ m/s}$. What is the ocean depth at this point?</p>",
+    "params": {
+      "twt_s": 2.4,
+      "speed_ms": 1480,
+      "depth_m": 1776.0
+    },
+    "options": [
+      "1776 m",
+      "888 m",
+      "2664 m",
+      "3552 m"
+    ],
+    "correctAnswer": "1776 m",
+    "explanation": "Depth $= \\\\frac{v \\\\times t}{2} = \\\\frac{1480 \\\\times 2.4}{2} = \\\\frac{3552}{2} = 1776\\\\text{ m}$."
+  },
+  {
+    "id": "PARAM-GCH-ECHO-03",
+    "templateId": "PARAM-GCH-ECHO",
+    "field": "Geochemistry & mineralogy",
+    "difficulty": "basic",
+    "points": 1,
+    "type": "single-choice",
+    "title": "Echo-Sounding Bathymetric Depth Calculation",
+    "content": "<p>A research vessel performs echo-sounding. The two-way travel time (TWT) of the acoustic pulse is $3.2\\\\text{ s}$ and the sound velocity in seawater is $1500\\\\text{ m/s}$. What is the ocean depth at this point?</p>",
+    "params": {
+      "twt_s": 3.2,
+      "speed_ms": 1500,
+      "depth_m": 2400.0
+    },
+    "options": [
+      "2400 m",
+      "1200 m",
+      "3600 m",
+      "4800 m"
+    ],
+    "correctAnswer": "2400 m",
+    "explanation": "Depth $= \\\\frac{v \\\\times t}{2} = \\\\frac{1500 \\\\times 3.2}{2} = \\\\frac{4800}{2} = 2400\\\\text{ m}$."
+  },
+  {
+    "id": "PARAM-GCH-ECHO-04",
+    "templateId": "PARAM-GCH-ECHO",
+    "field": "Geochemistry & mineralogy",
+    "difficulty": "basic",
+    "points": 1,
+    "type": "single-choice",
+    "title": "Echo-Sounding Bathymetric Depth Calculation",
+    "content": "<p>A research vessel performs echo-sounding. The two-way travel time (TWT) of the acoustic pulse is $4.8\\\\text{ s}$ and the sound velocity in seawater is $1520\\\\text{ m/s}$. What is the ocean depth at this point?</p>",
+    "params": {
+      "twt_s": 4.8,
+      "speed_ms": 1520,
+      "depth_m": 3648.0
+    },
+    "options": [
+      "3648 m",
+      "1824 m",
+      "5472 m",
+      "7296 m"
+    ],
+    "correctAnswer": "3648 m",
+    "explanation": "Depth $= \\\\frac{v \\\\times t}{2} = \\\\frac{1520 \\\\times 4.8}{2} = \\\\frac{7296}{2} = 3648\\\\text{ m}$."
+  },
+  {
+    "id": "PARAM-GCH-ECHO-05",
+    "templateId": "PARAM-GCH-ECHO",
+    "field": "Geochemistry & mineralogy",
+    "difficulty": "basic",
+    "points": 1,
+    "type": "single-choice",
+    "title": "Echo-Sounding Bathymetric Depth Calculation",
+    "content": "<p>A research vessel performs echo-sounding. The two-way travel time (TWT) of the acoustic pulse is $6.0\\\\text{ s}$ and the sound velocity in seawater is $1500\\\\text{ m/s}$. What is the ocean depth at this point?</p>",
+    "params": {
+      "twt_s": 6.0,
+      "speed_ms": 1500,
+      "depth_m": 4500.0
+    },
+    "options": [
+      "4500 m",
+      "2250 m",
+      "6750 m",
+      "9000 m"
+    ],
+    "correctAnswer": "4500 m",
+    "explanation": "Depth $= \\\\frac{v \\\\times t}{2} = \\\\frac{1500 \\\\times 6.0}{2} = \\\\frac{9000}{2} = 4500\\\\text{ m}$."
+  },
+  {
+    "id": "PARAM-MET-BARO-01",
+    "templateId": "PARAM-MET-BARO",
+    "field": "Meteorology & atmospheric sciences",
+    "difficulty": "basic",
+    "points": 1,
+    "type": "single-choice",
+    "title": "Barometric Altitude Determination",
+    "content": "<p>At the base of a mountain the barometer reads $760\\\\text{ mmHg}$ and at the summit it reads $740\\\\text{ mmHg}$. Using the simplified barometric step of $10.5\\\\text{ m/mmHg}$, determine the altitude difference.</p>",
+    "params": {
+      "p_base": 760,
+      "p_summit": 740,
+      "step": 10.5,
+      "alt_diff_m": 210.0
+    },
+    "options": [
+      "210 m",
+      "168 m",
+      "252 m",
+      "260 m"
+    ],
+    "correctAnswer": "210 m",
+    "explanation": "$\\\\Delta P = 760 - 740 = 20\\\\text{ mmHg}$. $\\\\Delta h = 20 \\\\times 10.5 = 210\\\\text{ m}$."
+  },
+  {
+    "id": "PARAM-MET-BARO-02",
+    "templateId": "PARAM-MET-BARO",
+    "field": "Meteorology & atmospheric sciences",
+    "difficulty": "basic",
+    "points": 1,
+    "type": "single-choice",
+    "title": "Barometric Altitude Determination",
+    "content": "<p>At the base of a mountain the barometer reads $765\\\\text{ mmHg}$ and at the summit it reads $745\\\\text{ mmHg}$. Using the simplified barometric step of $11.0\\\\text{ m/mmHg}$, determine the altitude difference.</p>",
+    "params": {
+      "p_base": 765,
+      "p_summit": 745,
+      "step": 11.0,
+      "alt_diff_m": 220.0
+    },
+    "options": [
+      "220 m",
+      "176 m",
+      "264 m",
+      "270 m"
+    ],
+    "correctAnswer": "220 m",
+    "explanation": "$\\\\Delta P = 765 - 745 = 20\\\\text{ mmHg}$. $\\\\Delta h = 20 \\\\times 11.0 = 220\\\\text{ m}$."
+  },
+  {
+    "id": "PARAM-MET-BARO-03",
+    "templateId": "PARAM-MET-BARO",
+    "field": "Meteorology & atmospheric sciences",
+    "difficulty": "basic",
+    "points": 1,
+    "type": "single-choice",
+    "title": "Barometric Altitude Determination",
+    "content": "<p>At the base of a mountain the barometer reads $758\\\\text{ mmHg}$ and at the summit it reads $720\\\\text{ mmHg}$. Using the simplified barometric step of $10.5\\\\text{ m/mmHg}$, determine the altitude difference.</p>",
+    "params": {
+      "p_base": 758,
+      "p_summit": 720,
+      "step": 10.5,
+      "alt_diff_m": 399.0
+    },
+    "options": [
+      "399 m",
+      "319.2 m",
+      "478.8 m",
+      "449 m"
+    ],
+    "correctAnswer": "399 m",
+    "explanation": "$\\\\Delta P = 758 - 720 = 38\\\\text{ mmHg}$. $\\\\Delta h = 38 \\\\times 10.5 = 399\\\\text{ m}$."
+  },
+  {
+    "id": "PARAM-MET-BARO-04",
+    "templateId": "PARAM-MET-BARO",
+    "field": "Meteorology & atmospheric sciences",
+    "difficulty": "basic",
+    "points": 1,
+    "type": "single-choice",
+    "title": "Barometric Altitude Determination",
+    "content": "<p>At the base of a mountain the barometer reads $755\\\\text{ mmHg}$ and at the summit it reads $710\\\\text{ mmHg}$. Using the simplified barometric step of $11.0\\\\text{ m/mmHg}$, determine the altitude difference.</p>",
+    "params": {
+      "p_base": 755,
+      "p_summit": 710,
+      "step": 11.0,
+      "alt_diff_m": 495.0
+    },
+    "options": [
+      "495 m",
+      "396 m",
+      "594 m",
+      "545 m"
+    ],
+    "correctAnswer": "495 m",
+    "explanation": "$\\\\Delta P = 755 - 710 = 45\\\\text{ mmHg}$. $\\\\Delta h = 45 \\\\times 11.0 = 495\\\\text{ m}$."
+  },
+  {
+    "id": "PARAM-MET-LAPSE-01",
+    "templateId": "PARAM-MET-LAPSE",
+    "field": "Meteorology & atmospheric sciences",
+    "difficulty": "basic",
+    "points": 1,
+    "type": "single-choice",
+    "title": "Tropospheric Temperature Lapse Rate Calculation",
+    "content": "<p>The air temperature at an elevation of $200\\\\text{ m}$ is $+26\\\\text{ °C}$. Using the average tropospheric lapse rate $\\\\gamma = 6.5\\\\text{ °C/km}$, estimate the temperature at $3200\\\\text{ m}$.</p>",
+    "params": {
+      "z_base_m": 200,
+      "z_summit_m": 3200,
+      "t_base_C": 26,
+      "gamma_Ckm": 6.5,
+      "t_summit_C": 6.5
+    },
+    "options": [
+      "6.5 °C",
+      "11.5 °C",
+      "1.5 °C",
+      "7.2 °C"
+    ],
+    "correctAnswer": "6.5 °C",
+    "explanation": "$\\\\Delta z = 3200 - 200 = 3000\\\\text{ m} = 3\\\\text{ km}$. $T_{\\\\text{summit}} = +26 - 6.5 \\\\times 3 = +26 - 19.5 = 6.5\\\\text{ °C}$."
+  },
+  {
+    "id": "PARAM-MET-LAPSE-02",
+    "templateId": "PARAM-MET-LAPSE",
+    "field": "Meteorology & atmospheric sciences",
+    "difficulty": "basic",
+    "points": 1,
+    "type": "single-choice",
+    "title": "Tropospheric Temperature Lapse Rate Calculation",
+    "content": "<p>The air temperature at an elevation of $400\\\\text{ m}$ is $+20\\\\text{ °C}$. Using the average tropospheric lapse rate $\\\\gamma = 6.0\\\\text{ °C/km}$, estimate the temperature at $4400\\\\text{ m}$.</p>",
+    "params": {
+      "z_base_m": 400,
+      "z_summit_m": 4400,
+      "t_base_C": 20,
+      "gamma_Ckm": 6.0,
+      "t_summit_C": -4.0
+    },
+    "options": [
+      "-4 °C",
+      "1 °C",
+      "-9 °C",
+      "-5 °C"
+    ],
+    "correctAnswer": "-4 °C",
+    "explanation": "$\\\\Delta z = 4400 - 400 = 4000\\\\text{ m} = 4\\\\text{ km}$. $T_{\\\\text{summit}} = +20 - 6.0 \\\\times 4 = +20 - 24 = -4\\\\text{ °C}$."
+  },
+  {
+    "id": "PARAM-MET-LAPSE-03",
+    "templateId": "PARAM-MET-LAPSE",
+    "field": "Meteorology & atmospheric sciences",
+    "difficulty": "basic",
+    "points": 1,
+    "type": "single-choice",
+    "title": "Tropospheric Temperature Lapse Rate Calculation",
+    "content": "<p>The air temperature at an elevation of $600\\\\text{ m}$ is $+18\\\\text{ °C}$. Using the average tropospheric lapse rate $\\\\gamma = 6.5\\\\text{ °C/km}$, estimate the temperature at $5600\\\\text{ m}$.</p>",
+    "params": {
+      "z_base_m": 600,
+      "z_summit_m": 5600,
+      "t_base_C": 18,
+      "gamma_Ckm": 6.5,
+      "t_summit_C": -14.5
+    },
+    "options": [
+      "-14.5 °C",
+      "-9.5 °C",
+      "-19.5 °C",
+      "-13.2 °C"
+    ],
+    "correctAnswer": "-14.5 °C",
+    "explanation": "$\\\\Delta z = 5600 - 600 = 5000\\\\text{ m} = 5\\\\text{ km}$. $T_{\\\\text{summit}} = +18 - 6.5 \\\\times 5 = +18 - 32.5 = -14.5\\\\text{ °C}$."
+  },
+  {
+    "id": "PARAM-MET-LAPSE-04",
+    "templateId": "PARAM-MET-LAPSE",
+    "field": "Meteorology & atmospheric sciences",
+    "difficulty": "basic",
+    "points": 1,
+    "type": "single-choice",
+    "title": "Tropospheric Temperature Lapse Rate Calculation",
+    "content": "<p>The air temperature at an elevation of $800\\\\text{ m}$ is $+8\\\\text{ °C}$. Using the average tropospheric lapse rate $\\\\gamma = 6.0\\\\text{ °C/km}$, estimate the temperature at $5800\\\\text{ m}$.</p>",
+    "params": {
+      "z_base_m": 800,
+      "z_summit_m": 5800,
+      "t_base_C": 8,
+      "gamma_Ckm": 6.0,
+      "t_summit_C": -22.0
+    },
+    "options": [
+      "-22 °C",
+      "-17 °C",
+      "-27 °C",
+      "-23.2 °C"
+    ],
+    "correctAnswer": "-22 °C",
+    "explanation": "$\\\\Delta z = 5800 - 800 = 5000\\\\text{ m} = 5\\\\text{ km}$. $T_{\\\\text{summit}} = +8 - 6.0 \\\\times 5 = +8 - 30 = -22\\\\text{ °C}$."
+  },
+  {
+    "id": "PARAM-MIN-MASS-01",
+    "templateId": "PARAM-MIN-MASS",
+    "field": "Geochemistry & mineralogy",
+    "difficulty": "basic",
+    "points": 1,
+    "type": "single-choice",
+    "title": "Mass Fraction of Iron in Hematite",
+    "content": "<p>Calculate the mass fraction (percentage) of iron in the mineral hematite (Fe₂O₃). Use molar masses: $M(\\\\text{Fe}) = 111.7\\\\text{ g/mol}$, $M(\\\\text{Fe₂O₃}) = 159.7\\\\text{ g/mol}$.</p>",
+    "params": {
+      "element": "Fe",
+      "mineral": "Fe₂O₃",
+      "m_element": 111.7,
+      "m_total": 159.7,
+      "pct": 69.9
+    },
+    "options": [
+      "69.9%",
+      "62.9%",
+      "74.9%",
+      "59.4%"
+    ],
+    "correctAnswer": "69.9%",
+    "explanation": "Mass fraction $\\\\omega = \\\\frac{111.7}{159.7} \\\\times 100\\\\% = 69.9\\\\%$."
+  },
+  {
+    "id": "PARAM-MIN-MASS-02",
+    "templateId": "PARAM-MIN-MASS",
+    "field": "Geochemistry & mineralogy",
+    "difficulty": "basic",
+    "points": 1,
+    "type": "single-choice",
+    "title": "Mass Fraction of Iron in Magnetite",
+    "content": "<p>Calculate the mass fraction (percentage) of iron in the mineral magnetite (Fe₃O₄). Use molar masses: $M(\\\\text{Fe}) = 167.55\\\\text{ g/mol}$, $M(\\\\text{Fe₃O₄}) = 231.55\\\\text{ g/mol}$.</p>",
+    "params": {
+      "element": "Fe",
+      "mineral": "Fe₃O₄",
+      "m_element": 167.55,
+      "m_total": 231.55,
+      "pct": 72.4
+    },
+    "options": [
+      "72.4%",
+      "65.4%",
+      "77.4%",
+      "61.5%"
+    ],
+    "correctAnswer": "72.4%",
+    "explanation": "Mass fraction $\\\\omega = \\\\frac{167.55}{231.55} \\\\times 100\\\\% = 72.4\\\\%$."
+  },
+  {
+    "id": "PARAM-MIN-MASS-03",
+    "templateId": "PARAM-MIN-MASS",
+    "field": "Geochemistry & mineralogy",
+    "difficulty": "basic",
+    "points": 1,
+    "type": "single-choice",
+    "title": "Mass Fraction of Copper in Chalcopyrite",
+    "content": "<p>Calculate the mass fraction (percentage) of copper in the mineral chalcopyrite (CuFeS₂). Use molar masses: $M(\\\\text{Cu}) = 63.55\\\\text{ g/mol}$, $M(\\\\text{CuFeS₂}) = 183.52\\\\text{ g/mol}$.</p>",
+    "params": {
+      "element": "Cu",
+      "mineral": "CuFeS₂",
+      "m_element": 63.55,
+      "m_total": 183.52,
+      "pct": 34.6
+    },
+    "options": [
+      "34.6%",
+      "27.6%",
+      "39.6%",
+      "29.4%"
+    ],
+    "correctAnswer": "34.6%",
+    "explanation": "Mass fraction $\\\\omega = \\\\frac{63.55}{183.52} \\\\times 100\\\\% = 34.6\\\\%$."
+  },
+  {
+    "id": "PARAM-MIN-MASS-04",
+    "templateId": "PARAM-MIN-MASS",
+    "field": "Geochemistry & mineralogy",
+    "difficulty": "basic",
+    "points": 1,
+    "type": "single-choice",
+    "title": "Mass Fraction of Copper in Chalcocite",
+    "content": "<p>Calculate the mass fraction (percentage) of copper in the mineral chalcocite (Cu₂S). Use molar masses: $M(\\\\text{Cu}) = 127.1\\\\text{ g/mol}$, $M(\\\\text{Cu₂S}) = 159.16\\\\text{ g/mol}$.</p>",
+    "params": {
+      "element": "Cu",
+      "mineral": "Cu₂S",
+      "m_element": 127.1,
+      "m_total": 159.16,
+      "pct": 79.9
+    },
+    "options": [
+      "79.9%",
+      "72.9%",
+      "84.9%",
+      "67.9%"
+    ],
+    "correctAnswer": "79.9%",
+    "explanation": "Mass fraction $\\\\omega = \\\\frac{127.1}{159.16} \\\\times 100\\\\% = 79.9\\\\%$."
+  },
+  {
+    "id": "PARAM-MIN-MASS-05",
+    "templateId": "PARAM-MIN-MASS",
+    "field": "Geochemistry & mineralogy",
+    "difficulty": "basic",
+    "points": 1,
+    "type": "single-choice",
+    "title": "Mass Fraction of Lead in Galena",
+    "content": "<p>Calculate the mass fraction (percentage) of lead in the mineral galena (PbS). Use molar masses: $M(\\\\text{Pb}) = 207.2\\\\text{ g/mol}$, $M(\\\\text{PbS}) = 239.26\\\\text{ g/mol}$.</p>",
+    "params": {
+      "element": "Pb",
+      "mineral": "PbS",
+      "m_element": 207.2,
+      "m_total": 239.26,
+      "pct": 86.6
+    },
+    "options": [
+      "86.6%",
+      "79.6%",
+      "91.6%",
+      "73.6%"
+    ],
+    "correctAnswer": "86.6%",
+    "explanation": "Mass fraction $\\\\omega = \\\\frac{207.2}{239.26} \\\\times 100\\\\% = 86.6\\\\%$."
+  },
+  {
+    "id": "PARAM-MIN-MASS-06",
+    "templateId": "PARAM-MIN-MASS",
+    "field": "Geochemistry & mineralogy",
+    "difficulty": "basic",
+    "points": 1,
+    "type": "single-choice",
+    "title": "Mass Fraction of Zinc in Sphalerite",
+    "content": "<p>Calculate the mass fraction (percentage) of zinc in the mineral sphalerite (ZnS). Use molar masses: $M(\\\\text{Zn}) = 65.38\\\\text{ g/mol}$, $M(\\\\text{ZnS}) = 97.44\\\\text{ g/mol}$.</p>",
+    "params": {
+      "element": "Zn",
+      "mineral": "ZnS",
+      "m_element": 65.38,
+      "m_total": 97.44,
+      "pct": 67.1
+    },
+    "options": [
+      "67.1%",
+      "60.1%",
+      "72.1%",
+      "57.0%"
+    ],
+    "correctAnswer": "67.1%",
+    "explanation": "Mass fraction $\\\\omega = \\\\frac{65.38}{97.44} \\\\times 100\\\\% = 67.1\\\\%$."
+  },
+  {
+    "id": "PARAM-MIN-PRISM-01",
+    "templateId": "PARAM-MIN-PRISM",
+    "field": "Mining & mineral processing",
+    "difficulty": "basic",
+    "points": 1,
+    "type": "single-choice",
+    "title": "Ore Body Volume by Prismoidal Method",
+    "content": "<p>An ore body is approximated by a prismoid with cross-sectional areas $S_1 = 1,200\\\\text{ m}^2$ and $S_2 = 800\\\\text{ m}^2$, separated by a distance $L = 200\\\\text{ m}$. Calculate the volume using $V = \\\\frac{S_1 + S_2}{2} \\\\times L$.</p>",
+    "params": {
+      "S1_m2": 1200,
+      "S2_m2": 800,
+      "L_m": 200,
+      "volume_m3": 200000.0
+    },
+    "options": [
+      "200\\\\,000 m³",
+      "150\\\\,000 m³",
+      "250\\\\,000 m³",
+      "240\\\\,000 m³"
+    ],
+    "correctAnswer": "200\\\\,000 m³",
+    "explanation": "$V = \\\\frac{1,200 + 800}{2} \\\\times 200 = \\\\frac{2,000}{2} \\\\times 200 = 1,000 \\\\times 200 = 200,000\\\\text{ m}^3$."
+  },
+  {
+    "id": "PARAM-MIN-PRISM-02",
+    "templateId": "PARAM-MIN-PRISM",
+    "field": "Mining & mineral processing",
+    "difficulty": "basic",
+    "points": 1,
+    "type": "single-choice",
+    "title": "Ore Body Volume by Prismoidal Method",
+    "content": "<p>An ore body is approximated by a prismoid with cross-sectional areas $S_1 = 2,400\\\\text{ m}^2$ and $S_2 = 1,600\\\\text{ m}^2$, separated by a distance $L = 300\\\\text{ m}$. Calculate the volume using $V = \\\\frac{S_1 + S_2}{2} \\\\times L$.</p>",
+    "params": {
+      "S1_m2": 2400,
+      "S2_m2": 1600,
+      "L_m": 300,
+      "volume_m3": 600000.0
+    },
+    "options": [
+      "600\\\\,000 m³",
+      "450\\\\,000 m³",
+      "750\\\\,000 m³",
+      "720\\\\,000 m³"
+    ],
+    "correctAnswer": "600\\\\,000 m³",
+    "explanation": "$V = \\\\frac{2,400 + 1,600}{2} \\\\times 300 = \\\\frac{4,000}{2} \\\\times 300 = 2,000 \\\\times 300 = 600,000\\\\text{ m}^3$."
+  },
+  {
+    "id": "PARAM-MIN-PRISM-03",
+    "templateId": "PARAM-MIN-PRISM",
+    "field": "Mining & mineral processing",
+    "difficulty": "basic",
+    "points": 1,
+    "type": "single-choice",
+    "title": "Ore Body Volume by Prismoidal Method",
+    "content": "<p>An ore body is approximated by a prismoid with cross-sectional areas $S_1 = 3,600\\\\text{ m}^2$ and $S_2 = 2,400\\\\text{ m}^2$, separated by a distance $L = 150\\\\text{ m}$. Calculate the volume using $V = \\\\frac{S_1 + S_2}{2} \\\\times L$.</p>",
+    "params": {
+      "S1_m2": 3600,
+      "S2_m2": 2400,
+      "L_m": 150,
+      "volume_m3": 450000.0
+    },
+    "options": [
+      "450\\\\,000 m³",
+      "337\\\\,500 m³",
+      "562\\\\,500 m³",
+      "540\\\\,000 m³"
+    ],
+    "correctAnswer": "450\\\\,000 m³",
+    "explanation": "$V = \\\\frac{3,600 + 2,400}{2} \\\\times 150 = \\\\frac{6,000}{2} \\\\times 150 = 3,000 \\\\times 150 = 450,000\\\\text{ m}^3$."
+  },
+  {
+    "id": "PARAM-MIN-PRISM-04",
+    "templateId": "PARAM-MIN-PRISM",
+    "field": "Mining & mineral processing",
+    "difficulty": "basic",
+    "points": 1,
+    "type": "single-choice",
+    "title": "Ore Body Volume by Prismoidal Method",
+    "content": "<p>An ore body is approximated by a prismoid with cross-sectional areas $S_1 = 4,800\\\\text{ m}^2$ and $S_2 = 3,600\\\\text{ m}^2$, separated by a distance $L = 500\\\\text{ m}$. Calculate the volume using $V = \\\\frac{S_1 + S_2}{2} \\\\times L$.</p>",
+    "params": {
+      "S1_m2": 4800,
+      "S2_m2": 3600,
+      "L_m": 500,
+      "volume_m3": 2100000.0
+    },
+    "options": [
+      "2\\\\,100\\\\,000 m³",
+      "1\\\\,575\\\\,000 m³",
+      "2\\\\,625\\\\,000 m³",
+      "2\\\\,400\\\\,000 m³"
+    ],
+    "correctAnswer": "2\\\\,100\\\\,000 m³",
+    "explanation": "$V = \\\\frac{4,800 + 3,600}{2} \\\\times 500 = \\\\frac{8,400}{2} \\\\times 500 = 4,200 \\\\times 500 = 2,100,000\\\\text{ m}^3$."
+  },
+  {
+    "id": "PARAM-MET-PRECIP-01",
+    "templateId": "PARAM-MET-PRECIP",
+    "field": "Meteorology & atmospheric sciences",
+    "difficulty": "basic",
+    "points": 1,
+    "type": "single-choice",
+    "title": "Monthly Precipitation as Percentage of Annual Total",
+    "content": "<p>At an observation station, the annual precipitation total is $600\\\\text{ mm}$. In June, $90\\\\text{ mm}$ fell. What percentage of the annual total does June represent?</p>",
+    "params": {
+      "annual_mm": 600,
+      "month_mm": 90,
+      "month": "June",
+      "pct": 15.0
+    },
+    "options": [
+      "15%",
+      "18%",
+      "12%",
+      "21%"
+    ],
+    "correctAnswer": "15%",
+    "explanation": "$\\\\frac{90}{600} \\\\times 100\\\\% = 15\\\\%$."
+  },
+  {
+    "id": "PARAM-MET-PRECIP-02",
+    "templateId": "PARAM-MET-PRECIP",
+    "field": "Meteorology & atmospheric sciences",
+    "difficulty": "basic",
+    "points": 1,
+    "type": "single-choice",
+    "title": "Monthly Precipitation as Percentage of Annual Total",
+    "content": "<p>At an observation station, the annual precipitation total is $800\\\\text{ mm}$. In July, $120\\\\text{ mm}$ fell. What percentage of the annual total does July represent?</p>",
+    "params": {
+      "annual_mm": 800,
+      "month_mm": 120,
+      "month": "July",
+      "pct": 15.0
+    },
+    "options": [
+      "15%",
+      "18%",
+      "12%",
+      "21%"
+    ],
+    "correctAnswer": "15%",
+    "explanation": "$\\\\frac{120}{800} \\\\times 100\\\\% = 15\\\\%$."
+  },
+  {
+    "id": "PARAM-MET-PRECIP-03",
+    "templateId": "PARAM-MET-PRECIP",
+    "field": "Meteorology & atmospheric sciences",
+    "difficulty": "basic",
+    "points": 1,
+    "type": "single-choice",
+    "title": "Monthly Precipitation as Percentage of Annual Total",
+    "content": "<p>At an observation station, the annual precipitation total is $1000\\\\text{ mm}$. In August, $150\\\\text{ mm}$ fell. What percentage of the annual total does August represent?</p>",
+    "params": {
+      "annual_mm": 1000,
+      "month_mm": 150,
+      "month": "August",
+      "pct": 15.0
+    },
+    "options": [
+      "15%",
+      "18%",
+      "12%",
+      "21%"
+    ],
+    "correctAnswer": "15%",
+    "explanation": "$\\\\frac{150}{1000} \\\\times 100\\\\% = 15\\\\%$."
+  },
+  {
+    "id": "PARAM-MET-PRECIP-04",
+    "templateId": "PARAM-MET-PRECIP",
+    "field": "Meteorology & atmospheric sciences",
+    "difficulty": "basic",
+    "points": 1,
+    "type": "single-choice",
+    "title": "Monthly Precipitation as Percentage of Annual Total",
+    "content": "<p>At an observation station, the annual precipitation total is $1200\\\\text{ mm}$. In July, $180\\\\text{ mm}$ fell. What percentage of the annual total does July represent?</p>",
+    "params": {
+      "annual_mm": 1200,
+      "month_mm": 180,
+      "month": "July",
+      "pct": 15.0
+    },
+    "options": [
+      "15%",
+      "18%",
+      "12%",
+      "21%"
+    ],
+    "correctAnswer": "15%",
+    "explanation": "$\\\\frac{180}{1200} \\\\times 100\\\\% = 15\\\\%$."
+  },
+  {
+    "id": "PARAM-GEO-RIVER-01",
+    "templateId": "PARAM-GEO-RIVER",
+    "field": "Geography, physical",
+    "difficulty": "basic",
+    "points": 1,
+    "type": "short-answer",
+    "title": "Cardinal Flow Direction of the Ob River",
+    "content": "<p>The source of the Ob River is located at approximately $51.0°\\\\text{N}$, $84.0°\\\\text{E}$, and its mouth at $66.5°\\\\text{N}$, $69.5°\\\\text{E}$. Determine the predominant cardinal direction of the river's flow.</p>",
+    "params": {
+      "river": "Ob",
+      "src_lat": 51.0,
+      "src_lon": 84.0,
+      "mouth_lat": 66.5,
+      "mouth_lon": 69.5,
+      "direction": "south-to-north"
+    },
+    "options": [],
+    "correctAnswer": "south-to-north",
+    "explanation": "Comparing source (51.0°N, 84.0°E) and mouth (66.5°N, 69.5°E): the dominant shift in coordinates indicates a south-to-north flow direction."
+  },
+  {
+    "id": "PARAM-GEO-RIVER-02",
+    "templateId": "PARAM-GEO-RIVER",
+    "field": "Geography, physical",
+    "difficulty": "basic",
+    "points": 1,
+    "type": "short-answer",
+    "title": "Cardinal Flow Direction of the Yenisei River",
+    "content": "<p>The source of the Yenisei River is located at approximately $51.7°\\\\text{N}$, $94.5°\\\\text{E}$, and its mouth at $71.8°\\\\text{N}$, $82.7°\\\\text{E}$. Determine the predominant cardinal direction of the river's flow.</p>",
+    "params": {
+      "river": "Yenisei",
+      "src_lat": 51.7,
+      "src_lon": 94.5,
+      "mouth_lat": 71.8,
+      "mouth_lon": 82.7,
+      "direction": "south-to-north"
+    },
+    "options": [],
+    "correctAnswer": "south-to-north",
+    "explanation": "Comparing source (51.7°N, 94.5°E) and mouth (71.8°N, 82.7°E): the dominant shift in coordinates indicates a south-to-north flow direction."
+  },
+  {
+    "id": "PARAM-GEO-RIVER-03",
+    "templateId": "PARAM-GEO-RIVER",
+    "field": "Geography, physical",
+    "difficulty": "basic",
+    "points": 1,
+    "type": "short-answer",
+    "title": "Cardinal Flow Direction of the Amur River",
+    "content": "<p>The source of the Amur River is located at approximately $48.4°\\\\text{N}$, $121.5°\\\\text{E}$, and its mouth at $52.9°\\\\text{N}$, $141.1°\\\\text{E}$. Determine the predominant cardinal direction of the river's flow.</p>",
+    "params": {
+      "river": "Amur",
+      "src_lat": 48.4,
+      "src_lon": 121.5,
+      "mouth_lat": 52.9,
+      "mouth_lon": 141.1,
+      "direction": "west-to-east"
+    },
+    "options": [],
+    "correctAnswer": "west-to-east",
+    "explanation": "Comparing source (48.4°N, 121.5°E) and mouth (52.9°N, 141.1°E): the dominant shift in coordinates indicates a west-to-east flow direction."
+  },
+  {
+    "id": "PARAM-GEO-RIVER-04",
+    "templateId": "PARAM-GEO-RIVER",
+    "field": "Geography, physical",
+    "difficulty": "basic",
+    "points": 1,
+    "type": "short-answer",
+    "title": "Cardinal Flow Direction of the Volga River",
+    "content": "<p>The source of the Volga River is located at approximately $57.2°\\\\text{N}$, $32.3°\\\\text{E}$, and its mouth at $45.7°\\\\text{N}$, $47.9°\\\\text{E}$. Determine the predominant cardinal direction of the river's flow.</p>",
+    "params": {
+      "river": "Volga",
+      "src_lat": 57.2,
+      "src_lon": 32.3,
+      "mouth_lat": 45.7,
+      "mouth_lon": 47.9,
+      "direction": "north-to-south"
+    },
+    "options": [],
+    "correctAnswer": "north-to-south",
+    "explanation": "Comparing source (57.2°N, 32.3°E) and mouth (45.7°N, 47.9°E): the dominant shift in coordinates indicates a north-to-south flow direction."
+  },
+  {
+    "id": "PARAM-ADV-SOLAR-01",
+    "templateId": "PARAM-ADV-SOLAR",
+    "field": "Geography, physical",
+    "difficulty": "advanced",
+    "points": 10,
+    "type": "extended-response",
+    "title": "Solar Noon Altitude — Saint Petersburg on Summer Solstice",
+    "content": "<p>Calculate the altitude of the Sun above the horizon at solar noon in <strong>Saint Petersburg</strong> (latitude $\\\\varphi = 60.0°\\\\text{N}$) on the <strong>Summer Solstice</strong> (solar declination $\\\\delta = +23.44°$).</p><p>Use the formula: $h = 90° - |\\\\varphi - \\\\delta|$.</p><p>Show all steps and explain the physical meaning of the result.</p>",
+    "params": {
+      "city": "Saint Petersburg",
+      "latitude": 60.0,
+      "date": "Summer Solstice",
+      "declination": 23.44,
+      "h_noon": 53.44
+    },
+    "options": [],
+    "correctAnswer": "53.44°",
+    "explanation": "$h = 90° - |60.0 - (+23.44)| = 90° - |36.56| = 90° - 36.56 = 53.44°$.",
+    "requiredKeywords": [
+      "53.44",
+      "90",
+      "36.56"
+    ],
+    "modelSolution": "Solution method:\\n1. Identify the parameters:\\n   - Latitude: $\\\\varphi = 60.0°\\\\text{N}$\\n   - Solar declination on Summer Solstice: $\\\\delta = +23.44°$\\n\\n2. Apply the solar noon altitude formula for the Northern Hemisphere:\\n   $$h = 90° - |\\\\varphi - \\\\delta|$$\\n\\n3. Substitute values:\\n   $$h = 90° - |60.0 - (+23.44)| = 90° - |36.56| = 90° - 36.56 = 53.44°$$\\n\\n4. Physical interpretation: The Sun reaches an altitude of $53.44°$ above the horizon at solar noon in Saint Petersburg on the Summer Solstice. This is the highest noon altitude of the year at this latitude.\\n\\nAssessment criteria:\\n- Criterion 1: Correctly identified latitude and declination — 0–2 points.\\n- Criterion 2: Correct formula application — 0–3 points.\\n- Criterion 3: Correct numerical result $53.44°$ — 0–3 points.\\n- Criterion 4: Physical interpretation — 0–2 points."
+  },
+  {
+    "id": "PARAM-ADV-SOLAR-02",
+    "templateId": "PARAM-ADV-SOLAR",
+    "field": "Geography, physical",
+    "difficulty": "advanced",
+    "points": 10,
+    "type": "extended-response",
+    "title": "Solar Noon Altitude — Novosibirsk on Winter Solstice",
+    "content": "<p>Calculate the altitude of the Sun above the horizon at solar noon in <strong>Novosibirsk</strong> (latitude $\\\\varphi = 55.0°\\\\text{N}$) on the <strong>Winter Solstice</strong> (solar declination $\\\\delta = -23.44°$).</p><p>Use the formula: $h = 90° - |\\\\varphi - \\\\delta|$.</p><p>Show all steps and explain the physical meaning of the result.</p>",
+    "params": {
+      "city": "Novosibirsk",
+      "latitude": 55.0,
+      "date": "Winter Solstice",
+      "declination": -23.44,
+      "h_noon": 11.560000000000002
+    },
+    "options": [],
+    "correctAnswer": "11.56°",
+    "explanation": "$h = 90° - |55.0 - (-23.44)| = 90° - |78.44| = 90° - 78.44 = 11.56°$.",
+    "requiredKeywords": [
+      "11.56",
+      "90",
+      "78.44"
+    ],
+    "modelSolution": "Solution method:\\n1. Identify the parameters:\\n   - Latitude: $\\\\varphi = 55.0°\\\\text{N}$\\n   - Solar declination on Winter Solstice: $\\\\delta = -23.44°$\\n\\n2. Apply the solar noon altitude formula for the Northern Hemisphere:\\n   $$h = 90° - |\\\\varphi - \\\\delta|$$\\n\\n3. Substitute values:\\n   $$h = 90° - |55.0 - (-23.44)| = 90° - |78.44| = 90° - 78.44 = 11.56°$$\\n\\n4. Physical interpretation: The Sun reaches an altitude of $11.56°$ above the horizon at solar noon in Novosibirsk on the Winter Solstice. This is the lowest noon altitude of the year at this latitude.\\n\\nAssessment criteria:\\n- Criterion 1: Correctly identified latitude and declination — 0–2 points.\\n- Criterion 2: Correct formula application — 0–3 points.\\n- Criterion 3: Correct numerical result $11.56°$ — 0–3 points.\\n- Criterion 4: Physical interpretation — 0–2 points."
+  },
+  {
+    "id": "PARAM-ADV-SOLAR-03",
+    "templateId": "PARAM-ADV-SOLAR",
+    "field": "Geography, physical",
+    "difficulty": "advanced",
+    "points": 10,
+    "type": "extended-response",
+    "title": "Solar Noon Altitude — Murmansk on Equinox",
+    "content": "<p>Calculate the altitude of the Sun above the horizon at solar noon in <strong>Murmansk</strong> (latitude $\\\\varphi = 69.0°\\\\text{N}$) on the <strong>Equinox</strong> (solar declination $\\\\delta = +0°$).</p><p>Use the formula: $h = 90° - |\\\\varphi - \\\\delta|$.</p><p>Show all steps and explain the physical meaning of the result.</p>",
+    "params": {
+      "city": "Murmansk",
+      "latitude": 69.0,
+      "date": "Equinox",
+      "declination": 0.0,
+      "h_noon": 21.0
+    },
+    "options": [],
+    "correctAnswer": "21°",
+    "explanation": "$h = 90° - |69.0 - (+0)| = 90° - |69| = 90° - 69 = 21°$.",
+    "requiredKeywords": [
+      "21",
+      "90",
+      "69"
+    ],
+    "modelSolution": "Solution method:\\n1. Identify the parameters:\\n   - Latitude: $\\\\varphi = 69.0°\\\\text{N}$\\n   - Solar declination on Equinox: $\\\\delta = +0°$\\n\\n2. Apply the solar noon altitude formula for the Northern Hemisphere:\\n   $$h = 90° - |\\\\varphi - \\\\delta|$$\\n\\n3. Substitute values:\\n   $$h = 90° - |69.0 - (+0)| = 90° - |69| = 90° - 69 = 21°$$\\n\\n4. Physical interpretation: The Sun reaches an altitude of $21°$ above the horizon at solar noon in Murmansk on the Equinox. At equinox the noon altitude equals $90° - \\\\varphi$.\\n\\nAssessment criteria:\\n- Criterion 1: Correctly identified latitude and declination — 0–2 points.\\n- Criterion 2: Correct formula application — 0–3 points.\\n- Criterion 3: Correct numerical result $21°$ — 0–3 points.\\n- Criterion 4: Physical interpretation — 0–2 points."
+  },
+  {
+    "id": "PARAM-ADV-SOLAR-04",
+    "templateId": "PARAM-ADV-SOLAR",
+    "field": "Geography, physical",
+    "difficulty": "advanced",
+    "points": 10,
+    "type": "extended-response",
+    "title": "Solar Noon Altitude — Irkutsk on Summer Solstice",
+    "content": "<p>Calculate the altitude of the Sun above the horizon at solar noon in <strong>Irkutsk</strong> (latitude $\\\\varphi = 52.0°\\\\text{N}$) on the <strong>Summer Solstice</strong> (solar declination $\\\\delta = +23.44°$).</p><p>Use the formula: $h = 90° - |\\\\varphi - \\\\delta|$.</p><p>Show all steps and explain the physical meaning of the result.</p>",
+    "params": {
+      "city": "Irkutsk",
+      "latitude": 52.0,
+      "date": "Summer Solstice",
+      "declination": 23.44,
+      "h_noon": 61.44
+    },
+    "options": [],
+    "correctAnswer": "61.44°",
+    "explanation": "$h = 90° - |52.0 - (+23.44)| = 90° - |28.56| = 90° - 28.56 = 61.44°$.",
+    "requiredKeywords": [
+      "61.44",
+      "90",
+      "28.56"
+    ],
+    "modelSolution": "Solution method:\\n1. Identify the parameters:\\n   - Latitude: $\\\\varphi = 52.0°\\\\text{N}$\\n   - Solar declination on Summer Solstice: $\\\\delta = +23.44°$\\n\\n2. Apply the solar noon altitude formula for the Northern Hemisphere:\\n   $$h = 90° - |\\\\varphi - \\\\delta|$$\\n\\n3. Substitute values:\\n   $$h = 90° - |52.0 - (+23.44)| = 90° - |28.56| = 90° - 28.56 = 61.44°$$\\n\\n4. Physical interpretation: The Sun reaches an altitude of $61.44°$ above the horizon at solar noon in Irkutsk on the Summer Solstice. This is the highest noon altitude of the year at this latitude.\\n\\nAssessment criteria:\\n- Criterion 1: Correctly identified latitude and declination — 0–2 points.\\n- Criterion 2: Correct formula application — 0–3 points.\\n- Criterion 3: Correct numerical result $61.44°$ — 0–3 points.\\n- Criterion 4: Physical interpretation — 0–2 points."
+  },
+  {
+    "id": "PARAM-ADV-SULFIDE-01",
+    "templateId": "PARAM-ADV-SULFIDE",
+    "field": "Environmental geochemistry",
+    "difficulty": "advanced",
+    "points": 10,
+    "type": "extended-response",
+    "title": "Sulfide Waste Dump Oxidation — Pyrite Neutralization",
+    "content": "<p>A mine waste dump contains <strong>2 tonnes</strong> of material with <strong>1.84%</strong> pyrite (FeS₂) by mass. Upon weathering, the sulfide oxidises completely to produce sulfuric acid.</p><p><strong>Tasks:</strong></p><ol><li>Determine the oxidation state changes of sulfur and the metal cation.</li><li>Calculate the mass of $\\\\text{H}_2\\\\text{SO}_4$ produced (in kg).</li><li>Calculate the mass of slaked lime (Ca(OH)₂) needed to fully neutralise the acid (in kg).</li></ol><p>Molar masses: $M(\\\\text{FeS₂}) = 119.97\\\\text{ g/mol}$, $M(\\\\text{H}_2\\\\text{SO}_4) = 98.08\\\\text{ g/mol}$, $M(\\\\text{Ca(OH)₂}) = 74.09\\\\text{ g/mol}$.</p>",
+    "params": {
+      "tonnage_t": 2.0,
+      "mineral": "FeS₂",
+      "mass_pct": 1.84,
+      "molar_mass_mineral": 119.97,
+      "reagent": "Ca(OH)₂",
+      "molar_mass_reagent": 74.09,
+      "acid_kg": 60.2,
+      "reagent_kg": 45.5
+    },
+    "options": [],
+    "correctAnswer": "60.2 kg H₂SO₄; 45.5 kg Ca(OH)₂",
+    "explanation": "Mass of pyrite: $2 \\\\times 1000 \\\\times 0.0184 = 36.8\\\\text{ kg}$. Moles: $36800 / 119.97 = 306.7\\\\text{ mol}$. $\\\\text{H}_2\\\\text{SO}_4$: $613.5 \\\\times 98.08 = 60171\\\\text{ g} = 60.2\\\\text{ kg}$. Ca(OH)₂: $613.5 \\\\times 74.09 = 45453\\\\text{ g} = 45.5\\\\text{ kg}$.",
+    "requiredKeywords": [
+      "36.8",
+      "306.7",
+      "60.2",
+      "45.5"
+    ],
+    "modelSolution": "Solution method:\\n1. Oxidation numbers:\\n   - Sulfur in FeS₂: $-2$ (in sulfide) $\\\\to +6$ (in sulfate) — reductant\\n   - Oxygen: $0 \\\\to -2$ — oxidant\\n\\n2. Mass of pyrite in dump:\\n   $m(\\\\text{FeS₂}) = 2 \\\\times 10^3\\\\text{ kg} \\\\times 0.0184 = 36.8\\\\text{ kg} = 36800\\\\text{ g}$\\n\\n3. Moles of pyrite:\\n   $n = \\\\frac{36800}{119.97} = 306.7\\\\text{ mol}$\\n\\n4. Each mole of FeS₂ contains 2 S atom(s), producing 2 mol $\\\\text{H}_2\\\\text{SO}_4$:\\n   $n(\\\\text{H}_2\\\\text{SO}_4) = 613.5\\\\text{ mol}$\\n   $m(\\\\text{H}_2\\\\text{SO}_4) = 613.5 \\\\times 98.08 = 60171\\\\text{ g} = 60.2\\\\text{ kg}$\\n\\n5. Neutralisation with Ca(OH)₂ (1:1 stoichiometry per mol acid):\\n   $n(\\\\text{Ca(OH)₂}) = 613.5\\\\text{ mol}$\\n   $m(\\\\text{Ca(OH)₂}) = 613.5 \\\\times 74.09 = 45453\\\\text{ g} = 45.5\\\\text{ kg}$\\n\\nAnswer: $60.2\\\\text{ kg}$ of $\\\\text{H}_2\\\\text{SO}_4$; $45.5\\\\text{ kg}$ of $\\\\text{Ca(OH)₂}$.\\n\\nAssessment criteria:\\n- Criterion 1: Oxidation state shifts correctly documented — 0–3 points.\\n- Criterion 2: Mass of sulfuric acid — 0–4 points.\\n- Criterion 3: Mass of neutralising reagent — 0–3 points."
+  },
+  {
+    "id": "PARAM-ADV-SULFIDE-02",
+    "templateId": "PARAM-ADV-SULFIDE",
+    "field": "Environmental geochemistry",
+    "difficulty": "advanced",
+    "points": 10,
+    "type": "extended-response",
+    "title": "Sulfide Waste Dump Oxidation — Chalcopyrite Neutralization",
+    "content": "<p>A mine waste dump contains <strong>2.5 tonnes</strong> of material with <strong>2.4%</strong> chalcopyrite (CuFeS₂) by mass. Upon weathering, the sulfide oxidises completely to produce sulfuric acid.</p><p><strong>Tasks:</strong></p><ol><li>Determine the oxidation state changes of sulfur and the metal cation.</li><li>Calculate the mass of $\\\\text{H}_2\\\\text{SO}_4$ produced (in kg).</li><li>Calculate the mass of quicklime (CaO) needed to fully neutralise the acid (in kg).</li></ol><p>Molar masses: $M(\\\\text{CuFeS₂}) = 183.52\\\\text{ g/mol}$, $M(\\\\text{H}_2\\\\text{SO}_4) = 98.08\\\\text{ g/mol}$, $M(\\\\text{CaO}) = 56.08\\\\text{ g/mol}$.</p>",
+    "params": {
+      "tonnage_t": 2.5,
+      "mineral": "CuFeS₂",
+      "mass_pct": 2.4,
+      "molar_mass_mineral": 183.52,
+      "reagent": "CaO",
+      "molar_mass_reagent": 56.08,
+      "acid_kg": 64.1,
+      "reagent_kg": 36.7
+    },
+    "options": [],
+    "correctAnswer": "64.1 kg H₂SO₄; 36.7 kg CaO",
+    "explanation": "Mass of chalcopyrite: $2.5 \\\\times 1000 \\\\times 0.024 = 60\\\\text{ kg}$. Moles: $60000 / 183.52 = 326.9\\\\text{ mol}$. $\\\\text{H}_2\\\\text{SO}_4$: $653.9 \\\\times 98.08 = 64133\\\\text{ g} = 64.1\\\\text{ kg}$. CaO: $653.9 \\\\times 56.08 = 36670\\\\text{ g} = 36.7\\\\text{ kg}$.",
+    "requiredKeywords": [
+      "60",
+      "326.9",
+      "64.1",
+      "36.7"
+    ],
+    "modelSolution": "Solution method:\\n1. Oxidation numbers:\\n   - Sulfur in CuFeS₂: $-2$ (in sulfide) $\\\\to +6$ (in sulfate) — reductant\\n   - Oxygen: $0 \\\\to -2$ — oxidant\\n\\n2. Mass of chalcopyrite in dump:\\n   $m(\\\\text{CuFeS₂}) = 2.5 \\\\times 10^3\\\\text{ kg} \\\\times 0.024 = 60\\\\text{ kg} = 60000\\\\text{ g}$\\n\\n3. Moles of chalcopyrite:\\n   $n = \\\\frac{60000}{183.52} = 326.9\\\\text{ mol}$\\n\\n4. Each mole of CuFeS₂ contains 2 S atom(s), producing 2 mol $\\\\text{H}_2\\\\text{SO}_4$:\\n   $n(\\\\text{H}_2\\\\text{SO}_4) = 653.9\\\\text{ mol}$\\n   $m(\\\\text{H}_2\\\\text{SO}_4) = 653.9 \\\\times 98.08 = 64133\\\\text{ g} = 64.1\\\\text{ kg}$\\n\\n5. Neutralisation with CaO (1:1 stoichiometry per mol acid):\\n   $n(\\\\text{CaO}) = 653.9\\\\text{ mol}$\\n   $m(\\\\text{CaO}) = 653.9 \\\\times 56.08 = 36670\\\\text{ g} = 36.7\\\\text{ kg}$\\n\\nAnswer: $64.1\\\\text{ kg}$ of $\\\\text{H}_2\\\\text{SO}_4$; $36.7\\\\text{ kg}$ of $\\\\text{CaO}$.\\n\\nAssessment criteria:\\n- Criterion 1: Oxidation state shifts correctly documented — 0–3 points.\\n- Criterion 2: Mass of sulfuric acid — 0–4 points.\\n- Criterion 3: Mass of neutralising reagent — 0–3 points."
+  },
+  {
+    "id": "PARAM-ADV-SULFIDE-03",
+    "templateId": "PARAM-ADV-SULFIDE",
+    "field": "Environmental geochemistry",
+    "difficulty": "advanced",
+    "points": 10,
+    "type": "extended-response",
+    "title": "Sulfide Waste Dump Oxidation — Sphalerite Neutralization",
+    "content": "<p>A mine waste dump contains <strong>5 tonnes</strong> of material with <strong>3.0%</strong> sphalerite (ZnS) by mass. Upon weathering, the sulfide oxidises completely to produce sulfuric acid.</p><p><strong>Tasks:</strong></p><ol><li>Determine the oxidation state changes of sulfur and the metal cation.</li><li>Calculate the mass of $\\\\text{H}_2\\\\text{SO}_4$ produced (in kg).</li><li>Calculate the mass of limestone (CaCO₃) needed to fully neutralise the acid (in kg).</li></ol><p>Molar masses: $M(\\\\text{ZnS}) = 97.44\\\\text{ g/mol}$, $M(\\\\text{H}_2\\\\text{SO}_4) = 98.08\\\\text{ g/mol}$, $M(\\\\text{CaCO₃}) = 100.09\\\\text{ g/mol}$.</p>",
+    "params": {
+      "tonnage_t": 5.0,
+      "mineral": "ZnS",
+      "mass_pct": 3.0,
+      "molar_mass_mineral": 97.44,
+      "reagent": "CaCO₃",
+      "molar_mass_reagent": 100.09,
+      "acid_kg": 151.0,
+      "reagent_kg": 154.1
+    },
+    "options": [],
+    "correctAnswer": "151.0 kg H₂SO₄; 154.1 kg CaCO₃",
+    "explanation": "Mass of sphalerite: $5 \\\\times 1000 \\\\times 0.03 = 150\\\\text{ kg}$. Moles: $150000 / 97.44 = 1539.4\\\\text{ mol}$. $\\\\text{H}_2\\\\text{SO}_4$: $1539.4 \\\\times 98.08 = 150985\\\\text{ g} = 151.0\\\\text{ kg}$. CaCO₃: $1539.4 \\\\times 100.09 = 154079\\\\text{ g} = 154.1\\\\text{ kg}$.",
+    "requiredKeywords": [
+      "150",
+      "1539.4",
+      "151.0",
+      "154.1"
+    ],
+    "modelSolution": "Solution method:\\n1. Oxidation numbers:\\n   - Sulfur in ZnS: $-2$ (in sulfide) $\\\\to +6$ (in sulfate) — reductant\\n   - Oxygen: $0 \\\\to -2$ — oxidant\\n\\n2. Mass of sphalerite in dump:\\n   $m(\\\\text{ZnS}) = 5 \\\\times 10^3\\\\text{ kg} \\\\times 0.03 = 150\\\\text{ kg} = 150000\\\\text{ g}$\\n\\n3. Moles of sphalerite:\\n   $n = \\\\frac{150000}{97.44} = 1539.4\\\\text{ mol}$\\n\\n4. Each mole of ZnS contains 1 S atom(s), producing 1 mol $\\\\text{H}_2\\\\text{SO}_4$:\\n   $n(\\\\text{H}_2\\\\text{SO}_4) = 1539.4\\\\text{ mol}$\\n   $m(\\\\text{H}_2\\\\text{SO}_4) = 1539.4 \\\\times 98.08 = 150985\\\\text{ g} = 151.0\\\\text{ kg}$\\n\\n5. Neutralisation with CaCO₃ (1:1 stoichiometry per mol acid):\\n   $n(\\\\text{CaCO₃}) = 1539.4\\\\text{ mol}$\\n   $m(\\\\text{CaCO₃}) = 1539.4 \\\\times 100.09 = 154079\\\\text{ g} = 154.1\\\\text{ kg}$\\n\\nAnswer: $151.0\\\\text{ kg}$ of $\\\\text{H}_2\\\\text{SO}_4$; $154.1\\\\text{ kg}$ of $\\\\text{CaCO₃}$.\\n\\nAssessment criteria:\\n- Criterion 1: Oxidation state shifts correctly documented — 0–3 points.\\n- Criterion 2: Mass of sulfuric acid — 0–4 points.\\n- Criterion 3: Mass of neutralising reagent — 0–3 points."
   }
 ];
 

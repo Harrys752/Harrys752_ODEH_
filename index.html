@@ -150,6 +150,10 @@
                 <span><strong>Entry-Style Drill:</strong> 68 Rapid Basic MCQs (68 Pts · 60 min)</span>
               </label>
               <label class="preset-option-label">
+                <input type="radio" name="practice-preset" value="advanced-drill">
+                <span><strong>Advanced Essay Drill:</strong> Tasks 41–43 Only (30 Pts · 45 min)</span>
+              </label>
+              <label class="preset-option-label">
                 <input type="radio" name="practice-preset" value="single-field">
                 <span><strong>Discipline Focus:</strong> Single Field of Science</span>
               </label>
@@ -190,6 +194,25 @@
             <div class="mode-actions">
               <button id="btn-lobby-open-importer" class="btn btn-outline-dark btn-block">
                 Open PDF Question Importer
+              </button>
+            </div>
+          </div>
+
+          <!-- Mode D Card: Spontaneous Oral Response Drill -->
+          <div class="mode-card mode-card-oral">
+            <div class="mode-badge-tag oral-badge">SPONTANEOUS ORAL DEFENSE</div>
+            <h3 class="mode-title">Mode D: Task 44 Oral Defense Drill</h3>
+            <p class="mode-summary">
+              Practice the spontaneous oral interview component of the Second Round: <strong>3:00 minutes</strong> preparation followed by <strong>2:00 minutes</strong> live microphone recording against official NSU criteria.
+            </p>
+            <div class="mode-features-list">
+              <div class="feature-item"><span>🎙️</span> Browser MediaRecorder Live Audio</div>
+              <div class="feature-item"><span>⏱️</span> 3-min Prep + 2-min Spoken Timer</div>
+              <div class="feature-item"><span>📋</span> 5-Point NSU Rubric Evaluation</div>
+            </div>
+            <div class="mode-actions">
+              <button id="btn-lobby-start-oral" class="btn btn-outline-danger btn-block">
+                Start Task 44 Oral Practice (5 min)
               </button>
             </div>
           </div>
@@ -431,6 +454,200 @@
   </div>
 
   <!-- =========================================================================
+       STAGE 3.75: TASK 44 SPONTANEOUS ORAL-RESPONSE SIMULATOR (5 PTS)
+       ========================================================================= -->
+  <div id="oral-view" class="view-container oral-view" style="display: none;">
+    <div class="oral-container">
+      
+      <!-- Top Oral Header Banner -->
+      <div class="oral-header-banner">
+        <div class="oral-banner-left">
+          <div class="oral-badge-icon">🎙️</div>
+          <div class="oral-header-text">
+            <span class="oral-eyebrow">STAGE 2 • FINAL ORAL DEFENSE</span>
+            <h3>Task 44: Spontaneous Oral Response (5 Points Max)</h3>
+            <p>
+              In accordance with official Novosibirsk State University (NSU) Olympiad regulations, candidates orally defend one of the Advanced Tasks (Tasks 41–43) solved during the written examination.
+              <strong>3:00 minutes</strong> preparation period followed by <strong>2:00 minutes</strong> live voice recording.
+            </p>
+          </div>
+        </div>
+        <div class="oral-banner-actions no-print">
+          <button id="btn-skip-oral" class="btn btn-outline-secondary btn-sm" title="Skip oral defense and proceed directly to written test scoring">
+            Skip Oral Defense →
+          </button>
+        </div>
+      </div>
+
+      <!-- Oral Main Card -->
+      <div class="oral-main-card">
+        
+        <!-- Step 1: Select Topic to Defend -->
+        <div class="oral-step-section" id="oral-step-topic">
+          <div class="oral-step-header">
+            <span class="step-num-pill">Step 1</span>
+            <h4>Select Advanced Topic to Defend</h4>
+          </div>
+          <p class="oral-step-desc">Choose which of the 3 advanced Olympiad tasks from your session you will present to the examination committee:</p>
+          
+          <div class="oral-topics-grid" id="oral-topics-container">
+            <!-- Dynamically populated from active advanced tasks -->
+          </div>
+        </div>
+
+        <!-- Step 2: 3:00 Preparation Phase -->
+        <div class="oral-step-section" id="oral-step-prep">
+          <div class="oral-step-header">
+            <span class="step-num-pill">Step 2</span>
+            <h4>Preparation Phase (3:00 Minutes)</h4>
+          </div>
+          
+          <div class="prep-timer-box">
+            <div class="prep-timer-left">
+              <span class="prep-timer-label">Preparation Time Remaining:</span>
+              <span class="prep-timer-digits" id="oral-prep-timer-display">03:00</span>
+            </div>
+            <div class="prep-timer-actions">
+              <button id="btn-start-recording-early" class="btn btn-danger btn-sm">
+                ● Start Recording Now
+              </button>
+            </div>
+          </div>
+
+          <div class="prep-notes-area">
+            <label for="oral-prep-notes">Draft Your Verbal Defense Bullet Points (Formulas, Assumptions, Core Steps):</label>
+            <textarea id="oral-prep-notes" rows="4" class="oral-notes-input" placeholder="1. Problem setup & boundary conditions...&#10;2. Key governing equation...&#10;3. Final numerical result & geological significance..."></textarea>
+          </div>
+        </div>
+
+        <!-- Step 3: 2:00 Live Recording Phase -->
+        <div class="oral-step-section" id="oral-step-record">
+          <div class="oral-step-header">
+            <span class="step-num-pill">Step 3</span>
+            <h4>Live Spontaneous Recording (2:00 Minutes Max)</h4>
+          </div>
+
+          <div class="recording-control-panel">
+            <div class="rec-status-indicator" id="oral-rec-status">
+              <span class="rec-dot"></span>
+              <span id="oral-rec-status-text">Microphone Ready</span>
+            </div>
+            
+            <div class="rec-timer-digits" id="oral-rec-timer-display">02:00</div>
+
+            <div class="rec-btn-group">
+              <button id="btn-start-mic-record" class="btn btn-danger">
+                ● Record Voice (MediaRecorder)
+              </button>
+              <button id="btn-stop-mic-record" class="btn btn-secondary" style="display: none;">
+                ⏹ Stop & Save Recording
+              </button>
+            </div>
+          </div>
+
+          <!-- Audio playback -->
+          <div id="oral-audio-playback-wrap" class="audio-playback-wrap" style="display: none;">
+            <h5>Your Recorded Defense:</h5>
+            <audio id="oral-audio-player" controls class="oral-audio-player"></audio>
+            <div class="audio-meta" id="oral-audio-meta">Duration: 0:00</div>
+          </div>
+
+          <div id="oral-mic-fallback-msg" class="mic-fallback-note" style="display: none;">
+            <span>ℹ️ Microphone access disabled. Verbal timer was simulated. Practice delivering your bullet points aloud within the allocated 2 minutes.</span>
+          </div>
+        </div>
+
+        <!-- Step 4: NSU Oral Defense Rubric Self-Assessment (5 Points Max) -->
+        <div class="oral-step-section" id="oral-step-rubric">
+          <div class="oral-step-header">
+            <span class="step-num-pill">Step 4</span>
+            <h4>Official NSU Oral Defense Evaluation Rubric (5 Points)</h4>
+          </div>
+          <p class="oral-step-desc">Evaluate your spontaneous spoken presentation against the 4 official Novosibirsk State University oral assessment criteria:</p>
+
+          <div class="oral-rubric-table-wrap">
+            <table class="oral-rubric-table">
+              <thead>
+                <tr>
+                  <th>Criterion</th>
+                  <th>NSU Assessment Focus</th>
+                  <th>Max Points</th>
+                  <th>Awarded Score</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>1. Problem Formulation & Physics</strong></td>
+                  <td>Clear articulation of governing laws, boundary conditions, and chemical/physical balance equations.</td>
+                  <td>1.5 pts</td>
+                  <td>
+                    <select id="rubric-crit-1" class="rubric-score-select">
+                      <option value="1.5">1.5 / 1.5 — Flawless physical setup & boundary definition</option>
+                      <option value="1.0">1.0 / 1.5 — Good setup, minor omitted condition</option>
+                      <option value="0.5">0.5 / 1.5 — Partial or qualitative formulation</option>
+                      <option value="0.0">0.0 / 1.5 — Incorrect or absent formulation</option>
+                    </select>
+                  </td>
+                </tr>
+                <tr>
+                  <td><strong>2. Derivation Rigor & Calculation</strong></td>
+                  <td>Logical progression of mathematical substitutions, stoichiometric ratios, and units verification.</td>
+                  <td>1.5 pts</td>
+                  <td>
+                    <select id="rubric-crit-2" class="rubric-score-select">
+                      <option value="1.5">1.5 / 1.5 — Rigorous calculation & exact final values</option>
+                      <option value="1.0">1.0 / 1.5 — Sound derivation with minor arithmetic slip</option>
+                      <option value="0.5">0.5 / 1.5 — Incomplete calculation or missing units</option>
+                      <option value="0.0">0.0 / 1.5 — Fundamentally flawed derivation</option>
+                    </select>
+                  </td>
+                </tr>
+                <tr>
+                  <td><strong>3. Academic Fluency & Terminology</strong></td>
+                  <td>Accurate use of authentic Russian-school geoscience/mining terms (specific resistance, subsoil user, NTC, rock dumps).</td>
+                  <td>1.0 pt</td>
+                  <td>
+                    <select id="rubric-crit-3" class="rubric-score-select">
+                      <option value="1.0">1.0 / 1.0 — Professional academic terminology throughout</option>
+                      <option value="0.5">0.5 / 1.0 — Casual terminology or imprecise naming</option>
+                      <option value="0.0">0.0 / 1.0 — Severe misuse of scientific terms</option>
+                    </select>
+                  </td>
+                </tr>
+                <tr>
+                  <td><strong>4. Error Analysis & Geological Limits</strong></td>
+                  <td>Critical awareness of real-world geological heterogeneity, sampling bias, recovery tolerances, and environmental impact.</td>
+                  <td>1.0 pt</td>
+                  <td>
+                    <select id="rubric-crit-4" class="rubric-score-select">
+                      <option value="1.0">1.0 / 1.0 — Thorough discussion of assumptions & constraints</option>
+                      <option value="0.5">0.5 / 1.0 — Brief mention of limitations</option>
+                      <option value="0.0">0.0 / 1.0 — Assumed idealized conditions uncritically</option>
+                    </select>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="oral-score-total-bar">
+            <span>Total Task 44 Oral Defense Score:</span>
+            <strong id="oral-total-score-display">5.0 / 5.0 Points</strong>
+          </div>
+        </div>
+
+        <!-- Oral Bottom Actions -->
+        <div class="oral-bottom-actions no-print">
+          <button id="btn-submit-oral-defense" class="btn btn-primary btn-lg">
+            ✓ Finalize Examination & View Full Stage 2 Results →
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
        VIEW 4: POST-SUBMISSION EVALUATION & DETAILED REVIEW
        ========================================================================= -->
   <div id="review-view" class="view-container review-view" style="display: none;">
@@ -473,6 +690,12 @@
             <div class="score-card-label">TASKS FULLY CORRECT</div>
             <div class="score-card-value"><span id="score-correct-tasks">0</span> <small>/ <span id="score-total-tasks">43</span></small></div>
             <div class="score-card-sub"><span id="score-partial-tasks">0</span> partial credit awards</div>
+          </div>
+
+          <div class="score-card oral-score-card">
+            <div class="score-card-label">TASK 44 ORAL DEFENSE</div>
+            <div class="score-card-value"><span id="score-oral">0</span> <small>/ 5 Pts</small></div>
+            <div class="score-card-sub" id="score-oral-sub">Spontaneous Defense</div>
           </div>
         </div>
 
