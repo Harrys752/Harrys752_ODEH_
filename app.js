@@ -7,8 +7,23 @@
 (function () {
   'use strict';
 
-  const STORAGE_KEY = 'OPEN_DOORS_NSU_SIM_SESSION_V4';
+  const STORAGE_KEY = 'od_sim_nsu_v5';
   const GEMINI_KEY_STORAGE = 'OPEN_DOORS_GEMINI_API_KEY';
+
+  // Safe accessor to Question Bank with robust multi-context fallback
+  function getQuestionBank() {
+    if (typeof window !== 'undefined' && Array.isArray(window.QUESTION_BANK) && window.QUESTION_BANK.length > 0) {
+      return window.QUESTION_BANK;
+    }
+    if (typeof QUESTION_BANK !== 'undefined' && Array.isArray(QUESTION_BANK) && QUESTION_BANK.length > 0) {
+      return QUESTION_BANK;
+    }
+    if (typeof globalThis !== 'undefined' && Array.isArray(globalThis.QUESTION_BANK) && globalThis.QUESTION_BANK.length > 0) {
+      return globalThis.QUESTION_BANK;
+    }
+    console.error('CRITICAL: QUESTION_BANK could not be found on window, lexical scope, or globalThis!');
+    return [];
+  }
 
   const ALL_FIELDS = [
     'Geography, physical',
@@ -85,6 +100,10 @@
     lastSaved: null,
     oralResponse: null      // { topicId, topicTitle, prepNotes, audioUrl, durationSec, criteriaScores, totalEarned }
   };
+
+  if (typeof window !== 'undefined') {
+    window.__odGetState = () => state;
+  }
 
   let timerInterval = null;
   let uploadTimerInterval = null;
@@ -300,25 +319,11 @@
   // Question Bank Sampling Engine (Stratified Round-Robin by Field & Difficulty)
   // ============================================================================
   function sampleQuestions(config) {
-    const rawBank = window.QUESTION_BANK || [];
+    const rawBank = getQuestionBank();
     if (!rawBank || rawBank.length === 0) {
       console.error('QUESTION_BANK is empty or not loaded.');
       return [];
     }
-
-    // Filter by single field if requested
-    let pool = [...rawBank];
-    if (config.filterMode === 'single-field' && config.targetField && config.targetField !== 'all') {
-      pool = pool.filter((q) => q.field === config.targetField);
-      // If pool doesn't have enough, fall back to full pool
-      if (pool.length < (config.quotas.basic + config.quotas.intermediate + config.quotas.advanced)) {
-        pool = [...rawBank];
-      }
-    }
-
-    const basicPool = pool.filter((q) => q.difficulty === 'basic');
-    const interPool = pool.filter((q) => q.difficulty === 'intermediate');
-    const advPool = pool.filter((q) => q.difficulty === 'advanced');
 
     function shuffle(arr) {
       const a = [...arr];
@@ -328,6 +333,39 @@
       }
       return a;
     }
+
+    // STRICT SINGLE-FIELD DISCIPLINE ISOLATION (ZERO CROSS-FIELD LEAKAGE)
+    if (config.filterMode === 'single-field' && config.targetField && config.targetField !== 'all') {
+      const targetNorm = config.targetField.trim().toLowerCase();
+      const fieldPool = rawBank.filter((q) => (q.field || '').trim().toLowerCase() === targetNorm);
+
+      const bPool = fieldPool.filter((q) => q.difficulty === 'basic');
+      const iPool = fieldPool.filter((q) => q.difficulty === 'intermediate');
+      const aPool = fieldPool.filter((q) => q.difficulty === 'advanced');
+
+      // Dynamic quotas tailored strictly to the single discipline pool (12 basic, 5 intermediate, 2 advanced)
+      const bCount = config.quotas && config.quotas.basic !== undefined
+        ? Math.min(bPool.length, config.quotas.basic === 25 ? 12 : config.quotas.basic)
+        : Math.min(bPool.length, 12);
+
+      const iCount = config.quotas && config.quotas.intermediate !== undefined
+        ? Math.min(iPool.length, config.quotas.intermediate === 15 ? 5 : config.quotas.intermediate)
+        : Math.min(iPool.length, 5);
+
+      const aCount = config.quotas && config.quotas.advanced !== undefined
+        ? Math.min(aPool.length, config.quotas.advanced === 3 ? 2 : config.quotas.advanced)
+        : Math.min(aPool.length, 2);
+
+      const pickedB = shuffle(bPool).slice(0, bCount);
+      const pickedI = shuffle(iPool).slice(0, iCount);
+      const pickedA = shuffle(aPool).slice(0, aCount);
+
+      return [...pickedB, ...pickedI, ...pickedA];
+    }
+
+    const basicPool = rawBank.filter((q) => q.difficulty === 'basic');
+    const interPool = rawBank.filter((q) => q.difficulty === 'intermediate');
+    const advPool = rawBank.filter((q) => q.difficulty === 'advanced');
 
     function stratifiedPick(items, count) {
       if (count <= 0) return [];
@@ -383,7 +421,7 @@
   // Parametric Engine: Instantiate Multi-Variant Archetypes
   // ============================================================================
   function instantiateParametricVariants(questions) {
-    const rawBank = window.QUESTION_BANK || [];
+    const rawBank = getQuestionBank();
 
     // Group all parametric questions in bank by templateId
     const templateGroups = {};
@@ -427,6 +465,19 @@
       state.activeQuestions = instantiateParametricVariants(sampleQuestions(state.config));
     }
 
+    // Safety fallback: if activeQuestions is unexpectedly empty, recover directly from bank
+    if (!state.activeQuestions || state.activeQuestions.length === 0) {
+      console.warn('activeQuestions was empty. Engaging recovery fallback from Question Bank...');
+      const recoveryBank = getQuestionBank();
+      if (state.config.filterMode === 'single-field' && state.config.targetField && state.config.targetField !== 'all') {
+        const targetNorm = state.config.targetField.trim().toLowerCase();
+        const fMatches = recoveryBank.filter(q => (q.field || '').trim().toLowerCase() === targetNorm);
+        state.activeQuestions = fMatches.length > 0 ? fMatches : recoveryBank.slice(0, 20);
+      } else {
+        state.activeQuestions = recoveryBank.slice(0, 43);
+      }
+    }
+
     state.currentIndex = 0;
     state.savedAnswers = {};
     state.draftAnswers = {};
@@ -439,13 +490,23 @@
 
     // Configure Exam Header
     if (DOM.examModeBadge) {
-      if (state.mode === 'proctored') {
+      if (state.config.filterMode === 'single-field' && state.config.targetField) {
+        DOM.examModeBadge.textContent = `Focused Drill: ${state.config.targetField} (${state.activeQuestions.length} Tasks)`;
+        DOM.examModeBadge.className = 'moodle-mode-pill single-field';
+        DOM.examModeBadge.style.display = 'inline-flex';
+      } else if (state.mode === 'proctored') {
         DOM.examModeBadge.textContent = 'Proctored Stage 2';
         DOM.examModeBadge.className = 'moodle-mode-pill';
+        DOM.examModeBadge.style.display = 'inline-flex';
       } else {
         DOM.examModeBadge.textContent = 'Test Session (Practice)';
         DOM.examModeBadge.className = 'moodle-mode-pill practice';
+        DOM.examModeBadge.style.display = 'inline-flex';
       }
+    }
+
+    if (state.config.filterMode === 'single-field' && state.activeQuestions.length <= 25 && (state.config.durationMinutes === 180 || !state.config.durationMinutes)) {
+      state.remainingSeconds = 60 * 60; // 60 minutes for focused single-field drill
     }
 
     // Configure Focus Loss Proctoring
@@ -1442,9 +1503,233 @@
     state.gradingResult = gradeActiveSession();
     saveSessionToStorage();
 
+    // Record persistent attempt history in localStorage
+    recordAttemptHistory(state.gradingResult);
+
     switchView('review');
     renderEvaluationSection();
     showToast('Examination attempt finalized and officially graded.');
+  }
+
+  // ============================================================================
+  // PERSISTENT ATTEMPT HISTORY (od_attempt_history_v1)
+  // ============================================================================
+  const HISTORY_STORAGE_KEY = 'od_attempt_history_v1';
+
+  function getStoredHistory() {
+    try {
+      const raw = localStorage.getItem(HISTORY_STORAGE_KEY);
+      return raw ? JSON.parse(raw) : [];
+    } catch (e) {
+      console.warn('Failed to parse attempt history from localStorage', e);
+      return [];
+    }
+  }
+
+  function saveStoredHistory(historyArr) {
+    try {
+      localStorage.setItem(HISTORY_STORAGE_KEY, JSON.stringify(historyArr));
+    } catch (e) {
+      console.warn('Failed to save attempt history to localStorage', e);
+    }
+  }
+
+  function recordAttemptHistory(gradingResult) {
+    if (!gradingResult) return;
+    try {
+      const history = getStoredHistory();
+      const now = new Date();
+      const dateStr = now.toLocaleDateString(undefined, {
+        day: '2-digit',
+        month: 'short',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+
+      const entry = {
+        id: 'att_' + Date.now(),
+        dateIso: now.toISOString(),
+        dateFormatted: dateStr,
+        mode: state.mode || 'proctored',
+        presetId: state.presetId || 'stage2-full',
+        presetName: PRESETS[state.presetId]?.name || 'Exam Session',
+        filterMode: state.config.filterMode || 'balanced',
+        targetField: state.config.targetField || 'all',
+        taskCount: state.activeQuestions.length,
+        durationSeconds: (state.config.durationMinutes || 180) * 60 - (state.remainingSeconds || 0),
+        earnedTotal: gradingResult.earnedTotal,
+        maxTotal: gradingResult.maxTotal,
+        percentage: gradingResult.percentage,
+        correctCount: gradingResult.correctCount,
+        partialCount: gradingResult.partialCount,
+        incorrectCount: gradingResult.incorrectCount,
+        byField: gradingResult.byField,
+        snapshot: {
+          activeQuestions: state.activeQuestions,
+          savedAnswers: { ...state.savedAnswers },
+          draftAnswers: { ...state.savedAnswers },
+          flaggedIds: [...state.flaggedIds],
+          uploadedFiles: { ...state.uploadedFiles },
+          oralResponse: state.oralResponse ? { ...state.oralResponse } : null,
+          gradingResult: gradingResult,
+          config: { ...state.config },
+          mode: state.mode
+        }
+      };
+
+      // Keep up to 25 recent attempts
+      history.unshift(entry);
+      if (history.length > 25) history.pop();
+      saveStoredHistory(history);
+      renderAttemptHistory();
+    } catch (err) {
+      console.error('Error saving attempt to history', err);
+    }
+  }
+
+  function renderAttemptHistory() {
+    const container = document.getElementById('history-list-container');
+    const statsRow = document.getElementById('history-summary-stats');
+    const btnClear = document.getElementById('btn-clear-history');
+    const totalEl = document.getElementById('hist-total-attempts');
+    const avgEl = document.getElementById('hist-avg-score');
+    const bestEl = document.getElementById('hist-best-score');
+
+    if (!container) return;
+
+    const history = getStoredHistory();
+
+    if (!history || history.length === 0) {
+      if (statsRow) statsRow.style.display = 'none';
+      if (btnClear) btnClear.style.display = 'none';
+      container.innerHTML = `
+        <div class="history-empty-state">
+          <span class="empty-icon">📝</span>
+          <p>No past attempts recorded yet. Launch an exam session above to test your knowledge.</p>
+        </div>
+      `;
+      return;
+    }
+
+    if (statsRow) statsRow.style.display = 'grid';
+    if (btnClear) btnClear.style.display = 'inline-block';
+
+    // Calculate Summary Stats
+    const total = history.length;
+    const scores = history.map(h => h.percentage || 0);
+    const avg = Math.round(scores.reduce((a, b) => a + b, 0) / total);
+    const best = Math.max(...scores);
+
+    if (totalEl) totalEl.textContent = total;
+    if (avgEl) avgEl.textContent = `${avg}%`;
+    if (bestEl) bestEl.textContent = `${best}%`;
+
+    // Render entries
+    container.innerHTML = '';
+    history.forEach(item => {
+      const card = document.createElement('div');
+      card.className = 'history-item-card';
+
+      const durationMin = Math.round((item.durationSeconds || 0) / 60);
+      const isHigh = item.percentage >= 70;
+      const isMed = item.percentage >= 50 && item.percentage < 70;
+      const scoreClass = isHigh ? 'high' : (isMed ? 'medium' : 'low');
+
+      let modeLabel = item.mode === 'proctored' ? 'Proctored Stage 2' : 'Practice Drill';
+      if (item.filterMode === 'single-field') {
+        modeLabel = `Focused: ${item.targetField}`;
+      }
+
+      card.innerHTML = `
+        <div class="history-item-main">
+          <div class="history-item-header">
+            <span class="history-item-title">${escapeHtml(item.presetName || 'Exam Attempt')}</span>
+            <span class="history-mode-pill">${escapeHtml(modeLabel)}</span>
+          </div>
+          <div class="history-item-meta">
+            <span>📅 ${escapeHtml(item.dateFormatted || '')}</span>
+            <span>📝 ${item.taskCount} Tasks</span>
+            <span>⏱ ~${durationMin} min</span>
+            <span>🎯 ${item.correctCount || 0} Correct · ${item.partialCount || 0} Partial · ${item.incorrectCount || 0} Incorrect</span>
+          </div>
+        </div>
+        <div class="history-item-right">
+          <div class="history-score-badge">
+            <span class="history-score-percent ${scoreClass}">${item.percentage}%</span>
+            <span class="history-score-pts">${item.earnedTotal} / ${item.maxTotal} Pts</span>
+          </div>
+          <div class="history-item-actions">
+            <button class="btn-history-review" data-id="${item.id}" title="Inspect full solutions, correct answers, and grading review">
+              View Report & Review
+            </button>
+            <button class="btn-history-del" data-id="${item.id}" title="Delete this attempt entry">
+              ✕
+            </button>
+          </div>
+        </div>
+      `;
+
+      // Wire action buttons
+      const btnReview = card.querySelector('.btn-history-review');
+      if (btnReview) {
+        btnReview.addEventListener('click', () => {
+          restoreAttemptSnapshot(item.id);
+        });
+      }
+
+      const btnDel = card.querySelector('.btn-history-del');
+      if (btnDel) {
+        btnDel.addEventListener('click', (e) => {
+          e.stopPropagation();
+          deleteHistoryEntry(item.id);
+        });
+      }
+
+      container.appendChild(card);
+    });
+  }
+
+  function restoreAttemptSnapshot(historyId) {
+    const history = getStoredHistory();
+    const entry = history.find(h => h.id === historyId);
+    if (!entry || !entry.snapshot) {
+      showToast('Could not locate attempt snapshot data.');
+      return;
+    }
+
+    const snap = entry.snapshot;
+    state.activeQuestions = snap.activeQuestions || [];
+    state.savedAnswers = snap.savedAnswers || {};
+    state.draftAnswers = { ...(snap.savedAnswers || {}) };
+    state.flaggedIds = snap.flaggedIds || [];
+    state.uploadedFiles = snap.uploadedFiles || {};
+    state.oralResponse = snap.oralResponse || null;
+    state.gradingResult = snap.gradingResult || null;
+    state.timeSpentSeconds = entry.durationSeconds || 0;
+    state.isSubmitted = true;
+    state.config = snap.config || { durationMinutes: 180, name: entry.presetName };
+    state.mode = snap.mode || entry.mode || 'unproctored';
+
+    switchView('review');
+    renderEvaluationSection();
+    showToast(`Loaded review snapshot from ${entry.dateFormatted}`);
+  }
+
+  function deleteHistoryEntry(historyId) {
+    let history = getStoredHistory();
+    history = history.filter(h => h.id !== historyId);
+    saveStoredHistory(history);
+    renderAttemptHistory();
+    showToast('Attempt entry removed.');
+  }
+
+  function clearAllHistory() {
+    if (confirm('Are you sure you want to delete all saved past attempt history?')) {
+      localStorage.removeItem(HISTORY_STORAGE_KEY);
+      renderAttemptHistory();
+      showToast('All attempt history cleared.');
+    }
   }
 
   // ============================================================================
@@ -2985,6 +3270,12 @@ Return pure JSON only.`;
       });
     }
 
+    // Clear attempt history button
+    const btnClearHistory = document.getElementById('btn-clear-history');
+    if (btnClearHistory) {
+      btnClearHistory.addEventListener('click', clearAllHistory);
+    }
+
     // Keyboard navigation (Alt+Left, Alt+Right)
     window.addEventListener('keydown', (e) => {
       if (state.view !== 'exam') return;
@@ -3002,6 +3293,14 @@ Return pure JSON only.`;
   // Initialization & Lifecycle
   // ============================================================================
   function init() {
+    // 0. Purge legacy stale session storage from previous simulator iterations
+    try {
+      localStorage.removeItem('OPEN_DOORS_NSU_SIM_SESSION_V4');
+      localStorage.removeItem('OPEN_DOORS_SIM_SESSION_V3');
+      localStorage.removeItem('OPEN_DOORS_SIM_SESSION_V2');
+      localStorage.removeItem('OPEN_DOORS_EXAM_STATE');
+    } catch (e) {}
+
     // 1. Setup listeners and tools
     setupEventListeners();
     setupCalculatorAndReference();
@@ -3010,11 +3309,16 @@ Return pure JSON only.`;
     // 2. Default View MUST be Lobby
     switchView('lobby');
 
-    // 3. Check if an unfinished session exists to show the Resume banner
+    // 3. Render Past Attempt History (od_attempt_history_v1)
+    renderAttemptHistory();
+
+    // 4. Check if an unfinished session exists to show the Resume banner
     checkSavedSessionBanner();
 
-    // 4. Zero timers and zero proctoring listeners on initial page load!
+    // 5. Zero timers and zero proctoring listeners on initial page load!
     // Exam only starts when user clicks Mode A or Mode B buttons in the lobby.
+    const bank = getQuestionBank();
+    console.log(`[NSU Simulator] Question Bank initialized with ${bank.length} tasks across 7 disciplines.`);
   }
 
   if (document.readyState === 'loading') {

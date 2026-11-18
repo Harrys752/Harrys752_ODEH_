@@ -238,6 +238,45 @@
         </details>
       </div>
 
+      <!-- Past Attempts & Assignment History Panel -->
+      <div class="lobby-card history-panel" id="lobby-history-section">
+        <div class="history-panel-header">
+          <div class="history-title-block">
+            <h3 class="history-main-title">
+              <span class="history-icon">📜</span> Past Attempts & Assignment History
+            </h3>
+            <p class="history-sub-title">Review your recorded examination attempts, discipline scores, and inspect full solution breakdowns.</p>
+          </div>
+          <button id="btn-clear-history" class="btn-clear-history" style="display: none;" title="Erase all stored attempt history from browser">
+            🗑 Clear History
+          </button>
+        </div>
+
+        <!-- History Summary Statistics -->
+        <div class="history-summary-stats" id="history-summary-stats" style="display: none;">
+          <div class="hist-stat-card">
+            <span class="hist-stat-label">Total Attempts</span>
+            <strong class="hist-stat-val" id="hist-total-attempts">0</strong>
+          </div>
+          <div class="hist-stat-card">
+            <span class="hist-stat-label">Average Score</span>
+            <strong class="hist-stat-val" id="hist-avg-score">0%</strong>
+          </div>
+          <div class="hist-stat-card">
+            <span class="hist-stat-label">Best Score</span>
+            <strong class="hist-stat-val highlight" id="hist-best-score">0%</strong>
+          </div>
+        </div>
+
+        <!-- History Items List Container -->
+        <div id="history-list-container" class="history-list-container">
+          <div class="history-empty-state">
+            <span class="empty-icon">📝</span>
+            <p>No past attempts recorded yet. Launch an exam session above to test your knowledge.</p>
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
 
