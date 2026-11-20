@@ -7,7 +7,7 @@
 (function () {
   'use strict';
 
-  const STORAGE_KEY = 'od_sim_nsu_v5';
+  const STORAGE_KEY = 'od_sim_nsu_v7';
   const GEMINI_KEY_STORAGE = 'OPEN_DOORS_GEMINI_API_KEY';
 
   // Safe accessor to Question Bank with robust multi-context fallback
@@ -103,6 +103,7 @@
 
   if (typeof window !== 'undefined') {
     window.__odGetState = () => state;
+    window.__odRenderHistory = () => renderAttemptHistory();
   }
 
   let timerInterval = null;
@@ -740,6 +741,13 @@
     if (!DOM.questionNavMatrix) return;
     DOM.questionNavMatrix.innerHTML = '';
 
+    const total = state.activeQuestions.length;
+    let rows = 30;
+    if (total <= 20) rows = Math.ceil(total / 2);
+    else if (total <= 45) rows = Math.ceil(total / 3);
+    else rows = 30;
+    DOM.questionNavMatrix.style.setProperty('--matrix-rows', rows);
+
     state.activeQuestions.forEach((q, idx) => {
       const tile = document.createElement('button');
       tile.className = 'nav-tile';
@@ -802,7 +810,18 @@
   // Render Current Task in Single-Question Viewport Card
   // ============================================================================
   function renderCurrentTask() {
-    if (!state.activeQuestions || state.activeQuestions.length === 0) return;
+    if (!state.activeQuestions || state.activeQuestions.length === 0) {
+      console.warn('renderCurrentTask called with empty activeQuestions. Attempting emergency recovery...');
+      const recoveryBank = getQuestionBank();
+      if (recoveryBank.length > 0) {
+        state.activeQuestions = recoveryBank.slice(0, 43);
+      } else {
+        if (DOM.taskStemText) {
+          DOM.taskStemText.innerHTML = '<p class="error-msg">Questions could not be loaded. Please return to Lobby and start a new attempt.</p>';
+        }
+        return;
+      }
+    }
     const q = state.activeQuestions[state.currentIndex];
     if (!q) return;
 
@@ -1547,6 +1566,26 @@
         minute: '2-digit'
       });
 
+      const totalTasks = state.activeQuestions.length || gradingResult.totalTasks || 0;
+      const earned = typeof gradingResult.earnedPoints === 'number'
+        ? gradingResult.earnedPoints
+        : (typeof gradingResult.earnedTotal === 'number' ? gradingResult.earnedTotal : 0);
+      const maxPts = typeof gradingResult.maxPoints === 'number'
+        ? gradingResult.maxPoints
+        : (typeof gradingResult.maxTotal === 'number' ? gradingResult.maxTotal : (totalTasks > 0 ? totalTasks : 100));
+      const correct = typeof gradingResult.fullyCorrectCount === 'number'
+        ? gradingResult.fullyCorrectCount
+        : (typeof gradingResult.correctCount === 'number' ? gradingResult.correctCount : 0);
+      const partial = typeof gradingResult.partialCreditCount === 'number'
+        ? gradingResult.partialCreditCount
+        : (typeof gradingResult.partialCount === 'number' ? gradingResult.partialCount : 0);
+      const incorrect = typeof gradingResult.incorrectCount === 'number'
+        ? gradingResult.incorrectCount
+        : Math.max(0, totalTasks - correct - partial);
+      const pct = typeof gradingResult.percentage === 'number'
+        ? gradingResult.percentage
+        : (maxPts > 0 ? Math.round((earned / maxPts) * 100) : 0);
+
       const entry = {
         id: 'att_' + Date.now(),
         dateIso: now.toISOString(),
@@ -1556,15 +1595,23 @@
         presetName: PRESETS[state.presetId]?.name || 'Exam Session',
         filterMode: state.config.filterMode || 'balanced',
         targetField: state.config.targetField || 'all',
-        taskCount: state.activeQuestions.length,
+        taskCount: totalTasks,
         durationSeconds: (state.config.durationMinutes || 180) * 60 - (state.remainingSeconds || 0),
-        earnedTotal: gradingResult.earnedTotal,
-        maxTotal: gradingResult.maxTotal,
-        percentage: gradingResult.percentage,
-        correctCount: gradingResult.correctCount,
-        partialCount: gradingResult.partialCount,
-        incorrectCount: gradingResult.incorrectCount,
-        byField: gradingResult.byField,
+        // Standardized and backward-compatible property fields
+        pointsEarned: earned,
+        pointsMax: maxPts,
+        earnedPoints: earned,
+        earnedTotal: earned,
+        maxPoints: maxPts,
+        maxTotal: maxPts,
+        percentage: pct,
+        correctCount: correct,
+        fullyCorrectCount: correct,
+        partialCount: partial,
+        partialCreditCount: partial,
+        incorrectCount: incorrect,
+        byField: gradingResult.fieldScores || gradingResult.byField || {},
+        fieldScores: gradingResult.fieldScores || gradingResult.byField || {},
         snapshot: {
           activeQuestions: state.activeQuestions,
           savedAnswers: { ...state.savedAnswers },
@@ -1641,6 +1688,66 @@
         modeLabel = `Focused: ${item.targetField}`;
       }
 
+      // Backward-compatible points and counts resolution
+      let earned = item.pointsEarned ?? item.earnedPoints ?? item.earnedTotal;
+      let maxPts = item.pointsMax ?? item.maxPoints ?? item.maxTotal;
+      let correct = item.correctCount ?? item.fullyCorrectCount;
+      let partial = item.partialCount ?? item.partialCreditCount;
+      let incorrect = item.incorrectCount;
+
+      // Recompute from snapshot if previously saved as undefined
+      if (earned === undefined || maxPts === undefined || correct === undefined) {
+        if (item.snapshot && item.snapshot.gradingResult) {
+          const g = item.snapshot.gradingResult;
+          earned = g.earnedPoints ?? g.earnedTotal ?? g.pointsEarned;
+          maxPts = g.maxPoints ?? g.maxTotal ?? g.pointsMax;
+          correct = g.fullyCorrectCount ?? g.correctCount;
+          partial = g.partialCreditCount ?? g.partialCount;
+        } else if (item.snapshot && Array.isArray(item.snapshot.activeQuestions)) {
+          const qList = item.snapshot.activeQuestions;
+          const sAnswers = item.snapshot.savedAnswers || {};
+          let reEarned = 0;
+          let reMax = 0;
+          let reCorrect = 0;
+          let rePartial = 0;
+          qList.forEach(q => {
+            const pts = q.points || 1;
+            reMax += pts;
+            const uAns = sAnswers[q.id];
+            if (uAns !== undefined && uAns !== null && uAns !== '') {
+              if (String(uAns).trim().toLowerCase() === String(q.correctAnswer).trim().toLowerCase()) {
+                reEarned += pts;
+                reCorrect++;
+              }
+            }
+          });
+          earned = reEarned;
+          maxPts = reMax;
+          correct = reCorrect;
+          partial = rePartial;
+        }
+      }
+
+      // Fallback derivation from percentage and task count if still undefined
+      const taskCount = item.taskCount || (item.snapshot?.activeQuestions?.length) || 0;
+      if (maxPts === undefined || isNaN(maxPts)) {
+        maxPts = taskCount > 0 ? (taskCount === 43 ? 100 : taskCount) : 100;
+      }
+      if (earned === undefined || isNaN(earned)) {
+        earned = Math.round(((item.percentage || 0) / 100) * maxPts * 10) / 10;
+      }
+      if (correct === undefined || isNaN(correct)) {
+        correct = Math.round(((item.percentage || 0) / 100) * taskCount);
+      }
+      if (partial === undefined || isNaN(partial)) {
+        partial = 0;
+      }
+      if (incorrect === undefined || isNaN(incorrect)) {
+        incorrect = Math.max(0, taskCount - correct - partial);
+      }
+
+      const displayEarned = Number.isInteger(earned) ? earned : Number(earned).toFixed(1);
+
       card.innerHTML = `
         <div class="history-item-main">
           <div class="history-item-header">
@@ -1649,15 +1756,15 @@
           </div>
           <div class="history-item-meta">
             <span>📅 ${escapeHtml(item.dateFormatted || '')}</span>
-            <span>📝 ${item.taskCount} Tasks</span>
+            <span>📝 ${taskCount} Tasks</span>
             <span>⏱ ~${durationMin} min</span>
-            <span>🎯 ${item.correctCount || 0} Correct · ${item.partialCount || 0} Partial · ${item.incorrectCount || 0} Incorrect</span>
+            <span>🎯 ${correct} Correct · ${partial} Partial · ${incorrect} Incorrect</span>
           </div>
         </div>
         <div class="history-item-right">
           <div class="history-score-badge">
             <span class="history-score-percent ${scoreClass}">${item.percentage}%</span>
-            <span class="history-score-pts">${item.earnedTotal} / ${item.maxTotal} Pts</span>
+            <span class="history-score-pts">${displayEarned} / ${maxPts} Pts</span>
           </div>
           <div class="history-item-actions">
             <button class="btn-history-review" data-id="${item.id}" title="Inspect full solutions, correct answers, and grading review">
@@ -3295,6 +3402,8 @@ Return pure JSON only.`;
   function init() {
     // 0. Purge legacy stale session storage from previous simulator iterations
     try {
+      localStorage.removeItem('od_sim_nsu_v5');
+      localStorage.removeItem('od_sim_nsu_v6');
       localStorage.removeItem('OPEN_DOORS_NSU_SIM_SESSION_V4');
       localStorage.removeItem('OPEN_DOORS_SIM_SESSION_V3');
       localStorage.removeItem('OPEN_DOORS_SIM_SESSION_V2');

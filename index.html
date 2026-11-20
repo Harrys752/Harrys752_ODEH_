@@ -329,74 +329,76 @@
       </div>
     </header>
 
-    <!-- Main Exam Canvas -->
+    <!-- Main Exam Canvas: Side-by-Side 2-Column Layout Matching Real Open Doors Interface -->
     <main class="od-exam-canvas">
-      
-      <!-- Top Question Navigation Matrix (24px x 24px Squares, Rows of 30 Tiles) -->
-      <section class="od-matrix-section no-print">
-        <div class="od-matrix-container">
-          <div id="question-nav-matrix" class="od-tile-matrix">
-            <!-- Numbered square tiles 1..N injected dynamically via JS -->
-          </div>
-        </div>
-      </section>
+      <div class="od-exam-layout">
 
-      <!-- Single-Question White Card (860px Centered) -->
-      <section class="od-card-section">
-        <div class="od-question-card">
-          
-          <!-- Card Sub-Header: Flag Toggle & Save Status -->
-          <div class="od-card-top-row">
-            <div class="od-meta-tags">
-              <span id="task-number-label" style="display: none;">Question 1</span>
-              <span class="od-tag-field" id="task-discipline-pill">Geography, physical</span>
-              <span class="od-tag-pts" id="task-points-pill">1 Point</span>
-            </div>
+        <!-- Left Column: Single-Question White Card -->
+        <section class="od-card-section">
+          <div class="od-question-card">
             
-            <div class="od-card-actions">
-              <button id="btn-toggle-flag" class="btn-card-flag" title="Flag or unflag this question">
-                <span id="flag-icon">⚑</span> <span id="flag-text">Flag question</span>
-              </button>
-              <span class="od-save-status" id="task-save-indicator">Not answered yet</span>
+            <!-- Card Sub-Header: Flag Toggle & Save Status -->
+            <div class="od-card-top-row">
+              <div class="od-meta-tags">
+                <span id="task-number-label" style="display: none;">Question 1</span>
+                <span class="od-tag-field" id="task-discipline-pill">Geography, physical</span>
+                <span class="od-tag-pts" id="task-points-pill">1 Point</span>
+              </div>
+              
+              <div class="od-card-actions">
+                <button id="btn-toggle-flag" class="btn-card-flag" title="Flag or unflag this question">
+                  <span id="flag-icon">⚑</span> <span id="flag-text">Flag question</span>
+                </button>
+                <span class="od-save-status" id="task-save-indicator">Not answered yet</span>
+              </div>
+            </div>
+
+            <!-- Question Stem & Content -->
+            <div class="od-card-content">
+              <h3 id="task-title-text" style="display: none;"></h3>
+              <div class="od-task-stem" id="task-stem-text">
+                <!-- Rendered task stem HTML -->
+              </div>
+            </div>
+
+            <!-- Thin Horizontal Divider Line (1px solid #edf0f4) -->
+            <hr class="od-stem-divider">
+
+            <!-- Answer Options Zone (Circular Radio Buttons with 12px Spacing) -->
+            <div class="od-answer-zone" id="task-answer-zone">
+              <!-- Rendered via JS -->
+            </div>
+
+            <!-- Card Footer: Save Answer (Left) and Previous/Next (Right) -->
+            <div class="od-card-footer no-print">
+              <div class="footer-left">
+                <button id="btn-save-answer" class="btn-od-save" disabled>
+                  Save answer
+                </button>
+              </div>
+              <div class="footer-right">
+                <button id="btn-prev-task" class="btn-od-nav">
+                  ◀ Previous
+                </button>
+                <button id="btn-next-task" class="btn-od-nav">
+                  Next ▶
+                </button>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- Right Column: Navigation Matrix (Columns of 30 Tiles matching Real Open Doors Screenshot) -->
+        <aside class="od-matrix-sidebar no-print">
+          <div class="od-matrix-sticky">
+            <div id="question-nav-matrix" class="od-tile-matrix">
+              <!-- Numbered square tiles 1..N injected dynamically via JS -->
             </div>
           </div>
+        </aside>
 
-          <!-- Question Stem & Content -->
-          <div class="od-card-content">
-            <h3 id="task-title-text" style="display: none;"></h3>
-            <div class="od-task-stem" id="task-stem-text">
-              <!-- Rendered task stem HTML -->
-            </div>
-          </div>
-
-          <!-- Thin Horizontal Divider Line (1px solid #edf0f4) -->
-          <hr class="od-stem-divider">
-
-          <!-- Answer Options Zone (Circular Radio Buttons with 12px Spacing) -->
-          <div class="od-answer-zone" id="task-answer-zone">
-            <!-- Rendered via JS -->
-          </div>
-
-          <!-- Card Footer: Save Answer (Left) and Previous/Next (Right) -->
-          <div class="od-card-footer no-print">
-            <div class="footer-left">
-              <button id="btn-save-answer" class="btn-od-save" disabled>
-                Save answer
-              </button>
-            </div>
-            <div class="footer-right">
-              <button id="btn-prev-task" class="btn-od-nav">
-                ◀ Previous
-              </button>
-              <button id="btn-next-task" class="btn-od-nav">
-                Next ▶
-              </button>
-            </div>
-          </div>
-
-        </div>
-      </section>
-
+      </div>
     </main>
 
   </div>
